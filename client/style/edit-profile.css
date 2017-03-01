@@ -1,0 +1,135 @@
+.edit-options-title{
+	font-size:10pt;
+	color:#606060;
+}
+.edit-main-title{
+	font-size:14pt;
+	color:#469df5;
+	margin-bottom:25px;
+	margin-top:5px;
+}
+.edit-list{
+	margin-top:25px;
+	margin-left:-15px;
+	margin-right:-15px;
+}
+.edit-list li{
+	padding:15px 15px;
+	box-sizing: border-box;
+	color:#000;font-weight: bold;
+	font-size:10pt;
+	border-bottom:solid 1px #e0e0e0;
+	list-style: none;
+}
+.edit-list .active{
+	background: #f3f8fd;
+	border: solid 1px #d1e1f2;	
+	color:#469df5;
+	border-left: none;
+	border-right: none;
+	margin-top:-1px;
+}
+.edit-list li:hover{
+	background:#f3f8fd;
+	color:#469df5;
+	cursor: default;
+}
+.edit-list li:hover i{
+	opacity: 1;
+}
+.edit-list li i{
+	float:right;
+	opacity: 0;
+}
+.edit-list li.active i{
+	opacity: 1;
+}
+.edit-picture-img{
+	width:100px;
+	height:100px;
+	border-radius: 100px;
+	background-image: url(../../images/guy.jpg);
+	background-size:cover;
+	float:right;
+	margin-left: auto;
+	overflow: hidden;
+}
+.edit-picture-img:hover .overlay{
+	opacity: 1;
+}
+.overlay{
+	background:rgba(255,255,255,.8);
+	color:#A0A0A0;
+	text-align: center;
+	line-height: 100px;
+	font-size: 21pt;
+	transition:all .3s ease;
+	opacity: 0;
+	color:#469df5;
+	cursor: pointer;
+}
+.edit-item{
+	overflow: auto;
+	padding:10px 0px;
+	border-bottom:solid 1px #e0e0e0;
+	display: flex;
+	align-items: center;
+}
+.edit-title{
+	float: left;
+	font-size:10pt;
+	color:#606060;
+	text-align: left;
+}
+.edit-input{
+	margin-left: auto;
+}
+.edit-input input{
+	
+	text-align: right;
+	background:#fff;
+	font-size:9pt;
+	color:#606060;
+	font-weight: normal;
+	padding:10px;
+	border-radius: 5px;
+	border:solid 1px #fff;
+	transition:all .3s ease;
+	width:400px;
+}
+.edit-input input:focus{
+	background:#fff;
+	font-size:10pt;
+	color:#606060;font-weight: bold;
+	padding:10px;
+	border-radius: 5px;
+	border:solid 1px #e0e0e0;
+	color:#000;
+}
+.save-changes-btn{
+	display:block !important;
+	background:#469df5;
+	color:#fff;
+	padding:7px 25px;
+	font-size:10pt;
+	position: absolute;
+	bottom:20px;
+	right:15px;
+	border-radius:4px;
+}
+.save-changes-btn:hover{
+	background:#228AF3;
+	cursor: pointer;
+}
+.edit-upload{
+	background:#469df5;
+	color:#fff;
+	padding:7px 25px;
+	font-size:10pt;
+	margin-left: auto;
+	border-radius:4px;
+}
+.edit-upload:hover{
+	background:#228AF3;
+	cursor: pointer;
+}

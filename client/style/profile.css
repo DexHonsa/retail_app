@@ -1,0 +1,298 @@
+.main-user-img{
+	height:120px;
+	width:120px;
+	background-image:url(../../images/John.png);
+	background-size:cover;
+	border-radius:100px;	
+	margin-right:15px;
+	display:inline-block;
+	margin-top: -64px;
+    border: solid 4px #fff;
+	
+}
+.user-header{
+	text-align:center;
+	
+	
+	box-sizing:border-box;
+}
+.user-title{
+	font-size:19pt;
+	color:#000;	
+	margin-top:5px;
+}
+.user-title span{
+	font-size:9pt;	
+	display:inline-block;
+	line-height:12pt;
+	color:#606060;
+}
+.connect-with-btn{
+	margin-top:10px;
+	display:inline-block;
+	border-radius:5px;
+	border:solid 1px #e0e0e0;	
+	height:40px;
+	line-height:40px;
+	padding:0px 20px;
+	text-align:center;
+	font-size:10pt;
+	color:#606060;
+	float:left; margin-left:5px;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f1f1f1+100 */
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(241,241,241,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f1f1f1',GradientType=0 ); /* IE6-9 */
+
+}
+.connect-with-btn:hover{
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(221,221,221,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(221,221,221,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f1f1f1',GradientType=0 ); /* IE6-9 */	
+	cursor: pointer;
+}
+.connect-with-btn:active{
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 100%, rgba(241,241,241,1) 0%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 100%,rgba(241,241,241,1) 0%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(255,255,255,1) 100%,rgba(241,241,241,1) 0%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1f1f1', endColorstr='#fff',GradientType=0 ); /* IE6-9 */	
+	cursor: pointer;
+}
+.connect-with-drop-down{
+	float:right;
+	color:#606060;
+	width:40px;
+	height:40px;
+	border-left:1px solid #e0e0e0;
+	text-align:center;
+	line-height:40px;	
+}
+.profile-details-container{
+	margin-top:15px;
+	width:100%;
+	overflow:auto;	
+}
+.profile-details-item{
+	padding:5px 0px;
+	border-bottom:solid 1px #e0e0e0;	
+	overflow:auto;
+	color:#949494;
+	font-size:10pt;
+}
+.profile-details-left{
+	float:left;	
+	text-align:left;
+}
+.profile-details-right{
+	float:right;	
+	text-align:right;
+	color:#000;
+}
+.about-me-container{
+	margin-top:15px;	
+	color:#606060;
+	font-size:9pt;
+	text-align:left;
+}
+.about-me-title{
+	color:#469df5;
+	font-size:10pt;
+	margin-bottom:5px;
+	text-align:left;	
+}
+.view-resume-btn{
+	margin-top:15px;
+	width:100%;
+	height:50px;
+	background:#f7f7f7;
+	color:#A7A7A7;	
+	line-height:50px;
+	padding:0px 15px;
+	box-sizing:border-box;
+	font-size:10pt;
+	transition:all .3s ease;
+}
+.view-resume-btn i{
+	float:left;	
+	line-height:50px;
+	font-size:20pt;
+}
+.view-resume-btn:hover{
+	color:#469df5 !important;
+	box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	cursor:pointer;
+}
+.awards-container{
+	margin-top:15px;
+	width:100%;
+	overflow:auto;	
+	padding-bottom:5px;
+}
+.awards-item{
+	padding:5px 0px;
+	border-bottom:solid 1px #e0e0e0;	
+	overflow:auto;
+	color:#949494;
+	font-size:10pt;
+}
+.awards-left{
+	float:left;	
+	text-align:left;
+}
+.awards-right{
+	float:right;	
+	text-align:right;
+	color:#000;
+}
+.past-exp-title{
+	font-size:10pt;
+	color:#606060;	
+	text-align:left;
+	margin-bottom:7px;
+}
+.past-exp-item{
+	padding:15px 0px;
+	box-sizing:border-box;
+	border-bottom:solid 1px #e0e0e0;	
+	font-size:13pt;
+	font-weight:bold;
+	color:#469df5;
+	text-align:left;
+	line-height:12pt;
+}
+.past-exp-item a{
+	text-decoration:none;
+}
+.past-exp-item a:hover{
+	color:#7CB9F7;
+}
+.past-exp-item span{
+	display:inline-block;
+	font-size:8pt;
+	color:#606060;	
+	line-height:8pt;
+	font-weight:normal;
+}
+.person-item{
+	padding:15px 0px;
+	border-bottom:1px solid #e0e0e0;	
+	overflow:auto;
+}
+.person-item:last-child{
+	border:none;
+}
+.person-img-img{
+	height:30px;
+	width:30px;	
+	background-image:url(../../images/guy.jpg);
+	background-size:cover;
+	border-radius:100px;
+	margin-right:10px;
+	float:left;
+}
+.person-img{
+	font-size:10pt;	
+}
+.person-name{
+	font-size:10pt;
+	color:#469df5;
+	float:left;
+	padding-top:6px;
+}
+.person-desc{
+	float:right;
+	font-size:8pt;
+	color:#A4A4A4;	
+	text-align:right;
+	padding-top:3px;
+}
+.more-alumni-container{
+	text-align:left;
+	font-size:10pt;
+	color:#606060;	
+}
+.view-all{
+	text-align:center;
+	margin-top:10px; 
+	font-size:10pt; 
+	color:#469df5; 
+	cursor: pointer;
+}
+.btn-container{
+	display: inline-block;
+}
+.panel-tab-container{
+	height:50px;
+	background:#fff;
+	border-bottom:solid 1px #e0e0e0;
+	margin-top:-15px;
+	margin-left:-15px;
+	margin-right:-15px;
+	text-align: center;
+	margin-bottom:20px;
+}
+.panel-tab{
+	line-height: 46px;
+	border-bottom:solid 4px transparent;
+	float:left;
+	padding:0px 20px;
+	font-size:12pt;
+	color:#469df5;
+}
+.panel-tab:hover{
+	cursor: pointer;
+}
+.panel-tab.active{
+	border-bottom:solid 4px #469df5;
+}
+.follower-counter{
+	width:33.33333%;
+	border-right:solid 1px #e0e0e0;
+	text-align: left;
+	padding:5px;
+	box-sizing: border-box;
+	float: left;
+	
+}
+.follower-count-container{
+	margin-bottom:15px;
+	margin-top: 15px;
+	overflow: auto;
+}
+.follower-counter:nth-child(3){
+	border:none;
+}
+.counter-title{
+	font-size: 8pt;
+	color:#979797;
+	float:left;
+}
+.counter-number{
+	font-size:14pt;
+	color:#bbbbbb;
+	font-weight: 400;
+	margin-top:25px;
+}
+.photo-item{
+	width:120px;
+	height:120px;
+	background-size: cover;
+	background-position: center center;
+	border:solid 1px #e0e0e0;
+	
+	margin-right:10px;
+	float: left;
+	
+}
+.photo-item:hover{
+	border:solid 1px #606060;
+	cursor: pointer;
+}
+.photo-content{
+	overflow: auto;
+}
