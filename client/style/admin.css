@@ -453,7 +453,6 @@ a{
 	text-align: left;
 	background: #fff;
 	display:inline-block;
-	margin-bottom:35px;
 	
 }
 .control {
@@ -558,3 +557,86 @@ a{
 
 form p { position:relative }
 label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: normal; color:#808080;}
+.stage{
+	height:100vh;
+	width:100vw;
+	background:rgba(235,241,245,1.00);
+	background-image: url(../images/mapbg.jpg);
+	background-size: cover;
+	background-position: center center;
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+.main-message{
+	font-size:55pt;
+	color:#fff;
+	flex:1;
+	margin-left: 150px;
+	line-height: 60px;
+	font-weight: 300;
+	margin-bottom: 400px;
+}
+.login-container{
+	height:100%;
+	background:#f7f7f7;
+	width:500px;
+	margin-left: auto;
+	padding:15px;
+	display: flex;
+	align-items: center;
+}
+.login-box{
+	
+	height:300px;
+	width:100%;
+	text-align: left;
+	padding:15px;
+	font-weight: 300;
+}
+.login-label{
+	font-size:7pt;
+	color:#B5B5B5;
+	text-align: left;
+	text-transform: uppercase;
+	font-weight: bold;
+	letter-spacing: 1px;
+	margin-bottom:2px;
+}
+.login-title{
+	font-size: 17pt;
+	color:#3080e8;
+	margin-bottom:20px;
+}
+.login-box input{
+	width:100%;
+	background: #fff !important;
+	border:solid 1px #e0e0e0;
+	border-radius: 2px;
+	font-size:12pt;
+	padding:5px;
+	color:#808080;
+	margin-bottom:10px;
+}
+.login-box input:focus{
+	border:solid 1px #3080e8;
+}
+.forgot-password{
+	font-size: 10pt;
+	color:#3E5f77;
+	font-weight: normal;
+	float: left;
+}
+.login-btn{
+	background:#3080e8;
+	float: right;
+	color:#fff;
+	padding:10px 15px;
+	border-radius: 3px;
+	font-size: 10pt;
+}
+.login-btn:hover{
+	cursor: pointer;
+	background:#469df5;
+}
+

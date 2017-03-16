@@ -1,27 +1,91 @@
+/* eslint-disable */
 import React from 'react';
+import DemographicFilterItem from './demographic_filter_item';
+import AddDemoFilterPopup from './add_demo_filter_popup';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import ToggleSwitch from '@trendmicro/react-toggle-switch';
+
+import '@trendmicro/react-toggle-switch/dist/react-toggle-switch.css';
 
 class DemographicPopout extends React.Component {
 	constructor(props) {
-		super(props);
-		
-	}
+    super(props);
+      this.state = {
+        filters : [],
+        add_filter_open : false,
+        checked : false
+      }
+    }
+    showAddFilters(){
+      this.setState({
+        add_filter_open : true
+      })
+    }
+    hideAddFilters(){
+      this.setState({
+        add_filter_open : false
+      })
+    }
+
+    addFilter(options){
+      var newArray = this.state.filters.slice();
+      newArray.push(options);
+      this.setState({filters: newArray})
+    }
+    removeFilter(index){
+      var newArray = this.state.filters.slice();
+      newArray.splice(index, 1);
+      this.setState({filters: newArray})
+    }
 
 	render() {
+    var filters;
+    var addFilterPopup;
+    var noFilter;
+    if(this.state.add_filter_open){
+      addFilterPopup =  <AddDemoFilterPopup addFilter={this.addFilter.bind(this)} hideAddFilters={this.hideAddFilters.bind(this)}/>
+                
+    }else{
+      addFilterPopup = null;
+    }
+
+    if(this.state.filters.length == 0){
+      noFilter = <div className="nodemos">No Demographic Filters</div>
+    }else{
+      noFilter = null;
+      filters = this.state.filters.map(function(data, i){
+                return <div key={i} className="demo-filter animated fadeInUp">{data.title}<i onClick={this.removeFilter.bind(this, i)} className="fa fa-times-rectangle"></i></div>
+              },this)
+              
+              
+    }
 		return (
 				<div className="left-nav-popup">
-                    <div className="left-nav-popup-title">Demographics <i className="fa fa-life-saver" /></div>
-                    <div className="left-nav-popup-filter">
-                      <div className="filter-close"><i className="fa fa-close" /></div>
-                      <div className="filter-title">Households</div>
-                      <div className="filter-slider" />
-                    </div>
-                    <div className="left-nav-popup-filter">
-                      <div className="filter-close"><i className="fa fa-close" /></div>
-                      <div className="filter-title">Population</div>
-                      <div className="filter-slider" />
-                    </div>
-                    <div className="add-more-filters">Add More Filters <i className="fa fa-plus-circle" /></div>
-                  </div>
+        <div className="left-nav-popup-title" style={{textAlign: 'left'}}>Demographics <div style={{float: 'right'}}>
+        <ToggleSwitch
+            checked={this.state.checked}
+            size="small"
+            onChange={(event) => {
+                this.setState({ checked: !this.state.checked });
+            }}
+        /></div>
+</div>
+       
+        <div className="demo-filter-list">
+        {noFilter}
+        
+          {filters}
+          
+          <ReactCSSTransitionGroup
+                transitionName="fade"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}>
+          {addFilterPopup}
+          </ReactCSSTransitionGroup>
+        </div>
+        <div onClick={this.showAddFilters.bind(this)} className="add-more-filters"><i className="fa fa-sliders" /> Add Filter</div>
+      </div>
+
 			);
 	}
 }

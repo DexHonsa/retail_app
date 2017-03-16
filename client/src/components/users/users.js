@@ -29,9 +29,10 @@ updateSearch(event){
 }
 
 componentDidMount() {
-  return $.getJSON('http://retailapi.theamp.com/user')
+   return $.getJSON('/api/users')
       .then((data) => {
-        this.setState({ users: data.users });
+        console.log(data);
+        this.setState({ users: data.User });
       });
   }
 

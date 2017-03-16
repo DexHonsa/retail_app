@@ -4,7 +4,8 @@ var routes = require('./routes');
 var api = require('./routes/api');
 var config = require('./config.js');
 var bodyParser = require('body-parser');
-var serveStatic = require('serve-static')
+var serveStatic = require('serve-static');
+
 
 var app = express();
 
@@ -66,11 +67,17 @@ app.route('/api/searches/:id').delete(api.deleteSearch);
 app.route('/api/searches/:id').put(api.editSearch);
 
 // User API
-app.route('/api/users').get(api.User);
+app.route('/api/users').get(api.Users);
 app.route('/api/users/:id').get(api.User);
 app.route('/api/users').post(api.addUser);
 app.route('/api/users/:id').delete(api.deleteUser);
 app.route('/api/users/:id').put(api.editUser);
+
+//Login API
+app.route('/api/login').post(api.LoginCheck);
+
+//Zip code API
+app.route('/api/zip/:zip').get(api.Zip);
 
 // Role API
 app.route('/api/roles').post(api.addRole);

@@ -79,26 +79,12 @@ class ViewClient extends React.Component{
                 </div>
                 <div className="saved-locations-container">
                   <div className="field-header">Saved Searches</div>
-                  <div className="saved-location-item">
+                  {/*<div className="saved-location-item">
                     <div className="saved-location-img" />
                     <div className="saved-location-title">1245 Mission Ave <br /> <span style={{fontSize: '10pt'}}>San Francisco CA, 94545</span></div>
                     <i className="fa fa-map-marker" />
-                  </div>
-                  <div className="saved-location-item">
-                    <div className="saved-location-img" style={{backgroundImage: 'url(images/199535-building.jpg)'}} />
-                    <div className="saved-location-title">1245 Mission Ave <br /> <span style={{fontSize: '10pt'}}>San Francisco CA, 94545</span></div>
-                    <i className="fa fa-map-marker" />
-                  </div>
-                  <div className="saved-location-item">
-                    <div className="saved-location-img" style={{backgroundImage: 'url(images/building.png)'}} />
-                    <div className="saved-location-title">1245 Mission Ave <br /> <span style={{fontSize: '10pt'}}>San Francisco CA, 94545</span></div>
-                    <i className="fa fa-map-marker" />
-                  </div>
-                  <div className="saved-location-item">
-                    <div className="saved-location-img" style={{backgroundImage: 'url(images/unnamed.png)'}} />
-                    <div className="saved-location-title">1245 Mission Ave <br /> <span style={{fontSize: '10pt'}}>San Francisco CA, 94545</span></div>
-                    <i className="fa fa-map-marker" />
-                  </div>
+                  </div>*/}
+                  <div className="no-searches">No Saved Searches</div>
                 </div>
               </div>
               <div className="col-sm-4">
@@ -108,18 +94,7 @@ class ViewClient extends React.Component{
                     <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
                     <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
                   </div>
-                  <div className="client-contact-item">
-                    <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
-                    <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
-                  </div>
-                  <div className="client-contact-item">
-                    <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
-                    <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
-                  </div>
-                  <div className="client-contact-item">
-                    <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
-                    <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
-                  </div>
+                  
                 </div>
               </div>
             </div>

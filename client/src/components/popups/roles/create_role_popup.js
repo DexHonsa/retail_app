@@ -99,8 +99,8 @@ render(){
             <div className="form-row" style={{width: 400, display: 'inline-block'}}>
               <div>
                 <p>
-                  <label htmlFor="role-name">Role Name</label>
-                  <input className="popup-input" type="text" name="field_id" id="role-name" />
+                  
+                  <input className="popup-input" placeholder="Role Name" type="text" name="field_id" id="role-name" />
                 </p>
               </div>
             </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Script from 'react-load-script';
 
 import Header from './header';
+import LoginHome from './login/login';
 
 class App extends React.Component {
 	constructor(props) {
@@ -18,6 +19,7 @@ class App extends React.Component {
 	}
 	
 	render(){
+		
 
 		return (
 			<div>

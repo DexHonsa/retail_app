@@ -1,6 +1,8 @@
 import React from 'react';
 import $ from "jquery";
 import Client from '../../scripts/myScript.js';
+import InsertFinancialInfo from './insert_financial_info';
+
 class RightPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -10,6 +12,7 @@ class RightPanel extends React.Component {
       longitude: this.props.longitude,
       street: this.props.street,
       city: this.props.city,
+      zip: this.props.zip,
       medianAge: "",
       averageIncome: "",
       medianIncome: "",
@@ -22,7 +25,9 @@ class RightPanel extends React.Component {
       leaseFrequency: "",
       size: "",
       buildingSize: "",
-      pois: []
+      pois: [],
+      poi_filters: this.props.poiFilters,
+      addFinancialInfo : false
     }
   }
   getDemographics() {
@@ -56,11 +61,13 @@ class RightPanel extends React.Component {
   }
 
   componentDidMount() {
-   
+  
+   Client.drawZip(this.state.zip);
     this.setState({
       latitude: this.props.latitude,
       longitude: this.props.longitude,
       city: this.props.city,
+      zip: this.props.zip,
       street: this.props.street,
       isSaved: this.props.isSaved,
       searchId: this.props.searchId
@@ -93,30 +100,25 @@ class RightPanel extends React.Component {
       latitude: nextProps.latitude,
       longitude: nextProps.longitude,
       city: nextProps.city,
+      zip: nextProps.zip,
       street: nextProps.street,
       isSaved: nextProps.isSaved,
-      searchId: nextProps.searchId
+      searchId: nextProps.searchId,
+      poi_filters: this.props.poiFilters
     })
     Client.flyToLocation(nextProps.latitude, nextProps.longitude);
+    Client.drawZip(nextProps.zip);
     //this.getDemographics();
   }
   showPois(){
     var that = this;
-    var poiArray = Client.getPois(this.state.latitude, this.state.longitude);
+    var poiArray = Client.getPois(this.state.latitude, this.state.longitude,this.state.poi_filters);
     setTimeout(function(){
        that.setState({
         pois: poiArray
        });
       
     },1000)
-
-    
-     
-     
-
-     
-     
-
   }
   editLeaseInfo() {
     if(this.state.leaseEditMode) {
@@ -205,18 +207,20 @@ class RightPanel extends React.Component {
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   addToSearches() {
-    var createSavedMarker = createSavedMarker;
+    
     var this2 = this;
     var lat = this.state.latitude;
     var lng = this.state.longitude;
     var street = this.state.street;
     var city = this.state.city;
+    var zip = this.state.zip;
     var id = Math.random();
     var img_path = "https://maps.googleapis.com/maps/api/streetview?location=" + this.state.latitude + "," + this.state.longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs";
     var data = {
       "lat": lat,
       "lng": lng,
       "city": city,
+      "zip": zip,
       "street": street,
       "imgUrl": img_path,
       "leaseInfo": {
@@ -233,11 +237,22 @@ class RightPanel extends React.Component {
       data: JSON.stringify(data),
       success: function(data) {
         Client.createSavedMarker(lat, lng, id, street);
+        
         this2.props.hide();
       },
       dataType: "json",
       contentType: "application/json"
     });
+  }
+  addFinancialInfo(){
+    this.setState({
+      addFinancialInfo : true
+    })
+  }
+  saveFinancialInfo(){
+    this.setState({
+      addFinancialInfo : false
+    })
   }
   render() {
     var editBtn;
@@ -246,6 +261,12 @@ class RightPanel extends React.Component {
     var leaseFrequency;
     var size;
     var buildingSize;
+    var insertFinancialInfo;
+    var addFinancialInfoBtn;
+    if(this.state.addFinancialInfo){
+      insertFinancialInfo = <InsertFinancialInfo saveFinancialInfo={this.saveFinancialInfo.bind(this)} />
+      
+    }
     if(this.state.leaseRate !== "") {
       leaseRate = this.state.leaseRate;
     } else {
@@ -268,13 +289,15 @@ class RightPanel extends React.Component {
     }
     var addButton;
     if(this.state.isSaved) {
+      addFinancialInfoBtn = <div onClick={this.addFinancialInfo.bind(this)} className="add-to-saved">Add Financial Information</div>;
       addButton = null;
     } else {
       addButton = <div onClick={this.addToSearches.bind(this)} className="add-to-saved">Add to Saved Searches</div>;
     }
-    var poiArray = this.state.pois;
+    
     return(
       <div className="view-result" key="1">
+        {insertFinancialInfo}
           <div className="view-result-top">
             <div onClick={() => this.props.hide(this.props.markerId)} className="view-result-close"><i className="fa fa-chevron-left" /></div>
             <span>{this.trunc(this.state.street + this.state.city)}</span>
@@ -357,6 +380,7 @@ class RightPanel extends React.Component {
             </div>
 
             {addButton}
+            {addFinancialInfoBtn}
             
           </div>
         </div>

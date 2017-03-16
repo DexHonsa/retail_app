@@ -7,12 +7,30 @@
     "react-scripts": "0.9.0"
   },
   "dependencies": {
+    "@mapbox/geojsonhint": "^2.0.1",
+    "@trendmicro/react-toggle-switch": "^0.5.2",
     "arrive": "^2.3.1",
+    "babel-polyfill": "^6.16.0",
+    "chart.js": "^2.5.0",
+    "classnames": "^2.2.5",
+    "jsonwebtoken": "^7.3.0",
+    "jwt-decode": "^2.1.0",
     "little-loader": "^0.2.0",
     "react": "^15.4.2",
+    "react-chartjs-2": "^2.0.5",
     "react-dom": "^15.4.2",
+    "react-dual-range-slider": "^1.0.4",
+    "react-image-viewer": "^0.1.0",
+    "react-intl": "^2.2.3",
+    "react-rangeslider": "^2.0.1",
     "react-router": "^3.0.2",
-    "superagent": "^3.5.0"
+    "react-select": "^1.0.0-rc.3",
+    "react-slider": "^0.7.0",
+    "react-validation": "^2.10.9",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0",
+    "superagent": "^3.5.0",
+    "validator": "^7.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

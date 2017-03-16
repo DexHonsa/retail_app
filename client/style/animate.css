@@ -22,6 +22,7 @@
 .fade-leave.fade-leave-active{
   opacity: 0 !important; 
   transition: all .5s ease;
+ 
 }
 .fade-appear {
   opacity: 0.01;
@@ -150,7 +151,7 @@
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
-.animated-long {
+.animated-slow {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
   -webkit-animation-fill-mode: both;

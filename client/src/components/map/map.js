@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import $ from "jquery";
@@ -5,179 +6,300 @@ import arrive from 'arrive';
 import RightPanel from './right_panel';
 import SearchItem from './search_item';
 import DemographicPopout from './popouts/demographics';
+import PoiPopout from './popouts/pois';
 import Client from '../../scripts/myScript.js';
+import ZipDemographics from './zip_demographics';
+import MapStyles from './popouts/map_styles';
+import MoreZipDemographics from './popouts/more_zip_demographics';
 
-
-class Map extends React.Component{
-    constructor(props) {
-    super(props);    
+class Map extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      clientId : this.props.clientId,
-      rightPanel : false,
-      latitude : '',
-      longitude : '',
-      street : '',
-      city : '',
+      clientId: this.props.clientId,
+      rightPanel: false,
+      latitude: '',
+      longitude: '',
+      street: '',
+      city: '',
+      zip: '',
       searches: [],
-      isSaved : false,
+      isSaved: false,
       markerId: '',
       searchId: '',
-      demo_pop_open : false
-
+      demo_pop_open: false,
+      poi_pop_open: false,
+      map_pop_open: false,
+      zipDemographics: false,
+      activeStyle : 1,
+      poi_filters : [],
+      zipDemographicItems : [],
+      moreZipDemographics : false
     }
-    
   }
-  hideRightPanel(markerId){
+  showZipDemographics(){
+    var that = this;
+    $.ajax({
+            type: "GET",
+            url: 'http://demographicmarketing.net/api/demographics/demographicDataasjsonp?customerKey=4447e7ba&zipcode=' + this.state.zip ,
+            success: function(data) {
+              
+                that.setState({
+                  zipDemographicItems: data.d[0],
+                  zipDemographics : true
+                });
+            },
+            dataType: "jsonp",
+            contentType: "application/json"
+        });
+  }
+  hideZipDemographics(){
+    this.setState({
+      zipDemographics : false
+    })
+  }
+  showMoreZipDemographics(){
+    this.setState({
+      moreZipDemographics : true
+    })
+  }
+  hideMoreZipDemographics(){
+    this.setState({
+      moreZipDemographics : false
+    })
+  }
+  changeMap(val){
+    this.setState({
+      activeStyle : val
+    })
+    Client.changeMap(val);
+  }
+  removePois(){
     Client.removePois();
-    $('#' + markerId).remove();
-    $('.mapboxgl-popup-content').remove();
+    this.setState({
+      poi_pop_open : false
+    })
+  }
+  hideRightPanel(markerId) {
+    Client.hideZip();
+    Client.removePois();
+    $('#' + markerId)
+      .remove();
+    $('.mapboxgl-popup-content')
+      .remove();
     var this2 = this;
-
-    this.setState({rightPanel : false})
+    this.setState({
+      rightPanel: false,
+      zipDemographics: false
+    })
     $.getJSON('/api/searches')
       .then((data) => {
-        this2.setState({ searches: data });
+        this2.setState({
+          searches: data
+        });
       });
   }
-
- 
-  
-  showRightPanel(){
-     this.setState({rightPanel : true})
+  showRightPanel() {
+    this.setState({
+      rightPanel: true
+    })
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      cliendId : nextProps.clientId
+      cliendId: nextProps.clientId
     })
-   
   }
   componentDidMount() {
-   
     var this2 = this;
-
     $.getJSON('/api/searches')
       .then((data) => {
-        this2.setState({ searches: data });
-      });
-
-     $(document).arrive(".marker", function() {
-      $('.marker').click(function(){
         this2.setState({
-          rightPanel : false,
-          latitude : '',
-          longitude : '',
-          city : '',
-          street : ''
-        })
-        var lat = $(this).attr('lat');
-        var lng = $(this).attr('lng');
-        var markerId = $(this).attr('id');
-        var address = $(this).attr('address');
-        var main_address = address.match(/([^,]*),(.*)/);
-        var city = main_address[2];
-        var street = main_address[1];
-
-        $.getJSON('/api/searches/' + lat + '/' + lng)
-        .then((data) => {
-          if(data.result > 0){
-            this2.setState({isSaved : true})
-          }else{
-            this2.setState({isSaved : false})
-          }
+          searches: data
         });
-
-        this2.setState({
-          rightPanel : true,
-          latitude : lat,
-          longitude : lng,
-          city : city,
-          street : street,
-          markerId : markerId,
-          searchId : "",
-        });
-      
-        
       });
-    });
+    $(document)
+      .arrive(".marker", function() {
+        $('.marker')
+          .click(function() {
+
+            this2.setState({
+              rightPanel: false,
+              latitude: '',
+              longitude: '',
+              city: '',
+              zip: '',
+              street: ''
+            })
+            var lat = $(this)
+              .attr('lat');
+            var lng = $(this)
+              .attr('lng');
+            var markerId = $(this)
+              .attr('id');
+            var address = $(this)
+              .attr('address');
+            var main_address = address.match(/([^,]*),(.*)/);
+           
+            var city = main_address[2];
+            var street = main_address[1];
+            var zipArray = city.split(',');
+            var zip = zipArray[1].slice(-5);
+            
+            $.getJSON('/api/searches/' + lat + '/' + lng)
+              .then((data) => {
+                if(data.result > 0) {
+                  this2.setState({
+                    isSaved: true
+                  })
+                } else {
+                  this2.setState({
+                    isSaved: false
+                  })
+                }
+              });
+            this2.setState({
+              rightPanel: true,
+              latitude: lat,
+              longitude: lng,
+              city: city,
+              street: street,
+              markerId: markerId,
+              searchId: "",
+              zip: zip
+            });
+            this2.showZipDemographics();
+
+          });
+      });
   }
-
-
   deleteSearch(index, keyId, e) {
-      var newData = this.state.searches.slice(); //copy array
-      newData.splice(index, 1); //remove element
-      this.setState({searches: newData}); //update state
-
+    var newData = this.state.searches.slice(); //copy array
+    newData.splice(index, 1); //remove element
+    this.setState({
+      searches: newData
+    }); //update state
     $.ajax({
-            type: "DELETE",
-            url: "/api/searches/" + keyId,
-            success: function(data){
-              
-            },
-            dataType: "json",
-            contentType: "application/json"
-          });    
+      type: "DELETE",
+      url: "/api/searches/" + keyId,
+      success: function(data) {
+      },
+      dataType: "json",
+      contentType: "application/json"
+    });
     e.stopPropagation();
-}
-  findSearch(keyId){
+  }
+  findSearch(keyId) {
     var this2 = this;
-
-      $.getJSON('/api/searches/' + keyId)
+    $.getJSON('/api/searches/' + keyId)
       .then((data) => {
         this2.setState({
-          street : data.Searches.street,
-          city : data.Searches.city,
-          latitude : data.Searches.lat,
-          longitude : data.Searches.lng,
-          rightPanel : true,
-          isSaved : true,
-          searchId : keyId
+          street: data.Searches.street,
+          city: data.Searches.city,
+          zip: data.Searches.zip,
+          latitude: data.Searches.lat,
+          longitude: data.Searches.lng,
+          rightPanel: true,
+          isSaved: true,
+          searchId: keyId
         })
-
       });
   }
-  toggleDemographics(){
-    if(this.state.demo_pop_open){
+  toggleDemographics() {
+    if(this.state.demo_pop_open) {
       this.setState({
-        demo_pop_open : false
+        demo_pop_open: false
       })
-    }else{
+    } else {
       this.setState({
-        demo_pop_open : true
+        demo_pop_open: true
       })
     }
   }
-
-
-
- 
-  render(){
-    if(this.state.rightPanel){
-            var rightPanel = <RightPanel 
+  togglePois() {
+    if(this.state.poi_pop_open) {
+      this.setState({
+        poi_pop_open: false
+      })
+    } else {
+      this.setState({
+        poi_pop_open: true
+      })
+    }
+  }
+   toggleMapStyles() {
+    if(this.state.map_pop_open) {
+      this.setState({
+        map_pop_open: false
+      })
+    } else {
+      this.setState({
+        map_pop_open: true
+      })
+    }
+  }
+  setPoiFilters(results){
+    this.setState({
+      poi_filters : results,
+      poi_pop_open: false
+    })
+  }
+  render() {
+    if(this.state.zipDemographics) {
+      var zipDemographics = <ZipDemographics 
+                                zip={this.state.zip}
+                                zipDemographicItems={this.state.zipDemographicItems}
+                                showMoreZipDemographics={this.showMoreZipDemographics.bind(this)}
+                                 />
+                                
+                                
+    } else {
+    }
+    if(this.state.rightPanel) {
+      var rightPanel = <RightPanel 
+                                poiFilters={this.state.poi_filters}
                                 searchId={this.state.searchId} 
                                 markerId={this.state.markerId} 
                                 isSaved={this.state.isSaved} 
                                 city={this.state.city} 
+                                zip={this.state.zip}
                                 street={this.state.street} 
                                 latitude={this.state.latitude} 
                                 longitude={this.state.longitude} 
                                 hide={this.hideRightPanel.bind(this)}
                                  />
-        } else {
-            
-        }
-    var demo_pop;
-    if(this.state.demo_pop_open){
-      demo_pop = <DemographicPopout />
-    }else{
-
+    } else {
     }
-    return (
-
+    var more_zip_demographics;
+    if(this.state.moreZipDemographics){
+      more_zip_demographics = <MoreZipDemographics latitude={this.state.latitude} longitude={this.state.longitude} street={this.state.street} city={this.state.city} zip={this.state.zip} hideMoreZipDemographics={this.hideMoreZipDemographics.bind(this)} />
+    }
+    var demo_pop;
+    if(this.state.demo_pop_open) {
+      demo_pop = <DemographicPopout />
+    } else {
+    }
+    var poi_pop;
+    if(this.state.poi_pop_open) {
+      poi_pop = <PoiPopout removePois={this.removePois.bind(this)} poiFilters={this.state.poi_filters} setPoiFilters={this.setPoiFilters.bind(this)} />
+    } else {
+    }
+    var map_pop;
+    if(this.state.map_pop_open) {
+      map_pop = <MapStyles changeMap={this.changeMap.bind(this)} activeStyle={this.state.activeStyle}/>
+    } else {
+    }
+    return(
       <div>
   
        <main className="main">
+       {more_zip_demographics}
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
-          
+        <ReactCSSTransitionGroup
+                transitionName="fade"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}>
+        {zipDemographics}
+          </ReactCSSTransitionGroup>
        
           <div className="main-section">
             {/*left sidebar*/}
@@ -193,43 +315,27 @@ class Map extends React.Component{
                   </ReactCSSTransitionGroup>
                 </li>
                 {/*poi popup*/}
-                <li><div className="left-nav-btn"><i className="fa fa-map-marker" />POI's</div>
-                  <div className="left-nav-popup" style={{display: 'none'}}>
-                    <div className="left-nav-popup-title">POI's <i className="fa fa-life-saver" /></div>
-                    <div className="left-nav-popup-tabs">
-                      <div className="left-nav-popup-tab">By Name</div>
-                      <div className="left-nav-popup-tab active">By Category</div>
-                    </div>
-                    <input className="search-input" defaultValue="Search..." />
-                    <div className="poi-list">
-                      <div className="control-group" style={{paddinTop: 15, width: '100%'}}>
-                        <label className="control control--checkbox">Hotels
-                          <input type="checkbox" />
-                          <div className="control__indicator" />
-                        </label>
-                        <label className="control control--checkbox">Hospitals
-                          <input type="checkbox" />
-                          <div className="control__indicator" />
-                        </label>
-                        <label className="control control--checkbox">Restaurants
-                          <input type="checkbox" />
-                          <div className="control__indicator" />
-                        </label>
-                        <label className="control control--checkbox">Gas Stations
-                          <input type="checkbox" />
-                          <div className="control__indicator" />
-                        </label>
-                        <label className="control control--checkbox">Fast Food
-                          <input type="checkbox" />
-                          <div className="control__indicator" />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
+                <li><div onClick={this.togglePois.bind(this)} className="left-nav-btn"><i className="fa fa-map-marker" />POIs</div>
+                <ReactCSSTransitionGroup
+                transitionName="slideRight"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}>
+                  {poi_pop}
+                  </ReactCSSTransitionGroup>
+                 
                 </li>
-                <li><div className="left-nav-btn"><i className="fa fa-area-chart" />Sales Forcast</div></li>
-                <li><div className="left-nav-btn"><i className="fa fa-home" />Find Spaces</div></li>
+                {/*<li><div className="left-nav-btn"><i className="fa fa-area-chart" />Sales Forcast</div></li>
+                <li><div className="left-nav-btn"><i className="fa fa-home" />Find Spaces</div></li>*/}
                 <li><div className="left-nav-btn"><i className="fa fa-file" />Reports</div></li>
+                <li><div onClick={this.toggleMapStyles.bind(this)} className="left-nav-btn"><i className="fa fa-map" />Map Styles</div>
+                <ReactCSSTransitionGroup
+                transitionName="slideRight"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}>
+                  {map_pop}
+                  </ReactCSSTransitionGroup>
+                 
+                </li>
               </ul>
             </div>
             {/*big map*/}
@@ -243,8 +349,8 @@ class Map extends React.Component{
                 <label><i class="fa fa-map-marker"></i></label>
                 <input type="text"/>
                 <div class="go-location-btn"><i class="fa fa-arrow-right"></i></div>
-              </div>*/}
-              <div className="draw-toggle">Draw <span><i className="fa fa-paint-brush"></i></span></div>
+              </div><div className="draw-toggle">Draw <span><i className="fa fa-paint-brush"></i></span></div>*/}
+              
               
               <div id="map" />
               <div id="google-map" />
@@ -253,8 +359,8 @@ class Map extends React.Component{
             <div className="right-side-bar">
          <ReactCSSTransitionGroup
           transitionName="slideRight"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={500}
+          transitionEnterTimeout={1000}
+          transitionLeaveTimeout={1000}
           transitionAppear={true}
           transitionAppearTimeout={500}>
           {rightPanel}
@@ -284,19 +390,7 @@ class Map extends React.Component{
 
 
       </div>
-
     );
-    
-
-
   }
-    
-
-
-  
-
-
-
-  }
-
+}
 export default Map;

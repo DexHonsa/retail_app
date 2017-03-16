@@ -263,7 +263,7 @@ render(){
                 </div>
                 <div style={{flex: 2, marginLeft: 10}}>
                   <p>
-                    <input className="popup-input" plceholder="Phone" type="text" ref="phone" id="phone" />
+                    <input className="popup-input" placeholder="Phone" type="text" ref="phone" id="phone" />
                   </p>
                 </div>
                 <div style={{flex: 1, marginLeft: 10}}>

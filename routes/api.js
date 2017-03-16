@@ -4,6 +4,9 @@ var config = require(__dirname+'/../config.js');
 var thinky = require('thinky')(config);
 var r = thinky.r;
 var type = thinky.type;
+var Query = thinky.Query;
+var Validator = require('Validator');
+var jwt = require('jsonwebtoken');
 
 // Create the models
 // Note: if we don't provide the field date, the default function will be called
@@ -25,10 +28,12 @@ var User = thinky.createModel('User', {
     first_name: type.string(),
     last_name: type.string(),
     email: type.string(),
+    password: type.string(),
     title: type.string(),
     phone: type.string(),
     address: type.string(),
     city: type.string(),
+    type: type.string(),
     state: type.string(),
     zip: type.string(),
     status: type.string(),
@@ -54,6 +59,7 @@ var Searches = thinky.createModel('Searches', {
     lng: type.string(),
     street: type.string(),
     city: type.string(),
+    zip: type.string(),
     imgUrl: type.string(),
     created_at: type.date().default(r.now()),
     leaseInfo : {
@@ -64,6 +70,28 @@ var Searches = thinky.createModel('Searches', {
         buildingSize : type.string()
     }
 });
+
+var Zips = thinky.createModel('Zips',{
+    id: type.string(),
+    geometry : {
+        
+        type : type.string()
+    },
+    properties : {
+        ALAND10 : type.number(),
+        AWATER10 : type.number(),
+        CLASSFP10 : type.string(),
+        FUNCSTAT10 : type.string(),
+        GEOID10 : type.string(),
+        INTPTLAT10 : type.string(),
+        INTPTLNG10 : type.string(),
+        MTFCC10 : type.string(),
+        ZCTA5CE10 : type.string()
+
+    },
+    type : type.string()
+});
+
 
 
 // Specify the relations
@@ -79,10 +107,57 @@ var Searches = thinky.createModel('Searches', {
 
 // Make sure that an index on date is available
 Client.ensureIndex("client_name");
-User.ensureIndex("first_name");
+User.ensureIndex("email");
 Searches.ensureIndex("created_at");
 
+function validateInput(data){
+    var errors = {};
+    if(Validator.isNull(data.email)){
+        errors.email = 'This field is required';
+    }
+    if(Validator.isNull(data.email)){
+        errors.password = 'This field is required';
+    }
 
+}
+
+exports.LoginCheck = function(req, res){
+    const { username, password } = req.body;
+
+
+    User.filter({'email' : username, 'password' : password}).run().then(function(User){
+        if(User.length >= 1){
+            const token = jwt.sign({
+                id: User[0].id,
+                email: User[0].email
+            }, config.jwtSecret);
+
+
+            res.json({
+                token
+             })
+
+        }else{
+            res.status(401).json({errors: {form : "Invalid Credentials" } });
+        }
+        
+    }).error(handleError(res));
+   
+
+
+};
+exports.Zip = function (req, res) {
+    var zip = req.params.zip;
+
+    Zips.filter(function(user) {
+        return user("properties")("ZCTA5CE10").eq(zip)
+    }).run().then(function(Zips){
+        res.json({
+            Zips : Zips
+        });
+    }).error(handleError(res));
+    
+};
 
 exports.Searches = function (req, res) {
     Searches.orderBy({index: r.asc('created_at')}).run().then(function(Searches) {
@@ -236,12 +311,8 @@ exports.User = function (req, res) {
 
 // Save an User in the database
 exports.addUser = function (req, res) {
-    var User = new User(req.body);
-
-    User.save().then(function(result) {
-        res.json({
-            result: result
-        });
+    User.save(req.body).then(function(result) {
+        res.json(result);
     }).error(handleError(res));
 };
 

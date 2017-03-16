@@ -2,9 +2,9 @@ import React from 'react';
 import request from 'superagent';
 
 import AvatarCropper from "react-avatar-cropper";
-
+import img from '../../../../images/camera_upload.jpg';
 import FileUploaderUser from './file_uploader_user';
-
+import $ from 'jquery';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
@@ -39,7 +39,6 @@ class CreateUserPopup extends React.Component {
     })
   }
   handleCrop(dataURI) {
-    
     this.setState({
       cropperOpen: false,
       img: null,
@@ -99,8 +98,29 @@ class CreateUserPopup extends React.Component {
         var imgURL = this.state.uploadedFileCloudinaryUrl;
 
         console.log(userFirstName, userLastName, userType, userAddress, userCity, userState, userZip, userEmail, userClientAssociation,  imgURL);
+        var data = {
+          "first_name" : userFirstName,
+          "last_name" : userLastName,
+          "email" : userEmail,
+          "type" : userType,
+          "address" : userAddress,
+          "city" : userCity,
+          "state": userState,
+          "zip": userZip,
+          "user_img_path": imgURL,
+          "associate_client_id": userClientAssociation
+        }
         
-
+        $.ajax({
+          type: "POST",
+          url: "/api/users",
+          data: JSON.stringify(data),
+          success: function(data){
+            this.props.collapse();
+          },
+          dataType: "json",
+          contentType: "application/json"
+        });
         
       }
     });
@@ -129,7 +149,7 @@ render(){
           <div onClick={this.props.collapse} className="popup-close"><i className="fa fa-times"></i></div>
           <form>
             <div className="popup-small-title">Upload a Photo</div>
-            <div className="upload-picture" style={{backgroundImage: 'url(' + this.state.croppedImg + ')'}}>
+            <div className="upload-picture" style={{backgroundImage: 'url(' + img + ')'}}>
               <FileUploaderUser handleFileChange={this.handleFileChange.bind(this)} />
               
                 
@@ -138,14 +158,14 @@ render(){
             <div className="form-row">
               <div style={{flex: 2}}>
                 <p>
-                  <label htmlFor="user-first-name">First Name</label>
-                  <input className="popup-input" type="text" ref="user_first_name" id="user-first-name" />
+                  
+                  <input className="popup-input" placeholder="First Name" type="text" ref="user_first_name" id="user-first-name" />
                 </p>
               </div>
               <div style={{flex: 2, marginLeft: 10}}>
                 <p>
-                  <label htmlFor="user-last-name">Last Name</label>
-                  <input className="popup-input" type="text" ref="user_last_name" id="user-last-name" />
+                  
+                  <input className="popup-input" placeholder="Last Name" type="text" ref="user_last_name" id="user-last-name" />
                 </p>
               </div>
               <div className="popup-selector-dropdown" style={{flex: 1}}>
@@ -158,21 +178,21 @@ render(){
             <div className="form-row">
               <div style={{flex: 1}}>
                 <p>
-                  <label htmlFor="user-address">Street Address</label>
-                  <input className="popup-input" type="text" ref="user_address" id="user-address" />
+                  
+                  <input className="popup-input" placeholder="Address" type="text" ref="user_address" id="user-address" />
                 </p>
               </div>
               <div style={{flex: 1, marginLeft: 10}}>
                 <p>
-                  <label htmlFor="user-city">City</label>
-                  <input className="popup-input" type="text" ref="user_city" id="user-city" />
+                  
+                  <input className="popup-input" placeholder="City" type="text" ref="user_city" id="user-city" />
                 </p>
               </div>
             </div>
             <div className="form-row">
               <div className="popup-selector-dropdown" style={{flex: 1, maxWidth: 250, marginLeft: 0}}>
                 <select ref="user_state">
-                  <option default>State</option>
+                  <option default> Select State</option>
                   <option>Alabama</option>
                   <option>Arkansa</option>
                   <option>Alaska</option>
@@ -197,16 +217,16 @@ render(){
               </div>
               <div style={{flex: 1, maxWidth: 100, marginLeft: 10}}>
                 <p>
-                  <label htmlFor="user-zip">Zip</label>
-                  <input className="popup-input" type="text" ref="user_zip" id="user-zip" />
+                  
+                  <input className="popup-input" placeholder="Zip" type="text" ref="user_zip" id="user-zip" />
                 </p>
               </div>
             </div>
             <div className="form-row">
               <div style={{flex: 1, maxWidth: 300}}>
                 <p>
-                  <label htmlFor="user-email">Email</label>
-                  <input className="popup-input" type="text" ref="user_email" id="user-email" />
+                  
+                  <input className="popup-input" placeholder="Email" type="text" ref="user_email" id="user-email" />
                 </p>
               </div>
             </div>
