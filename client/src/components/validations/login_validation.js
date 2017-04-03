@@ -10,7 +10,7 @@ export default function validateInput(data){
 	if(Validator.isEmpty(data.password)){
 		errors.password = "This field is required";
 	}
-
+	
 	return {
 		errors,
 		isValid: isEmpty(errors)

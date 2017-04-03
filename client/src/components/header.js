@@ -1,20 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import $ from "jquery";
 import logo from '../../images/sitemap_logo.png';
+import {connect} from 'react-redux';
+import { logout, setCurrentClient } from '../actions/auth_actions';
+import SettingsDropdown from './util/settings_dropdown';
+
+
 class Header extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
       dropdown : false,
       clients : [],
-      client_id : "",
+      client_id : this.props.client.clientId,
       client_name: "Select a Client",
-      client_img : ""
+      client_img : "",
+      settings_dropdown: false
     }
   }
-
+  logout(e){
+    //e.preventDefault();
+    this.setState({
+      dropdown: false,
+      settings_dropdown:false
+    })
+    this.props.logout();
+  }
+toggleSettingsDropdown(){
+  if(this.state.settings_dropdown){
+    this.setState({
+      settings_dropdown : false
+    })
+  }else{
+    this.setState({
+      settings_dropdown : true
+    })
+  }
+}
 toggleDropdown(){
   $.getJSON('/api/clients')
       .then((data) => {
@@ -37,25 +60,38 @@ componentDidMount() {
         this.setState({ clients: data });
       });
 }
-activeClient(clientId){
+componentWillReceiveProps(nextProps) {
+  this.setState({
+    client_name: nextProps.client.clientName
+  })
+}
+activeClient(clientId, clientName){
+  this.props.setCurrentClient(clientId, clientName);
   this.props.clientId(clientId);
 
   $.getJSON('/api/clients/' + clientId)
       .then((data) => {
        
-        this.setState({ client_name: data.Client.client_name });
+        this.setState({ client_name: this.props.client.clientName });
       });
   
   this.setState({
-    client_id : clientId
+    client_id : this.props.client.clientId
   })
 
 }
 
 render(){
+ 
     var clientDropdown;
+    var settingsDropdown;
     if(this.state.dropdown){
       clientDropdown = <DropdownList activeClient={this.activeClient.bind(this)} clients={this.state.clients}/>
+    }else{
+
+    }
+    if(this.state.settings_dropdown){
+      settingsDropdown = <SettingsDropdown logout={this.logout.bind(this)} activeClient={this.activeClient.bind(this)} clients={this.state.clients}/>
     }else{
 
     }
@@ -70,7 +106,9 @@ render(){
             <Link to="/key_metrics" activeClassName="active">Key Metrics</Link>
           </div>
           <ul className="user-nav">
-            <li><a href="#"><i className="fa fa-gear"></i></a></li>
+            <li><a href="#"><i onClick={this.toggleSettingsDropdown.bind(this)} className="fa fa-gear"></i></a>
+              {settingsDropdown}
+            </li>
             <li><div onClick={this.toggleDropdown.bind(this)} className="client-dropdown">Client: {this.state.client_name}<i className="fa fa-caret-down" />
               {clientDropdown}
             </div>            
@@ -92,22 +130,23 @@ class DropdownList extends React.Component{
   }
   render(){
   return(
-            <ReactCSSTransitionGroup
-                      transitionName="fadeUp"
-                      transitionEnterTimeout={500}
-                      transitionLeaveTimeout={500}
-                      transitionAppear={true}
-                      transitionAppearTimeout={500}>
-              <div className="client-dropdown-dd">
+            
+              <div className="client-dropdown-dd animated fadeInUp">
               {this.props.clients.map((data,i) => {
-                return <div key={i} onClick={() => this.props.activeClient(data.id)} className="client-dd-option">{data.client_name}</div>;
+                return <div key={i} onClick={() => this.props.activeClient(data.id, data.client_name)} className="client-dd-option">{data.client_name}</div>;
               })
               }
                 
               </div>
-              </ReactCSSTransitionGroup>
+              
       );
 }
 }
 
-export default Header;
+function mapStateToProps(state){
+  return {
+    auth: state.auth,
+    client: state.client
+  };
+}
+export default connect(mapStateToProps, { logout, setCurrentClient })(Header);

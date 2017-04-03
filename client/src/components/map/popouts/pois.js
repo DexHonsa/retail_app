@@ -1,8 +1,5 @@
 import React from 'react';
-import Checkbox from './checkbox';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Client from '../../../scripts/myScript';
-import $ from 'jquery';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -139,7 +136,7 @@ class PoiPopout extends React.Component {
   handleFormSubmit = formSubmitEvent => {
     formSubmitEvent.preventDefault();
     var poiFilterSelections;
-    if(this.state.value.length == 0){
+    if(this.state.value.length === 0){
       poiFilterSelections = null;
       this.props.removePois();
       this.props.setPoiFilters(poiFilterSelections);
@@ -157,8 +154,8 @@ class PoiPopout extends React.Component {
    
   }
   titleCase(str) {
-      var str = str.replace(/_/g, ' ');
-     var words = str.toLowerCase().split(' ');
+      var str2 = str.replace(/_/g, ' ');
+     var words = str2.toLowerCase().split(' ');
 
      for(var i = 0; i < words.length; i++) {
           var letters = words[i].split('');
@@ -181,11 +178,7 @@ handleSelectChange (value) {
 
 
 	render() {
-    var filteredResults = this.state.poi_items.filter(
-        (data) => {
-          return data.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
-        }
-        );
+    
 
     var poiData = this.state.poi_item_data;
 		return (

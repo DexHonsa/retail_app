@@ -20,17 +20,17 @@ class MapStyles extends React.Component {
 		var two;
 		var three;
 
-		if(this.state.active_style == 1){
+		if(this.state.active_style === 1){
 			one = "active";
 			two = null;
 			three = null;
 		}
-		if(this.state.active_style == 2){
+		if(this.state.active_style === 2){
 			one = null;
 			two = "active";
 			three = null;
 		}
-		if(this.state.active_style == 3){
+		if(this.state.active_style === 3){
 			one = null;
 			two = null;
 			three = "active";

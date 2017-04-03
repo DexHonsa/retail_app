@@ -5,6 +5,8 @@ import AvatarCropper from "react-avatar-cropper";
 import img from '../../../../images/camera_upload.jpg';
 import ContactItem from './contact_item';
 import FileUploader from './file_uploader';
+import validateInput from '../../validations/create_client_validation';
+import TextFieldGroup from './text_field_group';
 
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
@@ -15,16 +17,26 @@ class CreateClientPopup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      client_name : "",
       state : "",
       contacts : [],
       croppedImg: img,
       cropperOpen: false,
       img: null,
-      closePopup: false
+      closePopup: false,
+      errors: {}
     }
   }
 
-
+  isValid(){
+    const { errors, isValid } = validateInput(this.state);
+    if(!isValid){
+      this.setState({
+        errors : errors
+      })
+    }
+    return isValid;
+  }
   deleteContact(data){
     const newState = this.state.contacts;
     if (newState.indexOf(data) > -1) {
@@ -32,31 +44,31 @@ class CreateClientPopup extends React.Component {
       this.setState({contacts: newState})
     }
   }
-   handleFileChange(dataURI) {
-    this.setState({
-      img: dataURI,
-      croppedImg: this.state.croppedImg,
-      cropperOpen: true,
-      uploadedFileCloudinaryUrl: ''
-    })
+  handleFileChange(dataURI) {
+      this.setState({
+        img: dataURI,
+        croppedImg: this.state.croppedImg,
+        cropperOpen: true,
+        uploadedFileCloudinaryUrl: ''
+      })
   }
   handleCrop(dataURI) {
-    
     this.setState({
       cropperOpen: false,
       img: null,
       croppedImg: dataURI
     })
-    
-    
-
   }
   handleRequestHide() {
     this.setState({
       cropperOpen: false
     })
   }
-
+  onChange(e){
+    this.setState({
+      [e.target.name] : e.target.value
+    })
+  }
   addContact(event){
     var first = this.refs.first_name.value;
     var last = this.refs.last_name.value;
@@ -76,51 +88,49 @@ class CreateClientPopup extends React.Component {
   }
   submitForm(event){
     var this2 = this;
-    var upload = request.post(CLOUDINARY_UPLOAD_URL)
+    if(this.isValid()){
+        var upload = request.post(CLOUDINARY_UPLOAD_URL)
                         .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
                         .field('file', this.state.croppedImg);
 
-    upload.end((err, response) => {
-      if (err) {
-        console.error(err);
-      }
+        upload.end((err, response) => {
+          if (err) {
+            console.error(err);
+          }
 
-      if (response.body.secure_url !== '') {
-        this.setState({
-          uploadedFileCloudinaryUrl: response.body.secure_url,
+          if (response.body.secure_url !== '') {
+            this2.setState({
+              uploadedFileCloudinaryUrl: response.body.secure_url,
+            });
+
+            
+            var clientName = this.state.client_name;
+            var industryName = this.refs.industry_name.value;
+            var addressName = this.refs.address_name.value;
+            var cityName = this.refs.city_name.value;
+            var stateName = this.refs.state_name.value;
+            var zipName = this.refs.zip_name.value;
+            var imgURL = this.state.uploadedFileCloudinaryUrl;
+
+            
+            
+            var data = {"client_name" : clientName,"industry" : industryName,"address" : addressName,"city" : cityName, "state" : stateName,"zip" : zipName,"logo_path" : imgURL};
+
+            $.ajax({
+              type: "POST",
+              url: "/api/clients",
+              data: JSON.stringify(data),
+              success: function(data){
+                this2.props.collapse();
+              },
+              dataType: "json",
+              contentType: "application/json"
+            });
+          }
         });
-
-        
-        var clientName = this.refs.client_name.value;
-        var industryName = this.refs.industry_name.value;
-        var addressName = this.refs.address_name.value;
-        var cityName = this.refs.city_name.value;
-        var stateName = this.refs.state_name.value;
-        var zipName = this.refs.zip_name.value;
-        var imgURL = this.state.uploadedFileCloudinaryUrl;
-
-        
-        
-        var data = {"client_name" : clientName,"industry" : industryName,"address" : addressName,"city" : cityName, "state" : stateName,"zip" : zipName,"logo_path" : imgURL};
-
-        $.ajax({
-          type: "POST",
-          url: "/api/clients",
-          data: JSON.stringify(data),
-          success: function(data){
-            this2.props.collapse();
-          },
-          dataType: "json",
-          contentType: "application/json"
-        });
-      
-
-        
-        
-
-        
-      }
-    });
+    }
+    
+    
   }
 
   collapseThis(event){
@@ -131,6 +141,7 @@ class CreateClientPopup extends React.Component {
 
   
 render(){
+  const {client_name, errors} = this.state;
       if(this.state.closePopup === true){
         this.props.collapse();
       }
@@ -163,9 +174,14 @@ render(){
               <div className="form-row">
                 <div style={{flex: 2}}>
                   
-                    <p>
-                    <input className="popup-input" placeholder="Client Name" type="text" ref="client_name" id="client-name" />
-                    </p>
+                    <TextFieldGroup
+                      field="client_name"
+                      label="Client Name"
+                      type="text"
+                      value={client_name}
+                      error={errors.client_name}
+                      onChange={this.onChange.bind(this)}
+                    />
                 </div>
                 <div className="popup-selector-dropdown" style={{flex: 1}}>
                   <select ref="industry_name">
@@ -177,7 +193,7 @@ render(){
                     <option>Department Store</option>
                     <option>Supermarkets</option>
                     <option>Restaurants</option>
-                    <option>E-talers</option>
+                    <option>E-tailers</option>
                    
 
                   </select>

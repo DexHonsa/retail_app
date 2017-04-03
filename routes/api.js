@@ -7,7 +7,14 @@ var type = thinky.type;
 var Query = thinky.Query;
 var Validator = require('Validator');
 var jwt = require('jsonwebtoken');
+var Twitter = require('Twitter');
 
+var client = new Twitter({
+          consumer_key: 'bcaU1xnKnYzbROA1z8NmNgZ59',
+          consumer_secret: 'rhVQdZW2LkvDFm1Liu3aGPRnR8fBj0I5naTAyVIbbs88RYzMLO',
+          access_token_key: '3894184813-OIaxL97zVpT5DreH1sgpbognZXoy9pFOjsgacK0',
+          access_token_secret: '7W4ySBLfecG4NCPqrWgXXdqtRdEp5sjNA2TciJJxXoMc8'
+        });
 // Create the models
 // Note: if we don't provide the field date, the default function will be called
 var Client = thinky.createModel('Client', {
@@ -54,7 +61,8 @@ var Role = thinky.createModel('Role', {
 
 var Searches = thinky.createModel('Searches', {
     id: type.string(),
-    client_id: type.string(),
+    userId : type.string(),
+    clientId: type.string(),
     lat: type.string(),
     lng: type.string(),
     street: type.string(),
@@ -92,7 +100,11 @@ var Zips = thinky.createModel('Zips',{
     type : type.string()
 });
 
-
+var Demographics = thinky.createModel('Demographics',{
+    Latitude : type.number(),
+    Longitude : type.number(),
+    Population : type.string()
+});
 
 // Specify the relations
 
@@ -110,15 +122,18 @@ Client.ensureIndex("client_name");
 User.ensureIndex("email");
 Searches.ensureIndex("created_at");
 
-function validateInput(data){
-    var errors = {};
-    if(Validator.isNull(data.email)){
-        errors.email = 'This field is required';
-    }
-    if(Validator.isNull(data.email)){
-        errors.password = 'This field is required';
-    }
+exports.TwitterPlaceLookup = function(req,res){
 
+   var params = {q: 'the', geocode: req.params.latitude + ',' + req.params.longitude + ',1mi'};
+        client.get('search/tweets', params, function(error, tweets, response) {
+          if (!error) {
+            
+            res.json({
+                tweets
+            })
+          }
+        });
+    
 }
 
 exports.LoginCheck = function(req, res){
@@ -131,8 +146,6 @@ exports.LoginCheck = function(req, res){
                 id: User[0].id,
                 email: User[0].email
             }, config.jwtSecret);
-
-
             res.json({
                 token
              })
@@ -149,18 +162,69 @@ exports.LoginCheck = function(req, res){
 exports.Zip = function (req, res) {
     var zip = req.params.zip;
 
-    Zips.filter(function(user) {
-        return user("properties")("ZCTA5CE10").eq(zip)
-    }).run().then(function(Zips){
+    Zips.getAll(zip, {index:'zip'}).run().then(function(Zips){
         res.json({
             Zips : Zips
         });
     }).error(handleError(res));
     
 };
+exports.drawZips = function (req, res){
+    var array = req.body;
+   
 
+    r.db('retail').table('Zips').getAll(r.args(array), {index:'zip'}).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
+exports.filterZips = function(req,res){
+    var zips = req.body.zips;
+    var filters = req.body.filters;
+
+    var newFilters = function(doc){
+        var filterString = '';
+        filters.forEach(function(item){
+
+         if (filters.indexOf(item) == 0){
+         filterString += "r.expr(doc('"+item.title+"').ge("+item.minVal+").and(doc('"+item.title+"').le("+item.maxVal+")))"
+        }
+        else{
+         filterString += ".and(r.expr(doc('"+item.title+"').ge("+item.minVal+").and(doc('"+item.title+"').le("+item.maxVal+"))))"
+        }
+        })
+        console.log(filterString);
+        return eval(filterString);
+    };
+   r.db('retail').table('Demographics').getAll(r.args(zips), {index: 'ZipCode'}).pluck('ZipCode','Population','TotalHouseholds','PropertyCrime')
+   .filter(newFilters).run().then(function(data){
+    res.json({
+        data
+    })
+   })    
+   
+}
+exports.getZips = function(req, res){
+
+    var neLat = parseFloat(req.body.neLat);
+    var swLat = parseFloat(req.body.swLat);
+    var neLng = parseFloat(req.body.neLng);
+    var swLng = parseFloat(req.body.swLng);
+   
+  
+    r.db('retail').table('Demographics').between(swLat, neLat, {index:'Latitude'}).filter(r.row('Longitude').gt(swLng).and(r.row('Longitude').lt(neLng))).getField('ZipCode').run().then(function(data){
+        res.json({
+            data
+        })
+    })
+
+}
 exports.Searches = function (req, res) {
-    Searches.orderBy({index: r.asc('created_at')}).run().then(function(Searches) {
+    var userId = req.params.userId;
+    var clientId = req.params.clientId;
+
+    Searches.filter(r.row('userId').eq(userId).and(r.row('clientId').eq(clientId))).orderBy(r.asc('created_at')).run().then(function(Searches) {
         res.json(Searches);
     }).error(handleError(res));
 };

@@ -14,10 +14,11 @@ import Users from './components/users/users';
 import Roles from './components/roles/roles';
 import KeyMetrics from './components/key_metrics/key_metrics';
 import thunk from 'redux-thunk';
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import setAuthoizationToken from './utils/set_authorization_token';
-
-
+import RootReducer from './rootreducer';
+import jwtDecode from 'jwt-decode';
+import { setCurrentUser } from './actions/auth_actions';
 
 
 import '../style/admin.css';
@@ -31,12 +32,17 @@ import '../style/font-awesome.min.css';
 
 
 const store = createStore(
-        (state = {}) => state,
+        RootReducer,
+        compose(
         applyMiddleware(thunk),
-        window.devToolsExtenstion ? window.devToolsExtenstion() : f => f
+        window.devToolsExtension ? window.devToolsExtension() : f => f
+        )
     );
 
-setAuthoizationToken(localStorage.jwtToken);
+if(localStorage.jwtToken){
+  setAuthoizationToken(localStorage.jwtToken);
+  store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
+}
 
 
 
@@ -51,6 +57,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
     	<Route path="/" component={App}>
+        <IndexRoute Component={LoginHome}/>
         <Route path="/login" component={LoginHome}></Route>
     		<Route path="/admin" component={Admin}>
     			<IndexRoute component={Clients}></IndexRoute>

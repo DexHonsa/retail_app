@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import icon from '../../../../images/ring-alt-small.svg';
 import {Bar, Pie} from 'react-chartjs-2';
 
 class MoreZipDemographics extends React.Component {
@@ -134,12 +133,7 @@ class MoreZipDemographics extends React.Component {
           return data[0].toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         }
         );
-		var loadingImg;
-        if(filteredDemographics.length == 0){
-        	loadingImg = <div className="demo-loading-img" ><img src={icon} /></div>
-        }else{
-        	//loadingImg = null;
-        }
+		
 		return(
 				<div className="modal-overlay">
         <div className="add-demo-filter-popup-container">
@@ -308,7 +302,7 @@ class MoreZipDemographics extends React.Component {
 			            height={300}
 			            options={{
 							"legend": {
-								"display":true,
+								"display":false,
 								"position" : 'right'
 							},
 							"responsive" : true,
@@ -327,7 +321,7 @@ class MoreZipDemographics extends React.Component {
 			            height={300}
 			            options={{
 							"legend": {
-								"display":true,
+								"display":false,
 								"position" : 'right'
 							},
 							"responsive" : true,

@@ -1,7 +1,11 @@
 import React from 'react';
+import axios from 'axios';
 import $ from "jquery";
 import Client from '../../scripts/myScript.js';
 import InsertFinancialInfo from './insert_financial_info';
+import { connect } from 'react-redux';
+//import ReactTimeAgo from 'react-time-ago';
+import Linkify from 'react-linkify'
 
 class RightPanel extends React.Component {
   constructor(props) {
@@ -27,8 +31,20 @@ class RightPanel extends React.Component {
       buildingSize: "",
       pois: [],
       poi_filters: this.props.poiFilters,
-      addFinancialInfo : false
+      addFinancialInfo : false,
+      twitterFeed: []
     }
+  }
+  getTwitterFeed(){
+    var this2 = this;
+    
+    axios.get('api/twitter/' + this.state.longitude + "/" + this.state.latitude).then(function(res){
+      
+      this2.setState({
+        twitterFeed : res.data.tweets.statuses
+      })
+      console.log(this2.state.twitterFeed);
+    })
   }
   getDemographics() {
     var lat = this.state.latitude;
@@ -40,7 +56,7 @@ class RightPanel extends React.Component {
       "url": "https://api.pitneybowes.com/location-intelligence/geolife/v1/demographics/bylocation?latitude=" + lat + "&longitude=" + lng,
       "method": "GET",
       "headers": {
-        "authorization": "Bearer 39ue52iBWeFgDYKYVKE7GwDdEyRI",
+        "authorization": "Bearer jPGny9Q6VIyzsx0QdVWSC8NRgWRv",
         "cache-control": "no-cache",
         "postman-token": "33b648c3-ace7-e131-0b20-1a1691a9dc40"
       },
@@ -61,7 +77,7 @@ class RightPanel extends React.Component {
   }
 
   componentDidMount() {
-  
+ //var this2 = this;
    Client.drawZip(this.state.zip);
     this.setState({
       latitude: this.props.latitude,
@@ -72,7 +88,9 @@ class RightPanel extends React.Component {
       isSaved: this.props.isSaved,
       searchId: this.props.searchId
     })
-    
+
+      this.getTwitterFeed();
+  
     if(this.state.searchId !== "" || this.state.searchId !== "N/A") {
       $.getJSON('/api/searches/' + this.state.searchId)
         .then((data) => {
@@ -207,42 +225,46 @@ class RightPanel extends React.Component {
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   addToSearches() {
-    
     var this2 = this;
-    var lat = this.state.latitude;
-    var lng = this.state.longitude;
-    var street = this.state.street;
-    var city = this.state.city;
-    var zip = this.state.zip;
-    var id = Math.random();
-    var img_path = "https://maps.googleapis.com/maps/api/streetview?location=" + this.state.latitude + "," + this.state.longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs";
-    var data = {
-      "lat": lat,
-      "lng": lng,
-      "city": city,
-      "zip": zip,
-      "street": street,
-      "imgUrl": img_path,
-      "leaseInfo": {
-        "leaseRate": "",
-        "leaseType": "",
-        "leaseFrequency": "",
-        "size": "",
-        "buildingSize": ""
-      }
-    };
-    $.ajax({
-      type: "POST",
-      url: "/api/searches",
-      data: JSON.stringify(data),
-      success: function(data) {
-        Client.createSavedMarker(lat, lng, id, street);
-        
-        this2.props.hide();
-      },
-      dataType: "json",
-      contentType: "application/json"
-    });
+   
+      
+      var lat = this.state.latitude;
+      var lng = this.state.longitude;
+      var street = this.state.street;
+      var city = this.state.city;
+      var zip = this.state.zip;
+     
+      var img_path = "https://maps.googleapis.com/maps/api/streetview?location=" + this.state.latitude + "," + this.state.longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs";
+      var data = {
+        "userId": this.props.auth.user.id,
+        "clientId": this.props.client.clientId,
+        "lat": lat,
+        "lng": lng,
+        "city": city,
+        "zip": zip,
+        "street": street,
+        "imgUrl": img_path,
+        "leaseInfo": {
+          "leaseRate": "",
+          "leaseType": "",
+          "leaseFrequency": "",
+          "size": "",
+          "buildingSize": ""
+        }
+      };
+      $.ajax({
+        type: "POST",
+        url: "/api/searches",
+        data: JSON.stringify(data),
+        success: function(data) {
+          console.log(data);
+          Client.createSavedMarker(lat, lng, data[0].id, street);
+          this2.props.hide();
+        },
+        dataType: "json",
+        contentType: "application/json"
+      });
+    
   }
   addFinancialInfo(){
     this.setState({
@@ -291,10 +313,66 @@ class RightPanel extends React.Component {
     if(this.state.isSaved) {
       addFinancialInfoBtn = <div onClick={this.addFinancialInfo.bind(this)} className="add-to-saved">Add Financial Information</div>;
       addButton = null;
-    } else {
+    }  else if(this.props.client.clientId !== undefined){
       addButton = <div onClick={this.addToSearches.bind(this)} className="add-to-saved">Add to Saved Searches</div>;
     }
-    
+    if(this.state.isSaved){
+    var leasingTable = <div className="view-result-demographic-table">
+                        <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Leasing Information
+                        <div onClick={this.editLeaseInfo.bind(this)} className="edit-btn">{editBtn}</div>
+                        </div>
+                        <ul className="demographics-list">
+                          <li>
+                            <div className="demo-title">Lease Rate</div>
+                            <div className="demo-value">{leaseRate}</div>
+                          </li>
+                          <li>
+                            <div className="demo-title">Lease Type</div>
+                            <div className="demo-value">{leaseType}</div>
+                          </li>
+                          <li>
+                            <div className="demo-title">Lease Frequency</div>
+                            <div className="demo-value">{leaseFrequency}</div>
+                          </li>
+                          <li>
+                            <div className="demo-title">Size</div>
+                            <div className="demo-value">{size}</div>
+                          </li>
+                          <li>
+                            <div className="demo-title">Building Size</div>
+                            <div className="demo-value">{buildingSize}</div>
+                          </li>
+                        </ul>
+                      </div>;
+                    }
+    var basicInfoTable = <div className="view-result-demographic-table">
+                        <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Basic Information
+                        
+                        </div>
+                        <ul className="demographics-list">
+                          <li>
+                            <div className="demo-title">Address</div>
+                            <div className="demo-value">{this.state.street}</div>
+                          </li>
+                          <li>
+                            <div className="demo-title">City</div>
+                            <div className="demo-value">{this.state.city}</div>
+                          </li>
+                          <li>
+                            <div className="demo-title">Zip</div>
+                            <div className="demo-value">{this.state.zip}</div>
+                          </li>
+                          <li>
+                            <div className="demo-title">Longitude</div>
+                            <div className="demo-value">{this.state.longitude}</div>
+                          </li>
+                          <li>
+                            <div className="demo-title">Latitude</div>
+                            <div className="demo-value">{this.state.latitude}</div>
+                          </li>
+                          
+                        </ul>
+                      </div>;
     return(
       <div className="view-result" key="1">
         {insertFinancialInfo}
@@ -305,8 +383,8 @@ class RightPanel extends React.Component {
           <div className="view-result-img" style={{backgroundImage: "url(https://maps.googleapis.com/maps/api/streetview?location="+this.state.latitude+","+this.state.longitude+"&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)"}} />
           <div className="view-result-details">
             <div className="view-result-title">{this.state.street + this.state.city}<br /></div>
-            <div className="view-result-demographic-table">
-              <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Demographics</div>
+            {/*<div className="view-result-demographic-table">
+              <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Block Demographics</div>
               <ul className="demographics-list">
                 <li>
                   <div className="demo-title">Household Median Income $</div>
@@ -330,43 +408,33 @@ class RightPanel extends React.Component {
                 </li>
                 
               </ul>
-            </div>
+            </div>*/}
+            {addButton}
+            {basicInfoTable}
+            {leasingTable}
             <div className="view-result-demographic-table">
-              <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Leasing Information
-              <div onClick={this.editLeaseInfo.bind(this)} className="edit-btn">{editBtn}</div>
-              </div>
+              <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Nearby Social Feed</div>
               <ul className="demographics-list">
-                <li>
-                  <div className="demo-title">Lease Rate</div>
-                  <div className="demo-value">{leaseRate}</div>
-                </li>
-                <li>
-                  <div className="demo-title">Lease Type</div>
-                  <div className="demo-value">{leaseType}</div>
-                </li>
-                <li>
-                  <div className="demo-title">Lease Frequency</div>
-                  <div className="demo-value">{leaseFrequency}</div>
-                </li>
-                <li>
-                  <div className="demo-title">Size</div>
-                  <div className="demo-value">{size}</div>
-                </li>
-                <li>
-                  <div className="demo-title">Building Size</div>
-                  <div className="demo-value">{buildingSize}</div>
-                </li>
-              </ul>
-            </div>
-            <div className="view-result-demographic-table">
-              <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Financial Information</div>
-              <ul className="demographics-list">
-                <li>
+                {/*<li>
                   <div className="no-information">No Information Available</div>
-                </li>
+                </li>*/}
+
+                {this.state.twitterFeed.map(function(data, i){
+                    return <li key={i}>
+                              <div>
+                                <div className="twitter-item-top">
+                                  <div className="twitter-item-img" style={{backgroundImage: 'url(' + data.user.profile_image_url + ')'}} />
+                                  <div className="twitter-item-name">{data.user.name}<br /><span style={{color: '#808080', fontSize: '.8em'}}>@{data.user.screen_name}</span></div>
+                                  <div className="demo-value"></div>
+                                </div>
+                                <div className="twitter-item-text"><Linkify>{data.text}</Linkify></div>
+                              </div>
+                            </li>
+                })}
+
               </ul>
             </div>
-            <div className="view-result-demographic-table">
+           {/* <div className="view-result-demographic-table">
               <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Closest Points of Interest
                 <div onClick={this.showPois.bind(this)} className="edit-btn">load pois</div>
               </div>
@@ -377,9 +445,9 @@ class RightPanel extends React.Component {
                     }
                 
               </ul>
-            </div>
+            </div>*/}
 
-            {addButton}
+            
             {addFinancialInfoBtn}
             
           </div>
@@ -387,14 +455,11 @@ class RightPanel extends React.Component {
     );
   }
 }
-class PoiItem extends React.Component {
-  render() {
-    return(
-        <li onClick={() => this.props.findPoi(this.props.lat, this.props.lng, this.props.name)}>
-          <div className="demo-title poi">{this.props.name}<br /><div style={{fontSize: '8pt'}}>{this.props.type}</div></div>
-          <div className="demo-value">Rating:</div>
-        </li>
-    );
-  }
+
+function mapStateToProps(state){
+  return {
+    auth: state.auth,
+    client: state.client
+  };
 }
-export default RightPanel;
+export default connect(mapStateToProps)(RightPanel);

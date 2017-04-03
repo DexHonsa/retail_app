@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from 'react';
+import axios from 'axios';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import $ from "jquery";
 import arrive from 'arrive';
@@ -7,16 +8,19 @@ import RightPanel from './right_panel';
 import SearchItem from './search_item';
 import DemographicPopout from './popouts/demographics';
 import PoiPopout from './popouts/pois';
+import {connect} from 'react-redux';
 import Client from '../../scripts/myScript.js';
 import ZipDemographics from './zip_demographics';
 import MapStyles from './popouts/map_styles';
 import MoreZipDemographics from './popouts/more_zip_demographics';
+import setCurrentClient from '../../actions/auth_actions';
 
 class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clientId: this.props.clientId,
+      clientId: this.props.client.clientId,
+      userId: this.props.auth.user.id,
       rightPanel: false,
       latitude: '',
       longitude: '',
@@ -92,12 +96,7 @@ class Map extends React.Component {
       rightPanel: false,
       zipDemographics: false
     })
-    $.getJSON('/api/searches')
-      .then((data) => {
-        this2.setState({
-          searches: data
-        });
-      });
+    this.refreshSearchList();
   }
   showRightPanel() {
     this.setState({
@@ -105,18 +104,33 @@ class Map extends React.Component {
     })
   }
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      cliendId: nextProps.clientId
+    var this2 = this;
+     this.setState({
+      clientId: nextProps.client.clientId
+     })
+     setTimeout(function(){
+      this2.refreshSearchList();
+     },100)
+     
+  }
+  refreshSearchList(){
+    var this2 = this;
+    $('.saved-marker').remove();
+    if(this.props.client.clientId != undefined){
+    axios.get('/api/searches/' + this.props.auth.user.id + '/' + this.props.client.clientId).then(function(res){
+      res.data.forEach(function(item){
+        Client.createSavedMarker(item.lat, item.lng, item.id, item.street);
+      })
+      this2.setState({
+        searches:res.data
+      })
     })
+  }
+    
   }
   componentDidMount() {
     var this2 = this;
-    $.getJSON('/api/searches')
-      .then((data) => {
-        this2.setState({
-          searches: data
-        });
-      });
+    this.refreshSearchList();
     $(document)
       .arrive(".marker", function() {
         $('.marker')
@@ -178,10 +192,12 @@ class Map extends React.Component {
     this.setState({
       searches: newData
     }); //update state
+    $('#' + keyId).remove();
     $.ajax({
       type: "DELETE",
       url: "/api/searches/" + keyId,
       success: function(data) {
+
       },
       dataType: "json",
       contentType: "application/json"
@@ -190,8 +206,10 @@ class Map extends React.Component {
   }
   findSearch(keyId) {
     var this2 = this;
-    $.getJSON('/api/searches/' + keyId)
+
+    $.getJSON('/api/search/' + keyId)
       .then((data) => {
+
         this2.setState({
           street: data.Searches.street,
           city: data.Searches.city,
@@ -202,6 +220,7 @@ class Map extends React.Component {
           isSaved: true,
           searchId: keyId
         })
+        this2.showZipDemographics();
       });
   }
   toggleDemographics() {
@@ -393,4 +412,10 @@ class Map extends React.Component {
     );
   }
 }
-export default Map;
+function mapStateToProps(state){
+  return {
+    auth: state.auth,
+    client: state.client
+  };
+}
+export default connect(mapStateToProps, { setCurrentClient })(Map);

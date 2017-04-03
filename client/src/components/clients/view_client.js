@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import axios from 'axios';
 import $ from "jquery";
+import {connect} from "react-redux";
+
 class ViewClient extends React.Component{
     constructor(props) {
     super(props);    
@@ -18,6 +21,12 @@ class ViewClient extends React.Component{
     }
   }
   componentDidMount() {
+    var this2 = this
+    axios.get('/api/searches/' + this.props.auth.user.id + '/' + this.props.params.id).then(function(res){
+      this2.setState({
+        searches : res.data
+      })
+    })
     $.getJSON('/api/clients/' + this.state.id )
       .then((data) => {
         this.setState({ 
@@ -34,6 +43,19 @@ class ViewClient extends React.Component{
   
   
   render(){
+    var searches;
+
+    if(this.state.searches.length > 0){
+      searches = this.state.searches.map(function(data, i){
+        return <div key={i} className="saved-location-item">
+                    <div className="saved-location-img" style={{backgroundImage: 'url('+data.imgUrl+')'}}/>
+                    <div className="saved-location-title">{data.street}<br /> <span style={{fontSize: '10pt'}}>{data.city}</span></div>
+                    <i className="fa fa-map-marker" />
+                  </div>
+      })
+    }else{
+      searches = <div className="no-searches">No Saved Searches</div>;
+    }
     return (
       
         <main className="main">
@@ -79,12 +101,8 @@ class ViewClient extends React.Component{
                 </div>
                 <div className="saved-locations-container">
                   <div className="field-header">Saved Searches</div>
-                  {/*<div className="saved-location-item">
-                    <div className="saved-location-img" />
-                    <div className="saved-location-title">1245 Mission Ave <br /> <span style={{fontSize: '10pt'}}>San Francisco CA, 94545</span></div>
-                    <i className="fa fa-map-marker" />
-                  </div>*/}
-                  <div className="no-searches">No Saved Searches</div>
+                  {searches}
+                  
                 </div>
               </div>
               <div className="col-sm-4">
@@ -106,5 +124,10 @@ class ViewClient extends React.Component{
     );
   }
   }
-
-export default ViewClient;
+function mapStateToProps(state){
+   return {
+    auth: state.auth,
+    client: state.client
+  };
+}
+export default connect(mapStateToProps)(ViewClient);

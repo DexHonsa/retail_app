@@ -248,11 +248,15 @@ a{
 	width:100%;
 	transition:all .3s ease;
 }
+.input-error input{
+	border-color:#d27676 !important;
+}
+
 .popup-input:hover{
-	border-color:#808080 !important;
+	border-color:#808080 ;
 }
 .popup-input:focus{
-	border-color:#808080 !important;
+	border-color:#808080 ;
 }
 .add-client-form{
 	display: flex;

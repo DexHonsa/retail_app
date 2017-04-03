@@ -20,7 +20,7 @@ function changeMap(val){
     var mapStyle;
 
     if(val == 1){
-        mapStyle = 'mapbox://styles/dexhonsa/cizyfpyzn003k2sobx3m1pbmh';
+        mapStyle = 'mapbox://styles/dexhonsa/cj0ckgfvs003i2rpb80fhoyzu';
     }
     if(val == 2){
         mapStyle = 'mapbox://styles/dexhonsa/ciyaweb92003d2ss7g5neultw';
@@ -40,11 +40,98 @@ function removeSourcesAndLayers(){
     map.removeSource('poi_markers');
     
 }
+function getZipsFromBounds(callback){
+        var bounds = map.getBounds();
+         var neLat = bounds._ne.lat;
+         var neLng = bounds._ne.lng;
+         var swLat = bounds._sw.lat;
+         var swLng = bounds._sw.lng;
+
+         var obj = {"neLat":neLat, "neLng":neLng, "swLat":swLat, "swLng":swLng};
+         //filter the zips in the bounding box
+         $.ajax({
+            type: 'POST',
+            url: 'api/getZips/',
+            data : obj,
+            success: function(res){
+                var data = res.data.map(String);
+                var newArray = []
+                data.forEach(function(item){
+                    if(item.toString().length < 5)
+                        item = "0" + item;
+                    newArray.push(item);
+                })
+                return callback(newArray);
+            }
+         })
+}
+function filterZips(zips, filters, callback){
+    var zips = zips;
+    var zipNumbers = zips.map(Number);
+   
+
+    var options = {};
+    options.zips = zipNumbers;
+    options.filters = filters;
+   
+    
+     
+    
+    $.ajax({
+        type: 'POST',
+        url:'api/filterZips/',
+        data: JSON.stringify(options),
+        contentType: 'application/json',
+        processData: false,
+        success: function(data){
+            return callback(data);
+        }
+    })
+}
+function clearDrawnZips(){
+    map.setFilter("zip-border", null);
+    map.setFilter("zip-fill", null);
+    map.getSource('zip_layer').setData({
+        "type": "FeatureCollection",
+        "features": []
+    });
+}
+function drawFilteredZips(array){
+        
+        var zipArray = []
+        array.forEach(function(item){
+            zipArray.push(item.ZipCode)
+        })
+        zipArray = zipArray.map(String);
+        var newArray = [];
+        zipArray.forEach(function(item){
+                    if(item.toString().length < 5)
+                        item = "0" + item;
+                    newArray.push(item);
+                })
+        
+                $.ajax({
+                    type:'POST',
+                    url: 'api/drawZips/',
+                    data: JSON.stringify(newArray),
+                    contentType: "application/json",
+                    processData: false,
+                    success: function(data){
+                       
+                        map.setFilter("zip-border", null);
+                        map.setFilter("zip-fill", null);
+                        map.getSource('zip_layer').setData({
+                            "type": "FeatureCollection",
+                            "features": data.data
+                        });
+                    }
+                })
+}
 function refreshMap() {
     window.mapboxgl.accessToken = 'pk.eyJ1IjoiZGV4aG9uc2EiLCJhIjoiY2luejFndTViMThsNnUya2o5bThpemRsaSJ9.GFlYLJmm5XmM-cGc57UH9g';
     map = new window.mapboxgl.Map({
         container: 'map', // container id
-        style: 'mapbox://styles/dexhonsa/cizyfpyzn003k2sobx3m1pbmh', //stylesheet location
+        style: 'mapbox://styles/dexhonsa/cj0ckgfvs003i2rpb80fhoyzu', //stylesheet location
         center: [-74.005941, 40.712784], // starting position
         zoom: 10 // starting zoom
     });
@@ -64,8 +151,6 @@ function refreshMap() {
         closeButton: false,
         closeOnClick: false
     });
-
-
     map.addControl(draw);
 
     map.on('dataloading', function() {
@@ -80,8 +165,14 @@ function refreshMap() {
             $('.map-preloader').addClass('hide-loader');
         }
     });
+    map.on('mousemove',function(){
+        $('.map-preloader').addClass('hide-loader');
+    });
     map.on('dragend', function() {
         updateMap();
+         
+         
+         
     });
     map.on('zoomend', function() {
         updateMap();
@@ -589,6 +680,7 @@ function getMapPois(filters) {
 
                 googlePois.push(place);
             }
+
         }
     }
 
@@ -605,12 +697,13 @@ function getMapPois(filters) {
     $.ajax(settings).done(function(response) {
 
         foursquarePois = response.response.venues;
+
     });
 
 
     setTimeout(function() {
 
-            return console.log(googlePois);
+            
         foursquarePois.forEach(function(item) {
             var source2 = {
                 "type": "Feature",
@@ -630,7 +723,7 @@ function getMapPois(filters) {
             var source = {
                 "type": "Feature",
                 "properties": {
-                    "description": "<div class=''"
+                    "description": "<div style='font-size:12pt;position:relative;'>"+item.name+"</div>"
                 },
                 "geometry": {
                     "type": "Point",
@@ -666,6 +759,7 @@ function getMapPois(filters) {
         });
 
     }, 1000)
+    
     return googlePois;
 
 
@@ -847,6 +941,10 @@ const Client = {
     getMapPois,
     drawZip,
     hideZip,
-    changeMap
+    changeMap,
+    getZipsFromBounds,
+    drawFilteredZips,
+    filterZips,
+    clearDrawnZips
 };
 export default Client;

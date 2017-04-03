@@ -31,7 +31,6 @@ updateSearch(event){
 componentDidMount() {
    return $.getJSON('/api/users')
       .then((data) => {
-        console.log(data);
         this.setState({ users: data.User });
       });
   }

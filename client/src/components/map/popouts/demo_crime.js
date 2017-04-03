@@ -20,9 +20,90 @@ class DemoCrime extends React.Component {
 
 	}
 	addFilter(){
-		var title = "Crime";
-		var minVal = this.state.min_value;
-		var maxVal = this.state.max_value;
+		var min_value;
+		var max_value;
+		if(this.state.min_value == 0){
+			min_value = 0;
+		}
+		if(this.state.min_value == 1){
+			min_value = 100;
+		}
+		if(this.state.min_value == 2){
+			min_value = 200;
+		}
+		if(this.state.min_value == 3){
+			min_value = 300;
+		}
+		if(this.state.min_value == 4){
+			min_value = 400;
+		}
+		if(this.state.min_value == 5){
+			min_value = 500;
+		}
+		if(this.state.min_value == 6){
+			min_value = 600;
+		}
+		if(this.state.min_value == 7){
+			min_value = 700;
+		}
+		if(this.state.min_value == 8){
+			min_value = 800;
+		}
+		if(this.state.min_value == 9){
+			min_value = 900;
+		}
+		if(this.state.min_value == 10){
+			min_value = 1000;
+		}
+		if(this.state.min_value == 11){
+			min_value = 1100;
+		}
+		if(this.state.min_value == 12){
+			min_value = 1500;
+		}
+
+		if(this.state.max_value == 0){
+			max_value = 0;
+		}
+		if(this.state.max_value == 1){
+			max_value = 100;
+		}
+		if(this.state.max_value == 2){
+			max_value = 200;
+		}
+		if(this.state.max_value == 3){
+			max_value = 300;
+		}
+		if(this.state.max_value == 4){
+			max_value = 400;
+		}
+		if(this.state.max_value == 5){
+			max_value = 500;
+		}
+		if(this.state.max_value == 6){
+			max_value = 600;
+		}
+		if(this.state.max_value == 7){
+			max_value = 700;
+		}
+		if(this.state.max_value == 8){
+			max_value = 800;
+		}
+		if(this.state.max_value == 9){
+			max_value = 900;
+		}
+		if(this.state.max_value == 10){
+			max_value = 1000;
+		}
+		if(this.state.max_value == 11){
+			max_value = 1100;
+		}
+		if(this.state.max_value == 12){
+			max_value = 1500;
+		}
+		var title = "PropertyCrime";
+		var minVal = min_value;
+		var maxVal = max_value;
 		var filter = {"title" : title, "minVal" : minVal, "maxVal" : maxVal}
 		this.props.addFilter(filter);
 		this.props.hideAddFilters();

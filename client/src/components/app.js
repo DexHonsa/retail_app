@@ -2,8 +2,7 @@ import React from 'react';
 import Script from 'react-load-script';
 
 import Header from './header';
-import LoginHome from './login/login';
-
+import {connect} from 'react-redux';
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -68,4 +67,10 @@ class App extends React.Component {
 	
 }
 
-export default App;
+function mapStateToProps(state){
+  return {
+    auth: state.auth,
+    client: state.client
+  };
+}
+export default connect(mapStateToProps)(App);

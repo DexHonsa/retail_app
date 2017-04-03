@@ -59,8 +59,8 @@ app.route('/api/clients').post(api.addClient);
 app.route('/api/clients/:id').delete(api.deleteClient);
 app.route('/api/clients/:id').put(api.editClient);
 // Saved Searches API
-app.route('/api/searches').get(api.Searches);
-app.route('/api/searches/:id').get(api.Search);
+app.route('/api/searches/:userId/:clientId').get(api.Searches);
+app.route('/api/search/:id').get(api.Search);
 app.route('/api/searches/:lat/:lng').get(api.checkIfSaved);
 app.route('/api/searches').post(api.addSearch);
 app.route('/api/searches/:id').delete(api.deleteSearch);
@@ -78,10 +78,16 @@ app.route('/api/login').post(api.LoginCheck);
 
 //Zip code API
 app.route('/api/zip/:zip').get(api.Zip);
+app.route('/api/getZips/').post(api.getZips);
+app.route('/api/drawZips/').post(api.drawZips);
+app.route('/api/filterZips/').post(api.filterZips);
 
 // Role API
 app.route('/api/roles').post(api.addRole);
 app.route('/api/roles/:id').delete(api.deleteRole);
+
+//Twitter API
+app.route('/api/twitter/:longitude/:latitude').get(api.TwitterPlaceLookup);
 
 // Redirect all others to the index
 // A 404 page is probably a better move
