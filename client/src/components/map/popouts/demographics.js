@@ -37,7 +37,7 @@ class DemographicPopout extends React.Component {
       var that = this;
       setTimeout(function(){
       that.setState({filters: newArray})
-      console.log(that.state.filters);
+      
       that.filterZips();
       },100);
       
@@ -62,7 +62,7 @@ class DemographicPopout extends React.Component {
       // }else{
         Client.getZipsFromBounds(function(result){
           var filters = that.state.filters;
-          console.log(filters);
+         
           Client.filterZips(result, filters, function(result){
 
             Client.drawFilteredZips(result.data);

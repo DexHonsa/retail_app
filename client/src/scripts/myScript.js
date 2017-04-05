@@ -68,15 +68,9 @@ function getZipsFromBounds(callback){
 function filterZips(zips, filters, callback){
     var zips = zips;
     var zipNumbers = zips.map(Number);
-   
-
     var options = {};
     options.zips = zipNumbers;
     options.filters = filters;
-   
-    
-     
-    
     $.ajax({
         type: 'POST',
         url:'api/filterZips/',
@@ -487,9 +481,9 @@ function drawZip(zip) {
 
     $.ajax({
         type: "GET",
-        url: "/api/zip/" + zip,
+        url: "api/zip/" + zip,
         success: function(data) {
-
+           
             map.setFilter("zip-border", null);
             map.setFilter("zip-fill", null);
             map.getSource('zip_layer').setData({

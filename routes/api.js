@@ -8,6 +8,14 @@ var Query = thinky.Query;
 var Validator = require('Validator');
 var jwt = require('jsonwebtoken');
 var Twitter = require('Twitter');
+var Pusher = require('pusher');
+
+var pusher = new Pusher({
+  appId      : "323748",
+  key        : "d3d161be3854778f5031",
+  secret     : "bd446427d3c80f0a9b02",
+  encrypted  : true,
+});
 
 var client = new Twitter({
           consumer_key: 'bcaU1xnKnYzbROA1z8NmNgZ59',
@@ -20,6 +28,7 @@ var client = new Twitter({
 var Client = thinky.createModel('Client', {
     id: type.string(),
     client_name: type.string(),
+    user_id: type.string(),
     industry: type.string(),
     address: type.string(),
     city: type.string(),
@@ -56,7 +65,24 @@ var User = thinky.createModel('User', {
 var Role = thinky.createModel('Role', {
     id: type.string(),
     role_name: type.string(),
-    accesses: [type.string()]
+    role_accesses: [type.string()]
+});
+
+var Message = thinky.createModel('Message', {
+    id: type.string(),
+    subject : type.string(),
+    creator_id: type.string(),
+    message_body: type.string(),
+    create_date: type.string(),
+    parent_message_id: type.string()
+    
+});
+var MessageRecipient = thinky.createModel('MessageRecipient', {
+    id: type.string(),
+    recipient_id : type.string(),
+    recipient_group_id: type.string(),
+    message_id: type.string(),
+    is_read: type.string()
 });
 
 var Searches = thinky.createModel('Searches', {
@@ -162,18 +188,26 @@ exports.LoginCheck = function(req, res){
 exports.Zip = function (req, res) {
     var zip = req.params.zip;
 
-    Zips.getAll(zip, {index:'zip'}).run().then(function(Zips){
+    r.db('retail_updated').table('Zips').getAll(zip, {index:'zip'}).run().then(function(Zips){
         res.json({
             Zips : Zips
         });
     }).error(handleError(res));
     
 };
+exports.getSearchRankings = function(req,res){
+    var zips = req.body.zips;
+    var field = req.body.field;
+    var zipNumbers = zips.map(Number);
+    r.db('retail_updated').table('Demographics').getAll(r.args(zipNumbers),{index:'ZipCode'}).pluck('Population').run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
 exports.drawZips = function (req, res){
     var array = req.body;
-   
-
-    r.db('retail').table('Zips').getAll(r.args(array), {index:'zip'}).run().then(function(data){
+    r.db('retail_updated').table('Zips').getAll(r.args(array), {index:'zip'}).run().then(function(data){
         res.json({
             data
         })
@@ -182,43 +216,40 @@ exports.drawZips = function (req, res){
 exports.filterZips = function(req,res){
     var zips = req.body.zips;
     var filters = req.body.filters;
-
     var newFilters = function(doc){
         var filterString = '';
         filters.forEach(function(item){
-
          if (filters.indexOf(item) == 0){
-         filterString += "r.expr(doc('"+item.title+"').ge("+item.minVal+").and(doc('"+item.title+"').le("+item.maxVal+")))"
+         filterString += "r.expr(doc('"+item.title+"')('value').ge("+item.minVal+").and(doc('"+item.title+"')('value').le("+item.maxVal+")))"
         }
         else{
-         filterString += ".and(r.expr(doc('"+item.title+"').ge("+item.minVal+").and(doc('"+item.title+"').le("+item.maxVal+"))))"
+         filterString += ".and(r.expr(doc('"+item.title+"')('value').ge("+item.minVal+").and(doc('"+item.title+"')('value').le("+item.maxVal+"))))"
         }
         })
         console.log(filterString);
         return eval(filterString);
     };
-   r.db('retail').table('Demographics').getAll(r.args(zips), {index: 'ZipCode'}).pluck('ZipCode','Population','TotalHouseholds','PropertyCrime')
+   r.db('retail_updated').table('Demographics').getAll(r.args(zips), {index: 'ZipCode'}).pluck('ZipCode','Population','TotalHouseholds','PropertyCrime')
    .filter(newFilters).run().then(function(data){
     res.json({
         data
     })
    })    
-   
 }
 exports.getZips = function(req, res){
-
     var neLat = parseFloat(req.body.neLat);
     var swLat = parseFloat(req.body.swLat);
     var neLng = parseFloat(req.body.neLng);
     var swLng = parseFloat(req.body.swLng);
-   
-  
-    r.db('retail').table('Demographics').between(swLat, neLat, {index:'Latitude'}).filter(r.row('Longitude').gt(swLng).and(r.row('Longitude').lt(neLng))).getField('ZipCode').run().then(function(data){
+    r.db('retail_updated').table('Demographics').between(swLat, neLat, {index:'Latitude'}).filter(r.row('Longitude').gt(swLng).and(r.row('Longitude').lt(neLng))).getField('ZipCode').run().then(function(data){
         res.json({
             data
         })
     })
-
+}
+exports.getRankings = function(req,res){
+    var field = req.params.field;
+   r.db('retail_updated').table('Demographics')
 }
 exports.Searches = function (req, res) {
     var userId = req.params.userId;
@@ -252,7 +283,7 @@ exports.editSearch = function (req, res) {
 exports.checkIfSaved = function (req, res){
     var lat = req.params.lat;
     var lng = req.params.lng;
-    var query = new thinky.Query(Searches, r.db("retail").table("Searches").filter({lat : lat, lng : lng}).count());
+    var query = new thinky.Query(Searches, r.db("retail_updated").table("Searches").filter({lat : lat, lng : lng}).count());
     query.execute().then(function(result){
         res.json({
             result : result
@@ -282,6 +313,15 @@ exports.Clients = function (req, res) {
         res.json(Client);
     }).error(handleError(res));
 };
+
+exports.getUserClients = function(req,res){
+    var userId = req.params.userId;
+    r.db('retail_updated').table('Client').filter(r.row('user_id').eq(userId)).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
 
 
 // Retrieve one Client
@@ -409,14 +449,23 @@ exports.editUser = function (req, res) {
 
 // Add a Role
 exports.addRole = function (req, res) {
-    var newRole = new Role(req.body);
+    var role_accesses = req.body.role_accesses;
+    var role_name = req.body.role_name;
 
-    newRole.save().then(function(error, result) {
+    r.db('retail_updated').table('Role').insert({"role_name":role_name, "role_accesses" : role_accesses}).run().then(function(data){
         res.json({
-            error: error,
-            result: result
-        });
-    });
+            data
+        })
+    })
+};
+// get Roles
+exports.Roles = function (req, res) {
+    
+    r.db('retail_updated').table('Role').run().then(function(data){
+        res.json({
+            data
+        })
+    })
 };
 
 

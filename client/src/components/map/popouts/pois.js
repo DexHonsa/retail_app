@@ -141,7 +141,6 @@ class PoiPopout extends React.Component {
       this.props.removePois();
       this.props.setPoiFilters(poiFilterSelections);
     }else{
-      console.log([this.state.value]);
       poiFilterSelections = [this.state.value];
       this.props.setPoiFilters(poiFilterSelections);
       Client.getMapPois(poiFilterSelections);
@@ -171,7 +170,7 @@ class PoiPopout extends React.Component {
 
   
 handleSelectChange (value) {
-    console.log('You\'ve selected:', value);
+    
     this.setState({ value });
   }
   

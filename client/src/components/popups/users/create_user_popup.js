@@ -1,10 +1,11 @@
 import React from 'react';
 import request from 'superagent';
-
 import AvatarCropper from "react-avatar-cropper";
 import img from '../../../../images/camera_upload.jpg';
 import FileUploaderUser from './file_uploader_user';
-import $ from 'jquery';
+import axios from 'axios';
+import validateInput from '../../validations/create_user_validation';
+import TextFieldGroup from './text_field_group';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
@@ -16,19 +17,22 @@ class CreateUserPopup extends React.Component {
     this.state = {
       state : "",
       contacts : [],
-      croppedImg: '/images/camera_upload.jpg',
+      croppedImg: img,
       cropperOpen: false,
-      img: null
+      img: null,
+      user_email: '',
+      user_password: '',
+      errors: {}
     }
   }
-
-
-  deleteContact(data){
-    const newState = this.state.contacts;
-    if (newState.indexOf(data) > -1) {
-      newState.splice(newState.indexOf(data), 1);
-      this.setState({contacts: newState})
+  isValid(){
+    const { errors, isValid } = validateInput(this.state);
+    if(!isValid){
+      this.setState({
+        errors : errors
+      })
     }
+    return isValid;
   }
    handleFileChange(dataURI) {
     this.setState({
@@ -44,38 +48,24 @@ class CreateUserPopup extends React.Component {
       img: null,
       croppedImg: dataURI
     })
-    
-    
-
   }
   handleRequestHide() {
     this.setState({
       cropperOpen: false
     })
   }
-
-  addContact(event){
-    var first = this.refs.first_name.value;
-    var last = this.refs.last_name.value;
-    var title = this.refs.title.value;
-    var email = this.refs.email.value;
-    var phone = this.refs.phone.value;
-
+  onChange(e){
     this.setState({
-      contacts : this.state.contacts.concat({first_name : first, last_name : last, title : title, email : email, phone : phone})
+      [e.target.name] : e.target.value
     })
-
-    this.refs.first_name.value = "";
-    this.refs.last_name.value = null;
-    this.refs.title.value = null;
-    this.refs.email.value = null;
-    this.refs.phone.value = null;
   }
+  
   submitForm(event){
-
+    var this2= this;
+    if(this.isValid()){
     var upload = request.post(CLOUDINARY_UPLOAD_URL)
-                        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-                        .field('file', this.state.croppedImg);
+        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+        .field('file', this.state.croppedImg);
 
     upload.end((err, response) => {
       if (err) {
@@ -93,45 +83,41 @@ class CreateUserPopup extends React.Component {
         var userCity = this.refs.user_city.value;
         var userState = this.refs.user_state.value;
         var userZip = this.refs.user_zip.value;
-        var userEmail = this.refs.user_email.value;
-        var userClientAssociation = this.refs.user_client_association.value;
+        
+        //var userClientAssociation = this.refs.user_client_association.value;
         var imgURL = this.state.uploadedFileCloudinaryUrl;
 
-        console.log(userFirstName, userLastName, userType, userAddress, userCity, userState, userZip, userEmail, userClientAssociation,  imgURL);
+        
         var data = {
           "first_name" : userFirstName,
           "last_name" : userLastName,
-          "email" : userEmail,
+          "email" : this.state.user_email,
+          "password": this.state.user_password,
           "type" : userType,
           "address" : userAddress,
           "city" : userCity,
           "state": userState,
           "zip": userZip,
           "user_img_path": imgURL,
-          "associate_client_id": userClientAssociation
+          
         }
+        axios.post('/api/users', data).then(function(res){
         
-        $.ajax({
-          type: "POST",
-          url: "/api/users",
-          data: JSON.stringify(data),
-          success: function(data){
-            this.props.collapse();
-          },
-          dataType: "json",
-          contentType: "application/json"
-        });
+          this2.props.collapse();
+        })
+        
         
       }
     });
 
-    
+    }
     
 
   }
 
   
 render(){
+   const {user_password,user_email, errors} = this.state;
     return (
       <div id="user-popup" className="popup">
         <div className="popup-container animated fadeInUp">
@@ -149,7 +135,7 @@ render(){
           <div onClick={this.props.collapse} className="popup-close"><i className="fa fa-times"></i></div>
           <form>
             <div className="popup-small-title">Upload a Photo</div>
-            <div className="upload-picture" style={{backgroundImage: 'url(' + img + ')'}}>
+            <div className="upload-picture" style={{backgroundImage: 'url(' + this.state.croppedImg + ')'}}>
               <FileUploaderUser handleFileChange={this.handleFileChange.bind(this)} />
               
                 
@@ -222,13 +208,38 @@ render(){
                 </p>
               </div>
             </div>
+            <div className="popup-small-title">User Credentials</div>
             <div className="form-row">
               <div style={{flex: 1, maxWidth: 300}}>
-                <p>
+                
                   
-                  <input className="popup-input" placeholder="Email" type="text" ref="user_email" id="user-email" />
-                </p>
+                  <TextFieldGroup
+                      field="user_email"
+                      label="Email"
+                      type="text"
+                      value={user_email}
+                      error={errors.user_email}
+                      onChange={this.onChange.bind(this)}
+                    />
+                
               </div>
+
+            </div>
+            <div className="form-row">
+              <div style={{flex: 1, maxWidth: 300}}>
+                
+                  
+                  <TextFieldGroup
+                      field="user_password"
+                      label="Password"
+                      type="text"
+                      value={user_password}
+                      error={errors.user_password}
+                      onChange={this.onChange.bind(this)}
+                    />
+                
+              </div>
+              
             </div>
             <div className="popup-small-title">Client Association</div>
             <div className="form-row">

@@ -5,6 +5,7 @@ import AvatarCropper from "react-avatar-cropper";
 import img from '../../../../images/camera_upload.jpg';
 import ContactItem from './contact_item';
 import FileUploader from './file_uploader';
+import {connect} from 'react-redux';
 import validateInput from '../../validations/create_client_validation';
 import TextFieldGroup from './text_field_group';
 
@@ -114,7 +115,7 @@ class CreateClientPopup extends React.Component {
 
             
             
-            var data = {"client_name" : clientName,"industry" : industryName,"address" : addressName,"city" : cityName, "state" : stateName,"zip" : zipName,"logo_path" : imgURL};
+            var data = {'user_id': this.props.auth.user.id,"client_name" : clientName,"industry" : industryName,"address" : addressName,"city" : cityName, "state" : stateName,"zip" : zipName,"logo_path" : imgURL};
 
             $.ajax({
               type: "POST",
@@ -297,4 +298,10 @@ render(){
   }
   }
 
-export default CreateClientPopup;
+function mapStateToProps(state){
+  return {
+    auth: state.auth,
+    client: state.client
+  };
+}
+export default connect(mapStateToProps)(CreateClientPopup);

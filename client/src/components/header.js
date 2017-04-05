@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import $ from "jquery";
 import logo from '../../images/sitemap_logo.png';
+import axios from 'axios';
 import {connect} from 'react-redux';
 import { logout, setCurrentClient } from '../actions/auth_actions';
 import SettingsDropdown from './util/settings_dropdown';
@@ -16,7 +17,8 @@ class Header extends React.Component{
       client_id : this.props.client.clientId,
       client_name: "Select a Client",
       client_img : "",
-      settings_dropdown: false
+      settings_dropdown: false,
+      user: {}
     }
   }
   logout(e){
@@ -38,11 +40,15 @@ toggleSettingsDropdown(){
     })
   }
 }
+getUser(){
+  var this2 = this;
+   axios.get('/api/users/' + this.props.auth.user.id).then(function(res){
+    this2.setState({ user: res.data.User });
+  })
+}
 toggleDropdown(){
-  $.getJSON('/api/clients')
-      .then((data) => {
-        this.setState({ clients: data });
-      });
+  this.getUserClients();
+  
   if(this.state.dropdown){
     this.setState({
       dropdown : false
@@ -54,15 +60,21 @@ toggleDropdown(){
   }
   
 }
+getUserClients(){
+  var this2 = this;
+      axios('/api/getUserClients/' + this.props.auth.user.id).then(function(res){
+        this2.setState({clients:res.data.data})
+      })
+}
 componentDidMount() {
-   return $.getJSON('/api/clients')
-      .then((data) => {
-        this.setState({ clients: data });
-      });
+  this.getUserClients();
+   this.getUser();
 }
 componentWillReceiveProps(nextProps) {
+  this.getUser();
   this.setState({
-    client_name: nextProps.client.clientName
+    client_name: nextProps.client.clientName,
+    client_id: nextProps.client.clientId
   })
 }
 activeClient(clientId, clientName){
@@ -104,6 +116,7 @@ render(){
             
             <Link to="/map" activeClassName="active">Map</Link>
             <Link to="/key_metrics" activeClassName="active">Key Metrics</Link>
+            <Link to="/rankings" activeClassName="active">Rankings</Link>
           </div>
           <ul className="user-nav">
             <li><a href="#"><i onClick={this.toggleSettingsDropdown.bind(this)} className="fa fa-gear"></i></a>
@@ -113,7 +126,7 @@ render(){
               {clientDropdown}
             </div>            
             </li>
-            <li><a href="#"><span className="user-img" /></a></li>
+            <li><a href="#"><span className="user-img" style={{backgroundImage: 'url('+this.state.user.user_img_path+')'}} /></a></li>
           </ul>
         </div>
       </header>

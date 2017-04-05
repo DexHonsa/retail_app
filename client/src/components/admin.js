@@ -33,6 +33,7 @@ class Admin extends React.Component {
               <Link to="/admin/clients" className="retail-tab" activeClassName="active">Clients</Link>
               <Link to="/admin/users" className="retail-tab" activeClassName="active">Users</Link>
               <Link to="/admin/roles" className="retail-tab" activeClassName="active">Roles</Link>
+              <Link to="/admin/messages" className="retail-tab" activeClassName="active">Messages</Link>
           
             </div>
             <div>

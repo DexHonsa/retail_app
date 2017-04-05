@@ -236,6 +236,8 @@ a{
 	color:#808080;
 	margin-top:25px;
 	margin-bottom:10px;
+	text-align: left;
+	color:#3080e8;
 }
 .popup-input{
 	background:#fff;
@@ -398,6 +400,8 @@ a{
 }
 .user-list-img{
 	background:#3080e8;
+	background-size: cover;
+	background-position: center;
 	color:#fff;
 	width:50px;
 	height:50px;
@@ -643,4 +647,95 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 	cursor: pointer;
 	background:#469df5;
 }
+.rankings-saved-searches{
+	padding:15px;
+	position: relative;
+	width:400px;
+	float: right;
+	border-left:solid 1px #e0e0e0;
+}
+.rankings-saved-searches-title{
+	margin-bottom: 15px;
+	font-size: 12pt;
+	color:#000;
+	text-align:left;
+}
+.ranking-search-item{
+	background:#fff;
+	padding:0px;
+	overflow: auto;
+	display: flex;
+	align-items: center;
+	flex: 1;
+	margin:5px 0px;
+}
+.ranking-search-item:hover .ranking-search-item-title{
+	color:#000;
+	cursor: pointer;
+}
+.ranking-search-item-img{
+	background-image: url(../images/1-Building-KYB.jpg);
+	background-size: cover;
+	background-position: center;
+	height:50px;
+	width:50px; float:left;
+}
+.ranking-search-item-title{
+	padding:0px 10px;
+	color:#808080;
+	font-size: 10pt;
+	text-align: left;
+}
+.ranking-search-item-rank{
+	margin-left: auto;
+	font-size: 8pt;
+	color:#aeaeae;
+	text-align: right;
+}
+.rankings-results{
+	width:calc(100% - 400px);
+	padding:15px;
+}
+.rankings-results-item{
+	flex:1;
+	justify-content: center;
+	border-bottom:solid 1px #f2f2f2;
+	padding:15px;
+	display: flex;
+	align-items: center;
+}
+.rankings-results-item-img{
+	background-image: url(../images/Garfield_Building_Detroit.jpg);
+	background-size: cover;
+	background-position: center;
+	height:100px;
+	width:100px;
+}
+.rankings-results-item-title{
+	padding:0px 15px;
+	font-size: 15pt;
+	color:#808080;
+	text-align: left;
+}
+.rankings-results-item:hover .rankings-results-item-title{
+	color:#000;
+	cursor: pointer;
+}
+.rankings-results-item-rank{
+	margin-left: auto;
+	font-size: 20pt;
+	padding-right:15px;
+	color:#3080e8;
+}
+.load-more-btn{
+	border:solid 1px #aeaeae;
+	border-radius: 3px;
+	padding:7px 15px;
+	color:#000;
+	display: inline-block;
 
+}
+.load-more-btn:hover{
+	background:#f7f7f7;
+	cursor: pointer;
+}

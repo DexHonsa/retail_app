@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from "jquery";
-
+import axios from 'axios';
 import Role from './role'
 import CreateRolePopup from '../popups/roles/create_role_popup';
 
@@ -16,13 +16,22 @@ class Roles extends React.Component {
   }
 
   collapsePopup(){
-    this.setState({popup : false})
+    this.setState({popup : false});
+    this.getRoles();
   }
   
   expandPopup(){
     this.setState({popup : true})
   }
-
+getRoles(){
+  var this2=this;
+  axios.get('/api/roles').then(function(res){
+    console.log(res);
+    this2.setState({
+      roles:res.data.data
+    })
+  })
+}
 updateSearch(event){
   this.setState({
     search: event.target.value.substr(0,20)
@@ -30,11 +39,7 @@ updateSearch(event){
 }
 
 componentDidMount() {
-  return $.getJSON('http://retailapi.theamp.com/roles')
-      .then((data) => {
-       
-        this.setState({ roles: data.roles });
-      });
+  this.getRoles();
   }
 
 
@@ -56,8 +61,8 @@ render(){
             <div onClick={this.expandPopup.bind(this)} className="add-client-btn" data-popup-type="role">Add Role</div>
           </div>
           <ul className="user-list">
-            {this.state.roles.map(function(data){
-              return <Role roleName={data.role_name} />
+            {this.state.roles.map(function(data, i){
+              return <Role key={i} roleName={data.role_name} />
             })}
           </ul>
         </div>

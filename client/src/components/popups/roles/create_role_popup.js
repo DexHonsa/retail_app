@@ -1,113 +1,132 @@
 import React from 'react';
 import request from 'superagent';
-
-
+import validateInput from '../../validations/create_role_validation';
+import TextFieldGroup from './text_field_group';
+import axios from 'axios';
+import Checkbox from './checkbox';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
+const items = [
+  'Create Clients',
+  'Create Users',
+  'Edit Existing Users',
+  'Create Roles'
+];
 
 class CreateRolePopup extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      croppedImg: '/images/camera_upload.jpg',
-      cropperOpen: false,
-      img: null
+      
+      role_name: '',
+      roles: [],
+      role_accesses: [],
+      errors: {}
+    }
+  }
+isValid(){
+    const { errors, isValid } = validateInput(this.state);
+    if(!isValid){
+      this.setState({
+        errors : errors
+      })
+    }
+    return isValid;
+  }
+
+    onChange(e){
+    this.setState({
+      [e.target.name] : e.target.value
+    })
+  }
+   
+
+  
+
+  componentWillMount = () => {
+    this.selectedCheckboxes = new Set();
+  }
+
+  toggleCheckbox = label => {
+    if (this.selectedCheckboxes.has(label)) {
+      this.selectedCheckboxes.delete(label);
+    } else {
+      this.selectedCheckboxes.add(label);
     }
   }
 
-
-  
-   handleFileChange(dataURI) {
-    this.setState({
-      img: dataURI,
-      croppedImg: this.state.croppedImg,
-      cropperOpen: true,
-      uploadedFileCloudinaryUrl: ''
-    })
-  }
-  handleCrop(dataURI) {
-    
-    this.setState({
-      cropperOpen: false,
-      img: null,
-      croppedImg: dataURI
-    })
-    
-    
-
-  }
-  handleRequestHide() {
-    this.setState({
-      cropperOpen: false
-    })
-  }
-
-  
-  submitForm(event){
-
-    var upload = request.post(CLOUDINARY_UPLOAD_URL)
-                        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-                        .field('file', this.state.croppedImg);
-
-    upload.end((err, response) => {
-      if (err) {
-        console.error(err);
+  handleFormSubmit = formSubmitEvent => {
+    var this2 = this;
+      if(this.isValid()){
+        formSubmitEvent.preventDefault();
+        var role_accesses = [];
+        for (const checkbox of this2.selectedCheckboxes) {
+          role_accesses.push(checkbox);
+        }
+        this2.setState({
+          role_accesses: role_accesses
+        })
+        var data = {
+          "role_name" : this2.state.role_name,
+          "role_accesses" : role_accesses
+        }
+      
+        axios.post('/api/roles', data).then(function(res){
+          this2.setState({
+            roles: res.data
+          })
+          this2.props.collapse();
+        })
       }
+    }
+  
 
-      if (response.body.secure_url !== '') {
-        this.setState({
-          uploadedFileCloudinaryUrl: response.body.secure_url
-        });
-        var userFirstName = this.refs.user_first_name.value;
-        var userLastName = this.refs.user_last_name.value;
-        var userType = this.refs.user_type.value;
-        var userAddress = this.refs.user_address.value;
-        var userCity = this.refs.user_city.value;
-        var userState = this.refs.user_state.value;
-        var userZip = this.refs.user_zip.value;
-        var userEmail = this.refs.user_email.value;
-        var userClientAssociation = this.refs.user_client_association.value;
-        var imgURL = this.state.uploadedFileCloudinaryUrl;
+  createCheckbox = label => (
+    <Checkbox
+            label={label}
+            handleCheckboxChange={this.toggleCheckbox}
+            key={label}
+        />
+  )
 
-        console.log(userFirstName, userLastName, userType, userAddress, userCity, userState, userZip, userEmail, userClientAssociation,  imgURL);
-        
-
-        
-      }
-    });
-
-    
-    
-
-  }
+  createCheckboxes = () => (
+    items.map(this.createCheckbox)
+  )
+  
 
   
 render(){
+  const {role_name, errors} = this.state;
     return (
       <div id="role-popup" className="popup">
         <div className="popup-container animated fadeInUp" style={{textAlign: 'center'}}>
           <div className="popup-title" style={{textAlign: 'center'}}>Add New Role</div>
           <div onClick={this.props.collapse} className="popup-close"><i className="fa fa-times"></i></div>
           <form>
-            <div className="popup-small-title">Change Color</div>
+            {/*<div className="popup-small-title">Change Color</div>
             <div className="create-role-badge" style={{display: 'inline-block'}}>
               <i className="fa fa-glass" />
-            </div>
-            <div className="popup-small-title">Basic Info</div>
+            </div>*/}
+           
             <div className="form-row" style={{width: 400, display: 'inline-block'}}>
               <div>
-                <p>
-                  
-                  <input className="popup-input" placeholder="Role Name" type="text" name="field_id" id="role-name" />
-                </p>
+                <TextFieldGroup
+                      field="role_name"
+                      label="Role Name"
+                      type="text"
+                      value={role_name}
+                      error={errors.role_name}
+                      onChange={this.onChange.bind(this)}
+                    />
               </div>
             </div>
-            <div className="form-row" style={{display: 'inline-block', width: 400}}>
+            <div className="form-row" style={{display: 'inline-block', width: 400, paddingBottom:25}}>
               <div className="control-group">
                 <div className="popup-small-title">Role Access</div>
-                <label className="control control--checkbox">Create Clients
+                {this.createCheckboxes()}
+                {/*<label className="control control--checkbox">Create Clients
                   <input type="checkbox" />
                   <div className="control__indicator" />
                 </label>
@@ -126,11 +145,11 @@ render(){
                 <label className="control control--checkbox">Edit Properties
                   <input type="checkbox" />
                   <div className="control__indicator" />
-                </label>
+                </label>*/}
               </div>
             </div>
             <div className="form-row" style={{borderTop: 'solid 1px #e0e0e0', textAlign: 'center', display: 'block'}}>
-              <div className="create-client-btn" style={{marginTop: 15, display: 'inline-block'}}>Create Role</div>
+              <div onClick={this.handleFormSubmit.bind(this)} className="create-client-btn" style={{marginTop: 15, display: 'inline-block'}}>Create Role</div>
             </div>
           </form>
         </div>

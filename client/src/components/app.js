@@ -3,14 +3,49 @@ import Script from 'react-load-script';
 
 import Header from './header';
 import {connect} from 'react-redux';
+
+
+
+
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { 
-			clientId : ""
+			clientId : "",
+			events : []
 		}
 		
 	}
+
+ // componentWillMount(){
+ //    this.pusher = new Pusher("d3d161be3854778f5031", {
+ //      encrypted: true,
+ //    });
+ //    //this.channel = this.pusher.subscribe('events_to_be_shown');
+ //  }
+
+ //  componentDidMount(){
+ //    this.channel.bind('created', this.updateEvents);
+ //    this.channel.bind('updated', this.updateEvents);
+ //    this.channel.bind('deleted', this.updateEvents);
+ //  }
+
+ //  componentWillUnmount(){
+ //    this.channel.unbind();
+
+ //    this.pusher.unsubscribe(this.channel);
+ //  }
+
+  // updateEvents(){
+  // 	console.log('updateEvents');
+  //   // var newArray = this.state.events.slice(0);
+  //   // newArray.unshift(data);
+
+  //   // this.setState({
+  //   //   events: newArray,
+  //   // });
+  // }
 	getClient(clientId){
 		this.setState({
 			clientId : clientId

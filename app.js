@@ -9,6 +9,26 @@ var serveStatic = require('serve-static');
 
 var app = express();
 
+// var server = require('http').createServer(app);
+// var io = require('socket.io').listen(server);
+
+// users = [];
+// connections = [];
+
+// server.listen(process.env.PORT || 3000);
+// console.log('Server Running');
+// app.get('/'),function(req,res){
+//     res.sendFile(__dirname + '/index.html');
+// }
+
+// io.sockets.on('connection', function(socket){
+//     connections.push(socket);
+//     console.log('Connected: %s sockets connectd', connections.length);
+//     connections.splice(connections.indexOf(socket), 1)
+//     console.log('Disconnected: %s sockets connected', connections.length);
+// });
+
+
 
 app.use(serveStatic('public', {'index': ['index.html', 'index.htm']}))
 //app.use(express.static(__dirname + '/public'));
@@ -54,6 +74,7 @@ app.route('/partials/:name').get(routes.partials);
 
 // Client API
 app.route('/api/clients').get(api.Clients);
+app.route('/api/getUserClients/:userId').get(api.getUserClients);
 app.route('/api/clients/:id').get(api.Client);
 app.route('/api/clients').post(api.addClient);
 app.route('/api/clients/:id').delete(api.deleteClient);
@@ -82,9 +103,15 @@ app.route('/api/getZips/').post(api.getZips);
 app.route('/api/drawZips/').post(api.drawZips);
 app.route('/api/filterZips/').post(api.filterZips);
 
+app.route('/api/getSearchRankings').post(api.getSearchRankings);
+
 // Role API
 app.route('/api/roles').post(api.addRole);
+app.route('/api/roles').get(api.Roles);
 app.route('/api/roles/:id').delete(api.deleteRole);
+
+//Ranking API
+app.route('/api/rankings/:field').get(api.getRankings);
 
 //Twitter API
 app.route('/api/twitter/:longitude/:latitude').get(api.TwitterPlaceLookup);
@@ -94,7 +121,14 @@ app.route('/api/twitter/:longitude/:latitude').get(api.TwitterPlaceLookup);
 app.route('*').get(routes.index);
 
 // Start server
-app.listen(config.expressPort, function(){
+const server = app.listen(config.expressPort, function(){
     console.log("Express server listening on port %d in %s mode",
         config.expressPort, app.settings.env);
 });
+
+
+ // const io = require('socket.io')(server);
+
+ // io.on('connection', (socket) => {
+ //    console.log('a user connected');
+ // })

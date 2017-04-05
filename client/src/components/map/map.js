@@ -126,7 +126,6 @@ class Map extends React.Component {
       })
     })
   }
-    
   }
   componentDidMount() {
     var this2 = this;

@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ClientItem from './client_item';
+import axios from 'axios';
+import {connect} from 'react-redux';
 import CreateClientPopup from '../popups/clients/create_client_popup';
 import $ from "jquery";
 
@@ -18,10 +20,7 @@ class Clients extends React.Component{
 
   collapsePopup(){
     this.setState({popup : false})
-    return $.getJSON('/api/clients')
-      .then((data) => {
-        this.setState({ clients: data });
-      });
+    this.getUserClients()
   }
   
   expandPopup(){
@@ -48,20 +47,14 @@ deleteClient(index, clientId){
 }
 
 
-
+getUserClients(){
+  var this2 = this;
+      axios('/api/getUserClients/' + this.props.auth.user.id).then(function(res){
+        this2.setState({clients:res.data.data})
+      })
+}
 componentDidMount() {
- // return $.getJSON('http://localhost:9000/api/clients')
- //     .then((data) => {
- //       this.setState({ clients: data });
- //     });
-      function parseJSON(response) {
-        return response.json();
-      }
-     return fetch(`/api/clients`, {accept: 'application/json'}).then(parseJSON).then((data) => {
-      this.setState({clients: data})
-     });
-
-
+      this.getUserClients();
   }
 
 
@@ -123,5 +116,10 @@ componentDidMount() {
       );
   }
 }
-
-export default Clients;
+function mapStateToProps(state){
+  return{
+    auth: state.auth,
+    client: state.client
+  }
+}
+export default connect(mapStateToProps)(Clients);

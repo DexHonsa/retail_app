@@ -17,6 +17,7 @@
     "jsonwebtoken": "^7.3.0",
     "jwt-decode": "^2.1.0",
     "little-loader": "^0.2.0",
+    "pusher": "^1.5.1",
     "react": "^15.4.2",
     "react-chartjs-2": "^2.0.5",
     "react-dom": "^15.4.2",

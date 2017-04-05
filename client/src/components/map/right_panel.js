@@ -43,7 +43,7 @@ class RightPanel extends React.Component {
       this2.setState({
         twitterFeed : res.data.tweets.statuses
       })
-      console.log(this2.state.twitterFeed);
+     
     })
   }
   getDemographics() {
@@ -257,7 +257,7 @@ class RightPanel extends React.Component {
         url: "/api/searches",
         data: JSON.stringify(data),
         success: function(data) {
-          console.log(data);
+         
           Client.createSavedMarker(lat, lng, data[0].id, street);
           this2.props.hide();
         },
