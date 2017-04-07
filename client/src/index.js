@@ -13,6 +13,7 @@ import Clients from './components/clients/clients';
 import ViewClient from './components/clients/view_client';
 import Users from './components/users/users';
 import Roles from './components/roles/roles';
+import UserProfile from './components/user_profile/user_profile';
 import Messages from './components/messages/messages';
 import Rankings from './components/rankings/rankings';
 import KeyMetrics from './components/key_metrics/key_metrics';
@@ -63,17 +64,23 @@ ReactDOM.render(
     	<Route path="/" component={App}>
         <IndexRoute Component={LoginHome}/>
         <Route path="/login" component={LoginHome}></Route>
+        <Route path="/user/:id" component={UserProfile}></Route>
         <Route path="/rankings" component={Rankings}></Route>
+        <Route path="/rankings/population" component={Rankings} field="Population"></Route>
+        <Route path="/rankings/households" component={Rankings} field="TotalHouseholds"></Route>
+        <Route path="/rankings/education" component={Rankings} field="EducationBachelorOrGreater"></Route>
+        <Route path="/rankings/income" component={Rankings} field="IncomePerHousehold"></Route>
+
     		<Route path="/admin" component={Admin}>
-    			<IndexRoute component={Clients}></IndexRoute>
+    			
     			<Route path="/admin/clients" component={Clients}></Route>
     			<Route path="/admin/users" component={Users}></Route>
                 <Route path="/admin/roles" component={Roles}></Route>
                 <Route path="/admin/messages" component={Messages}></Route>
     		</Route>
         <Route path="/admin/clients/:id" component={ViewClient}></Route>
-    		<Route path="map" component={Map}></Route>
-        <Route path="map/:clientId" component={Map}></Route>
+		<Route path="map" component={Map}></Route>
+        <Route path="map/:zip" component={Map}></Route>
         <Route path="key_metrics" component={KeyMetrics}></Route>
     	</Route>
     	

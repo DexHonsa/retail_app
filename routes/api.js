@@ -9,6 +9,9 @@ var Validator = require('Validator');
 var jwt = require('jsonwebtoken');
 var Twitter = require('Twitter');
 var Pusher = require('pusher');
+var request = require("request");
+
+
 
 var pusher = new Pusher({
   appId      : "323748",
@@ -49,7 +52,7 @@ var User = thinky.createModel('User', {
     phone: type.string(),
     address: type.string(),
     city: type.string(),
-    type: type.string(),
+    role: type.string(),
     state: type.string(),
     zip: type.string(),
     status: type.string(),
@@ -72,11 +75,16 @@ var Message = thinky.createModel('Message', {
     id: type.string(),
     subject : type.string(),
     creator_id: type.string(),
+    recipient_id: type.string(),
     message_body: type.string(),
     create_date: type.string(),
     parent_message_id: type.string()
     
 });
+
+    
+
+
 var MessageRecipient = thinky.createModel('MessageRecipient', {
     id: type.string(),
     recipient_id : type.string(),
@@ -161,6 +169,70 @@ exports.TwitterPlaceLookup = function(req,res){
         });
     
 }
+exports.geoCoder = function(req,res){
+    var zip = req.params.zip;
+    var options = { method: 'GET',
+      url: 'https://maps.googleapis.com/maps/api/geocode/json',
+      qs: { address: zip, sensor: 'true', key: 'AIzaSyDZbOsqAQ_mUPlg7PClzQHBQUUq3tYrwrU' },
+      headers: 
+       { 'postman-token': 'e7c9234f-ad9f-a1f8-d280-c1459f68e174',
+         'cache-control': 'no-cache' } };
+
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+
+      res.json({
+        body
+      })
+       
+      
+    });
+}
+exports.sendMessage = function(req,res){
+    var userId = req.body.userId;
+    var recipientId = req.body.recipientId;
+    var messageBody = req.body.messageBody;
+    r.db('retail_updated').table('Message').insert({
+        creator_id: userId,
+        recipient_id: recipientId,
+        message_body: messageBody,
+        create_date: r.now(),
+        is_read: 0
+    }).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
+exports.getMessages = function(req,res){
+    var recipientId = req.body.recipientId;
+    var userId = req.body.userId;
+     r.db('retail_updated').table('Message').filter(r.row('recipient_id').eq(recipientId).and(r.row('creator_id').eq(userId)).or(r.row('recipient_id').eq(userId).and(r.row('creator_id').eq(recipientId)))).orderBy(r.asc('create_date')).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
+exports.getLastMessages = function(req,res){
+    var recipientId = req.body.recipientId;
+    var userId = req.body.userId;
+     r.db('retail_updated').table('Message').filter(r.row('recipient_id').eq(recipientId).and(r.row('creator_id').eq(userId)).or(r.row('recipient_id').eq(userId).and(r.row('creator_id').eq(recipientId)))).orderBy(r.desc('create_date')).limit(1).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
+
+exports.readMessage = function(req,res){
+    var userId = req.body.userId;
+    var recipientId = req.body.recipientId;
+
+    r.db('retail_updated').table('Message').filter(r.row('recipient_id').eq(recipientId).and(r.row('creator_id').eq(userId)).or(r.row('recipient_id').eq(userId).and(r.row('creator_id').eq(recipientId)))).orderBy(r.desc('create_date')).limit(1).update({'is_read':1}).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
 
 exports.LoginCheck = function(req, res){
     const { username, password } = req.body;
@@ -170,7 +242,8 @@ exports.LoginCheck = function(req, res){
         if(User.length >= 1){
             const token = jwt.sign({
                 id: User[0].id,
-                email: User[0].email
+                email: User[0].email,
+                role: User[0].role
             }, config.jwtSecret);
             res.json({
                 token
@@ -199,7 +272,7 @@ exports.getSearchRankings = function(req,res){
     var zips = req.body.zips;
     var field = req.body.field;
     var zipNumbers = zips.map(Number);
-    r.db('retail_updated').table('Demographics').getAll(r.args(zipNumbers),{index:'ZipCode'}).pluck('Population').run().then(function(data){
+    r.db('retail_updated').table('Demographics').getAll(r.args(zipNumbers),{index:'ZipCode'}).pluck(field).run().then(function(data){
         res.json({
             data
         })
@@ -249,8 +322,13 @@ exports.getZips = function(req, res){
 }
 exports.getRankings = function(req,res){
     var field = req.params.field;
-   r.db('retail_updated').table('Demographics')
+   r.db('retail_updated').table('Demographics').orderBy({index: r.desc(field)}).limit(10).pluck(field,'ZipCode','Longitude','Latitude', 'City', 'StateAbbreviation').run().then(function(data){
+    res.json({
+        data
+    })
+   });
 }
+
 exports.Searches = function (req, res) {
     var userId = req.params.userId;
     var clientId = req.params.clientId;
@@ -472,8 +550,7 @@ exports.Roles = function (req, res) {
 // Delete Role
 exports.deleteRole = function (req, res) {
     var id = req.params.id;
-
-    // We can directly delete the Role since there is no foreign key to clean
+    
     Role.get(id).delete().execute().then(function(error, result) {
         res.json({
             error: error,

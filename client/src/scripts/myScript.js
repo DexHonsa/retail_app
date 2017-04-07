@@ -51,7 +51,7 @@ function getZipsFromBounds(callback){
          //filter the zips in the bounding box
          $.ajax({
             type: 'POST',
-            url: 'api/getZips/',
+            url: '/api/getZips/',
             data : obj,
             success: function(res){
                 var data = res.data.map(String);
@@ -73,7 +73,7 @@ function filterZips(zips, filters, callback){
     options.filters = filters;
     $.ajax({
         type: 'POST',
-        url:'api/filterZips/',
+        url:'/api/filterZips/',
         data: JSON.stringify(options),
         contentType: 'application/json',
         processData: false,
@@ -106,7 +106,7 @@ function drawFilteredZips(array){
         
                 $.ajax({
                     type:'POST',
-                    url: 'api/drawZips/',
+                    url: '/api/drawZips/',
                     data: JSON.stringify(newArray),
                     contentType: "application/json",
                     processData: false,
@@ -478,10 +478,9 @@ function addLayers(){
        
 }
 function drawZip(zip) {
-
     $.ajax({
         type: "GET",
-        url: "api/zip/" + zip,
+        url: "/api/zip/" + zip,
         success: function(data) {
            
             map.setFilter("zip-border", null);
@@ -495,7 +494,28 @@ function drawZip(zip) {
         contentType: "application/json"
     });
 }
+function drawZipAndFlyTo(zip){
+    drawZip(zip);
+    var lat;
+    var lng;
+   $.ajax({
+        type: 'GET',
+        url: '/api/geocoder/' + zip,
+        async : false,
+        success: function(res){
+          
+          var parse = JSON.parse(res.body);
+          console.log(parse);
+          lat = parse.results[0].geometry.location.lat;
+          lng = parse.results[0].geometry.location.lng;
+        }
+      })
 
+    map.flyTo({
+        center: [lng, lat],
+        zoom: 12
+    });
+}
 function hideZip() {
     map.setFilter("zip-border", ["==", "ZCTA5CE10", ""]);
     map.setFilter("zip-fill", ["==", "ZCTA5CE10", ""]);
@@ -939,6 +959,7 @@ const Client = {
     getZipsFromBounds,
     drawFilteredZips,
     filterZips,
-    clearDrawnZips
+    clearDrawnZips,
+    drawZipAndFlyTo
 };
 export default Client;

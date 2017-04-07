@@ -38,8 +38,8 @@ class RightPanel extends React.Component {
   getTwitterFeed(){
     var this2 = this;
     
-    axios.get('api/twitter/' + this.state.longitude + "/" + this.state.latitude).then(function(res){
-      
+    axios.get('/api/twitter/' + this.state.longitude + "/" + this.state.latitude).then(function(res){
+      console.log(res.data);
       this2.setState({
         twitterFeed : res.data.tweets.statuses
       })
@@ -270,11 +270,13 @@ class RightPanel extends React.Component {
     this.setState({
       addFinancialInfo : true
     })
+    $('.zip-code-popup').hide();
   }
   saveFinancialInfo(){
     this.setState({
       addFinancialInfo : false
     })
+    $('.zip-code-popup').show();
   }
   render() {
     var editBtn;

@@ -112,11 +112,11 @@ render(){
         <div className="container-fluid">
           <div className="logo"><img alt="logo" style={{height: 20, display: 'inline-block', lineHeight: 50}} src={logo} /></div>
           <div className="main-nav">
-            <Link to="/admin/clients" activeClassName="active">Admin</Link>
+            <Link to="/admin/users" activeClassName="active">Admin</Link>
             
             <Link to="/map" activeClassName="active">Map</Link>
             <Link to="/key_metrics" activeClassName="active">Key Metrics</Link>
-            <Link to="/rankings" activeClassName="active">Rankings</Link>
+            <Link to="/rankings/population" activeClassName="active">Rankings</Link>
           </div>
           <ul className="user-nav">
             <li><a href="#"><i onClick={this.toggleSettingsDropdown.bind(this)} className="fa fa-gear"></i></a>
@@ -126,7 +126,7 @@ render(){
               {clientDropdown}
             </div>            
             </li>
-            <li><a href="#"><span className="user-img" style={{backgroundImage: 'url('+this.state.user.user_img_path+')'}} /></a></li>
+            <li><Link to={"/user/" + this.props.auth.user.id}><span className="user-img" style={{backgroundImage: 'url('+this.state.user.user_img_path+')'}}></span></Link></li>
           </ul>
         </div>
       </header>

@@ -103,7 +103,12 @@ app.route('/api/getZips/').post(api.getZips);
 app.route('/api/drawZips/').post(api.drawZips);
 app.route('/api/filterZips/').post(api.filterZips);
 
-app.route('/api/getSearchRankings').post(api.getSearchRankings);
+//Messages API
+
+app.route('/api/getMessages').post(api.getMessages);
+app.route('/api/getLastMessages').post(api.getLastMessages);
+app.route('/api/sendMessage').post(api.sendMessage);
+app.route('/api/readMessage').put(api.readMessage);
 
 // Role API
 app.route('/api/roles').post(api.addRole);
@@ -112,6 +117,10 @@ app.route('/api/roles/:id').delete(api.deleteRole);
 
 //Ranking API
 app.route('/api/rankings/:field').get(api.getRankings);
+app.route('/api/getSearchRankings').post(api.getSearchRankings);
+
+//geocoder
+app.route('/api/geocoder/:zip').get(api.geoCoder);
 
 //Twitter API
 app.route('/api/twitter/:longitude/:latitude').get(api.TwitterPlaceLookup);

@@ -4,6 +4,7 @@ import axios from 'axios';
 import User from './user'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CreateUserPopup from '../popups/users/create_user_popup';
+import {connect} from 'react-redux';
 
 class Users extends React.Component {
   constructor(props) {
@@ -12,18 +13,37 @@ class Users extends React.Component {
     this.state = {
       users : [],
       search : "",
-      popup: false
+      popup: false,
+      roles: []
     }
+    this.getRoles = this.getRoles.bind(this)  
+    this.getUsers = this.getUsers.bind(this)
   }
+
+
   getUsers(){
     var this2 = this;
     axios.get('/api/users').then(function(res){
       this2.setState({ users: res.data.User });
+      this2.getRoles();
     })
+    
+  }
+  getRoles(){
+    var roles = [];
+    this.state.users.forEach(function(item){
+      
+      roles.push(item.role);
+    })
+    this.setState({
+      roles : roles
+    })
+
   }
   collapsePopup(){
     this.setState({popup : false})
    this.getUsers();
+
   }
   
   expandPopup(){
@@ -53,11 +73,21 @@ deleteUser(index, userId){
           });
 }
 
+setSearchTerm(term){
+  this.setState({
+    search: term
+  })
+}
+
 
 render(){
+  var addUserBtn;
+    if(this.props.auth.user.role == 'Admin'){
+      addUserBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add User</div>;
+    }
     var filteredUsers = this.state.users.filter(
         (data) => {
-          return data.first_name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+          return data.role.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         }
         );
     if(this.state.popup){
@@ -69,17 +99,20 @@ render(){
       <div>
       {popup}
       <div id="users-content">
-        <div className="left-side-filter-container">
+        {/*<div className="left-side-filter-container">
           <ul className="left-side-filter">
             <li className="filter-header">User Roles</li>
-            <li>Admin (0)</li>
-            <li className="filled">Retail Users (<span>1</span>)</li>
+            {this.state.roles.map(function(data,i){
+
+              return <li onClick={() => this.setSearchTerm(data)} key={i}>{data}</li>
+            },this)}
+            
           </ul>
-        </div>
+        </div>*/}
         <div className="user-content">
           <div className="client-top-section">
-            <input onChange={this.updateSearch.bind(this)} className="client-search" />
-            <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add User</div>
+            <input placeholder="Search" onChange={this.updateSearch.bind(this)} className="client-search" />
+            {addUserBtn}
           </div>
           <ul className="user-list">
           <ReactCSSTransitionGroup
@@ -89,7 +122,14 @@ render(){
                       transitionAppear={true}
                       transitionAppearTimeout={500}>
             {filteredUsers.map(function(data, i){
-              return <User deleteUser={this.deleteUser.bind(this)} id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role_id} status={data.status}  />
+               if(data.id === this.props.auth.user.id){
+                 return <User id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
+               }else if(this.props.auth.user.role == 'Admin'){
+                 return <User deleteUser={this.deleteUser.bind(this)} id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
+               }else{
+                 return <User id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
+               }
+              
             },this)}
             </ReactCSSTransitionGroup>
           </ul>
@@ -100,4 +140,10 @@ render(){
   }
   }
 
-export default Users;
+function mapStateToProps(state){
+  return{
+    auth: state.auth,
+    client: state.client
+  }
+}
+export default connect(mapStateToProps)(Users);

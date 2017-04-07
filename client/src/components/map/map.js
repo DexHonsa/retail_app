@@ -114,6 +114,7 @@ class Map extends React.Component {
      
   }
   refreshSearchList(){
+
     var this2 = this;
     $('.saved-marker').remove();
     if(this.props.client.clientId != undefined){
@@ -128,6 +129,13 @@ class Map extends React.Component {
   }
   }
   componentDidMount() {
+    var this2 = this;
+    setTimeout(function(){
+      if(this2.props.params.zip !== undefined){
+      Client.drawZipAndFlyTo(this2.props.params.zip);
+    }
+    },2000)
+    
     var this2 = this;
     this.refreshSearchList();
     $(document)
@@ -184,6 +192,7 @@ class Map extends React.Component {
 
           });
       });
+      
   }
   deleteSearch(index, keyId, e) {
     var newData = this.state.searches.slice(); //copy array

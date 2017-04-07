@@ -6,6 +6,7 @@ import FileUploaderUser from './file_uploader_user';
 import axios from 'axios';
 import validateInput from '../../validations/create_user_validation';
 import TextFieldGroup from './text_field_group';
+import {connect} from 'react-redux';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
@@ -22,8 +23,17 @@ class CreateUserPopup extends React.Component {
       img: null,
       user_email: '',
       user_password: '',
+      roles: [],
+      clients: [],
       errors: {}
     }
+  }
+  componentWillMount() {
+    this.getRoles();
+    this.getClients();
+  }
+  componentDidMount() {
+    
   }
   isValid(){
     const { errors, isValid } = validateInput(this.state);
@@ -54,6 +64,24 @@ class CreateUserPopup extends React.Component {
       cropperOpen: false
     })
   }
+  getRoles(){
+    var this2 = this;
+    axios.get('/api/roles').then(function(res){
+      this2.setState({
+        roles: res.data.data
+      })
+      console.log(res.data.data);
+    })
+  }
+  getClients(){
+    var this2 = this;
+    axios.get('/api/getUserClients/' + this.props.auth.user.id).then(function(res){
+      this2.setState({
+        clients: res.data.data
+      })
+      console.log(res.data.data);
+    })
+  }
   onChange(e){
     this.setState({
       [e.target.name] : e.target.value
@@ -78,7 +106,7 @@ class CreateUserPopup extends React.Component {
         });
         var userFirstName = this.refs.user_first_name.value;
         var userLastName = this.refs.user_last_name.value;
-        var userType = this.refs.user_type.value;
+        var userRole = this.refs.user_role.value;
         var userAddress = this.refs.user_address.value;
         var userCity = this.refs.user_city.value;
         var userState = this.refs.user_state.value;
@@ -93,13 +121,12 @@ class CreateUserPopup extends React.Component {
           "last_name" : userLastName,
           "email" : this.state.user_email,
           "password": this.state.user_password,
-          "type" : userType,
+          "role" : userRole,
           "address" : userAddress,
           "city" : userCity,
           "state": userState,
           "zip": userZip,
           "user_img_path": imgURL,
-          
         }
         axios.post('/api/users', data).then(function(res){
         
@@ -118,6 +145,20 @@ class CreateUserPopup extends React.Component {
   
 render(){
    const {user_password,user_email, errors} = this.state;
+   var roles;
+    if(this.state.roles.length > 0){
+      roles = this.state.roles.map(function(data,i){
+        return <option key={i}>{data.role_name}</option>
+      },this)
+    }
+
+    var clients;
+    if(this.state.clients.length > 0){
+      clients = this.state.clients.map(function(data,i){
+        return <option key={i}>{data.client_name}</option>
+      },this)
+    }
+   
     return (
       <div id="user-popup" className="popup">
         <div className="popup-container animated fadeInUp">
@@ -155,9 +196,9 @@ render(){
                 </p>
               </div>
               <div className="popup-selector-dropdown" style={{flex: 1}}>
-                <select ref="user_type">
-                  <option default>Account Type</option>
-                  <option>Admin</option>
+                <select ref="user_role">
+                  
+                  {roles}
                 </select>
               </div>
             </div>
@@ -245,8 +286,7 @@ render(){
             <div className="form-row">
               <div className="popup-selector-dropdown" style={{flex: 1, maxWidth: 300, marginLeft: 0}}>
                 <select ref="user_client_association">
-                  <option default>Select Client</option>
-                  <option>Admin</option>
+                  {clients}
                 </select>
               </div>
             </div>
@@ -261,5 +301,10 @@ render(){
     );
   }
   }
-
-export default CreateUserPopup;
+function mapStateToProps(state){
+  return {
+    auth: state.auth,
+    client: state.client
+  };
+}
+export default connect(mapStateToProps)(CreateUserPopup);

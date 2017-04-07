@@ -17,12 +17,10 @@ class Clients extends React.Component{
 
     };
   }
-
   collapsePopup(){
     this.setState({popup : false})
     this.getUserClients()
   }
-  
   expandPopup(){
     this.setState({popup : true})
   }
@@ -60,6 +58,10 @@ componentDidMount() {
 
 
   render(){
+    var addClientBtn;
+    if(this.props.auth.user.role == 'Admin'){
+      addClientBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>;
+    }
       var filteredClients = this.state.clients.filter(
         (data) => {
           return data.client_name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
@@ -75,7 +77,7 @@ componentDidMount() {
         <div >
         {popup}
           <div id="clients-content" style={{display: 'flex'}}>
-                  <div className="left-side-filter-container">
+                  {/*<div className="left-side-filter-container">
                     <ul className="left-side-filter">
                       <li className="filter-header">Retail Industry</li>
                       <li>Department Stores (0)</li>
@@ -87,11 +89,11 @@ componentDidMount() {
                       <li>Restaurants (0)</li>
                       <li className="filled">Fast Food Franchise (<span>1</span>)</li>
                     </ul>
-                  </div>
+                  </div>*/}
                   <div className="client-content">
                     <div className="client-top-section">
-                      <input onChange={this.updateSearch.bind(this)} className="client-search" />
-                      <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>
+                      <input placeholder="Search" onChange={this.updateSearch.bind(this)} className="client-search" />
+                      {addClientBtn}
                     </div>
                     <ul className="client-list">
                     <ReactCSSTransitionGroup
@@ -102,7 +104,11 @@ componentDidMount() {
                       transitionAppearTimeout={500}>
 
                       {filteredClients.map((data, i) => {
-                        return <ClientItem deleteClient={this.deleteClient.bind(this)} key={i} index={i} id={data.id} clientName={data.client_name} industry={data.industry} imgUrl={data.logo_path} />;
+                        if(this.props.auth.user.role == 'Admin'){
+                          return <ClientItem deleteClient={this.deleteClient.bind(this)} key={i} index={i} id={data.id} clientName={data.client_name} industry={data.industry} imgUrl={data.logo_path} />;
+                        }else{
+                        return <ClientItem key={i} index={i} id={data.id} clientName={data.client_name} industry={data.industry} imgUrl={data.logo_path} />;
+                        }
                       })
                     }
 

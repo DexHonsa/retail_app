@@ -60,7 +60,7 @@ class ViewClient extends React.Component{
       
         <main className="main">
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
-          <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', height: 'calc(100vh - 70px)', padding: 0}}>
+          <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', padding: 0, paddingBottom:200}}>
             <ReactCSSTransitionGroup
                       transitionName="fadeDown"
                       transitionEnterTimeout={500}

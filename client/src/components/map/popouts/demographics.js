@@ -37,7 +37,6 @@ class DemographicPopout extends React.Component {
       var that = this;
       setTimeout(function(){
       that.setState({filters: newArray})
-      
       that.filterZips();
       },100);
       
@@ -93,7 +92,12 @@ class DemographicPopout extends React.Component {
     }else{
       noFilter = null;
       filters = this.state.filters.map(function(data, i){
-                return <div key={i} className="demo-filter animated fadeInUp">{data.title.replace(/([A-Z])/g, ' $1').trim()}&nbsp;&nbsp;{data.minVal}&nbsp;&nbsp;-&nbsp;&nbsp;{data.maxVal}<i onClick={this.removeFilter.bind(this, i)} className="fa fa-times-rectangle"></i></div>
+                if(data.bachelorsPercent){
+                  return <div key={i} className="demo-filter animated fadeInUp">{data.title.replace(/([A-Z])/g, ' $1').trim()}&nbsp;&nbsp;{data.bachelorsPercent}<i onClick={this.removeFilter.bind(this, i)} className="fa fa-times-rectangle"></i></div>
+                }else{
+                  return <div key={i} className="demo-filter animated fadeInUp">{data.title.replace(/([A-Z])/g, ' $1').trim()}&nbsp;&nbsp;{data.minVal}&nbsp;&nbsp;-&nbsp;&nbsp;{data.maxVal}<i onClick={this.removeFilter.bind(this, i)} className="fa fa-times-rectangle"></i></div>
+                }
+                
               },this)
     }
 		return (

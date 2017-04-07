@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import {connect} from 'react-redux';
 
 class Admin extends React.Component {
   constructor(props) {
@@ -18,8 +19,12 @@ class Admin extends React.Component {
 
 
   render(){
-      
-
+      var roleTab;
+      var clientTab;
+if(this.props.auth.user.role === "Admin"){
+  roleTab = <Link to="/admin/roles" className="retail-tab" activeClassName="active">Roles</Link>;
+  clientTab = <Link to="/admin/clients" className="retail-tab" activeClassName="active">Clients</Link>
+}
      
      
 
@@ -30,9 +35,10 @@ class Admin extends React.Component {
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
           <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', minHeight: 'calc(100vh - 70px)', padding: 0}}>
             <div className="retail-tabs">
-              <Link to="/admin/clients" className="retail-tab" activeClassName="active">Clients</Link>
+              
               <Link to="/admin/users" className="retail-tab" activeClassName="active">Users</Link>
-              <Link to="/admin/roles" className="retail-tab" activeClassName="active">Roles</Link>
+              {clientTab}
+              {roleTab}
               <Link to="/admin/messages" className="retail-tab" activeClassName="active">Messages</Link>
           
             </div>
@@ -49,4 +55,10 @@ class Admin extends React.Component {
   }
   }
 
-export default Admin;
+function mapStateToProps(state){
+  return{
+    auth: state.auth,
+    client: state.client
+  }
+}
+export default connect(mapStateToProps)(Admin);
