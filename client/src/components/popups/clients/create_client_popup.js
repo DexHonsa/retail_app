@@ -115,7 +115,7 @@ class CreateClientPopup extends React.Component {
 
             
             
-            var data = {'user_id': this.props.auth.user.id,"client_name" : clientName,"industry" : industryName,"address" : addressName,"city" : cityName, "state" : stateName,"zip" : zipName,"logo_path" : imgURL};
+            var data = {'user_id': this.props.auth.user.id,"client_name" : clientName,"industry" : industryName,"address" : addressName,"city" : cityName, "state" : stateName,"zip" : zipName,"logo_path" : imgURL, contacts: [] };
 
             $.ajax({
               type: "POST",
@@ -150,7 +150,7 @@ render(){
       
       <div className="popup">
       
-          <div className="popup-container animated fadeInUp">
+          <div className="popup-container animated-slow bounceInUp">
           {this.state.cropperOpen &&
           <AvatarCropper
             onRequestHide={this.handleRequestHide.bind(this)}

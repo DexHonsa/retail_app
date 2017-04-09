@@ -22,10 +22,10 @@ class DemoEducation extends React.Component {
 	
 	
 	addFilter(){
-		var title = "Education";
+		var title = "EducationBachelorOrGreater";
 		var bachelorsPercent = this.state.bachelorsData;
 		console.log(bachelorsPercent);
-		var filter = {"title" : title, "bachelorsPercent" : bachelorsPercent.value}
+		var filter = {"title" : title, "value" : bachelorsPercent.value}
 		this.props.addFilter(filter);
 		this.props.hideAddFilters();
 
@@ -67,7 +67,6 @@ class DemoEducation extends React.Component {
 				<div>
 			     		<div>
 					        <div className="add-filter-instructions">Select Values</div>
-					       
 					         <div className="selector-main-container" style={{width: '100%'}}>
 						         <div className="selector-label"><div className="my-select-label">Percent of Bachelors Degree or Above</div>
 						         		<Select

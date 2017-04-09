@@ -236,7 +236,7 @@ class RightPanel extends React.Component {
      
       var img_path = "https://maps.googleapis.com/maps/api/streetview?location=" + this.state.latitude + "," + this.state.longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs";
       var data = {
-        "userId": this.props.auth.user.id,
+        "creatorId": this.props.auth.user.id,
         "clientId": this.props.client.clientId,
         "lat": lat,
         "lng": lng,

@@ -79,7 +79,11 @@ app.route('/api/clients/:id').get(api.Client);
 app.route('/api/clients').post(api.addClient);
 app.route('/api/clients/:id').delete(api.deleteClient);
 app.route('/api/clients/:id').put(api.editClient);
+
+app.route('/api/updateClient').put(api.updateClient);
+
 // Saved Searches API
+app.route('/api/getUserSearches/:userId').get(api.getUserSearches);
 app.route('/api/searches/:userId/:clientId').get(api.Searches);
 app.route('/api/search/:id').get(api.Search);
 app.route('/api/searches/:lat/:lng').get(api.checkIfSaved);
@@ -88,11 +92,14 @@ app.route('/api/searches/:id').delete(api.deleteSearch);
 app.route('/api/searches/:id').put(api.editSearch);
 
 // User API
-app.route('/api/users').get(api.Users);
+app.route('/api/signUpUser').post(api.signUpUser);
+app.route('/api/getUsers/:id').get(api.getUsers);
 app.route('/api/users/:id').get(api.User);
 app.route('/api/users').post(api.addUser);
 app.route('/api/users/:id').delete(api.deleteUser);
 app.route('/api/users/:id').put(api.editUser);
+app.route('/api/changePicture').put(api.changePicture);
+app.route('/api/updateUser').put(api.updateUser);
 
 //Login API
 app.route('/api/login').post(api.LoginCheck);
@@ -104,11 +111,13 @@ app.route('/api/drawZips/').post(api.drawZips);
 app.route('/api/filterZips/').post(api.filterZips);
 
 //Messages API
-
 app.route('/api/getMessages').post(api.getMessages);
 app.route('/api/getLastMessages').post(api.getLastMessages);
 app.route('/api/sendMessage').post(api.sendMessage);
 app.route('/api/readMessage').put(api.readMessage);
+
+//Mailer API
+app.route('/api/signup/:email').get(api.sendMailer);
 
 // Role API
 app.route('/api/roles').post(api.addRole);

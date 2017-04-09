@@ -101,7 +101,7 @@ render(){
   const {role_name, errors} = this.state;
     return (
       <div id="role-popup" className="popup">
-        <div className="popup-container animated fadeInUp" style={{textAlign: 'center'}}>
+        <div className="popup-container animated-slow bounceInUp" style={{textAlign: 'center'}}>
           <div className="popup-title" style={{textAlign: 'center'}}>Add New Role</div>
           <div onClick={this.props.collapse} className="popup-close"><i className="fa fa-times"></i></div>
           <form>

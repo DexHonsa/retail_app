@@ -109,6 +109,7 @@ class Map extends React.Component {
       clientId: nextProps.client.clientId
      })
      setTimeout(function(){
+
       this2.refreshSearchList();
      },100)
      
@@ -117,8 +118,10 @@ class Map extends React.Component {
 
     var this2 = this;
     $('.saved-marker').remove();
-    if(this.props.client.clientId != undefined){
+    if(this.props.client.clientId !== undefined){
+      
     axios.get('/api/searches/' + this.props.auth.user.id + '/' + this.props.client.clientId).then(function(res){
+      console.log(res.data);
       res.data.forEach(function(item){
         Client.createSavedMarker(item.lat, item.lng, item.id, item.street);
       })

@@ -652,6 +652,9 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 	border-radius: 3px;
 	font-size: 10pt;
 }
+.signup-btn{
+	margin-right:10px;
+}
 .login-btn:hover{
 	cursor: pointer;
 	background:#469df5;
@@ -747,4 +750,10 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 .load-more-btn:hover{
 	background:#f7f7f7;
 	cursor: pointer;
+}
+.signup-disclaimer{
+	padding: 15px;
+	font-size:10pt;
+	color:#808080;
+	margin:10px 0px;
 }

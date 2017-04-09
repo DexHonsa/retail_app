@@ -3,6 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 import $ from "jquery";
 import {connect} from "react-redux";
+import CreateContact from './create_client_contact';
 
 class ViewClient extends React.Component{
     constructor(props) {
@@ -17,10 +18,22 @@ class ViewClient extends React.Component{
       logo_path : "",
       state: "",
       zip:"",
-      searches: []
+      searches: [],
+      createContactPopup: false,
+      clientContacts: []
     }
   }
+  getClient(){
+    var this2 = this;
+    axios.get('/api/clients/' + this.props.params.id).then(function(res){
+      console.log(res.data.Client);
+      this2.setState({
+        clientContacts: res.data.Client.contacts
+      })
+    })
+  }
   componentDidMount() {
+    this.getClient();
     var this2 = this
     axios.get('/api/searches/' + this.props.auth.user.id + '/' + this.props.params.id).then(function(res){
       this2.setState({
@@ -40,11 +53,39 @@ class ViewClient extends React.Component{
           });
       });
   }
-  
+  showCreateContact(){
+    this.setState({createContactPopup:true})
+  }
+  hideCreateContact(){
+    this.setState({createContactPopup:false})
+    this.getClient();
+  }
+  deleteClientContact(index, clientId){
+    var this2 = this;
+    var newData = this.state.clientContacts.slice(); //copy array
+      newData.splice(index, 1); //remove element
+      this.setState({clientContacts: newData}); //update state
+
+      var data = {
+        clientId :  this.props.params.id,
+        contactIndex: index,
+        deleteContact: true
+      }
+    axios.put('/api/updateClient', data).then(function(res){
+        
+        this2.props.hideCreateContact();
+      })
+}
   
   render(){
     var searches;
-
+    var createContactPopup;
+    if(this.state.createContactPopup === true){
+      createContactPopup = <CreateContact hideCreateContact={this.hideCreateContact.bind(this)} clientId={this.props.params.id} />;
+    }else{
+      createContactPopup = '';
+    }
+    const {contactName, contactEmail, contactPhone, errors} = this.state;
     if(this.state.searches.length > 0){
       searches = this.state.searches.map(function(data, i){
         return <div key={i} className="saved-location-item">
@@ -59,6 +100,8 @@ class ViewClient extends React.Component{
     return (
       
         <main className="main">
+
+        {createContactPopup}
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
           <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', padding: 0, paddingBottom:200}}>
             <ReactCSSTransitionGroup
@@ -81,7 +124,11 @@ class ViewClient extends React.Component{
                       transitionLeaveTimeout={500}
                       transitionAppear={true}
                       transitionAppearTimeout={500}>
+
             <div className="details-container">
+            <div className="edit-profile-btn-container">
+             <div className=" load-more-btn">Edit</div>
+             </div>
               <div className="col-sm-8">
                 <div className="client-details">
                   <div className="field-header">Client Info</div>
@@ -108,9 +155,17 @@ class ViewClient extends React.Component{
               <div className="col-sm-4">
                 <div className="client-contacts">
                   <div className="client-contact-header">Client Contacts</div>
-                  <div className="client-contact-item">
-                    <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
-                    <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
+                  {this.state.clientContacts.map(function(data, i){
+                    return <div className="client-contact-item">
+                            <div className="client-contact-desc">{data.contactName}<br /><span style={{fontSize: '10pt', color: '#808080'}}>{data.contactEmail}</span><br /><span style={{fontSize: '10pt', color: '#808080'}}>{data.contactPhone}</span></div>
+                            <div className="client-contact-icons"> <i onClick={this.deleteClientContact(i).bind(this)} className="fa fa-times-rectangle" /></div>
+                          </div>
+                  },this)}
+                  
+
+                  <div className="client-contact-create">
+                    <div onClick={this.showCreateContact.bind(this)} className="client-contact-create-title">Add Contact</div>
+                    
                   </div>
                   
                 </div>

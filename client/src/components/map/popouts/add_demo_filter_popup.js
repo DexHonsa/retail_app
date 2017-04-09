@@ -9,6 +9,7 @@ import DemoEthnicity from './demo_ethnicity';
 import DemoHouseholds from './demo_households';
 import DemoEducation from './demo_education';
 import DemoPopulation from './demo_population';
+import DemoGender from './demo_gender';
 
 class AddDemoFilterPopup extends React.Component {
 	constructor(props) {
@@ -46,6 +47,10 @@ class AddDemoFilterPopup extends React.Component {
 		}
 		if(this.state.page == "ethnicity"){
 			page = <DemoEthnicity ref="DemoEthnicity" addFilter={this.addFilter.bind(this)} key={2} hideAddFilters={this.props.hideAddFilters}/>
+			
+		}
+		if(this.state.page == "gender"){
+			page = <DemoGender ref="DemoGender" addFilter={this.addFilter.bind(this)} key={2} hideAddFilters={this.props.hideAddFilters}/>
 			
 		}
 		if(this.state.page == "households"){

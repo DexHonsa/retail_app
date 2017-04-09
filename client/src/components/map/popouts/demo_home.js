@@ -11,12 +11,18 @@ class DemoHome extends React.Component {
 		            <div className="add-filter-row">
 		              <div onClick={() => this.props.updatePage("crime")} className="add-filter-type">Crime</div>
 		              <div onClick={() => this.props.updatePage("population")} className="add-filter-type">Popuplation</div>
-		              <div onClick={() => this.props.updatePage("ethnicity")} className="add-filter-type">Gender, Ethnicity, and Age</div>
+		              <div onClick={() => this.props.updatePage("ethnicity")} className="add-filter-type">Ethnicity</div>
 		            </div>
 		            <div className="add-filter-row">
 		              <div onClick={() => this.props.updatePage("households")} className="add-filter-type">Households</div>
 		              <div onClick={() => this.props.updatePage("householdIncome")} className="add-filter-type">Household Income</div>
 		              <div onClick={() => this.props.updatePage("education")}  className="add-filter-type">Education</div>
+		            </div>
+		            <div className="add-filter-row">
+		              <div onClick={() => this.props.updatePage("gender")} className="add-filter-type">Gender</div>
+		              <div onClick={() => this.props.updatePage("gender")} style={{opacity: '0', pointerEvents: 'none'}} className="add-filter-type"></div>
+		              <div onClick={() => this.props.updatePage("gender")} style={{opacity: '0', pointerEvents: 'none'}} className="add-filter-type"></div>
+		              
 		            </div>
 		            
 		          </div>

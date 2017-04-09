@@ -20,7 +20,6 @@ class Messages extends React.Component{
     }
   }
   componentDidMount() {
-    
     $('body').on('keypress', 'input', function(args) {
       if (args.keyCode == 13) {
           this2.sendMessage();
@@ -28,9 +27,9 @@ class Messages extends React.Component{
       }
     });
     this.getConversations();
+    
     var this2 = this;
     axios.get('/api/users/' + this.props.auth.user.id).then(function(res){
-     
       this2.setState({
         user: res.data.User
       })
@@ -61,7 +60,7 @@ class Messages extends React.Component{
   }
   getConversations(){
     var this2 = this;
-    axios.get('/api/users').then(function(res){
+    axios.get('/api/getUsers/' + this.props.auth.user.parent_user).then(function(res){
      
       this2.setState({
         users: res.data.User
@@ -150,8 +149,22 @@ truncate(string){
 };
 	render(){
     var conversations;
+    var replyBox;
+
+    if(this.state.recipient !== undefined){
+      replyBox = <div className="reply-container animated fadeInUp">
+                  <div className="reply-title">Write your reply to {this.state.recipient.first_name} {this.state.recipient.last_name}.</div>
+                  <div className="reply-text-area">
+                    <textarea onKeyPress={this._handleKeyPress.bind(this)} value={this.state.messageText}  onChange={this.onMessageChange.bind(this)} ref="messageBody" placeholder={"write your message..."} />
+                  </div>
+                  <div className="reply-bottom">
+                    <div className="load-more-btn" style={{margin: 0}}><i className="fa fa-paperclip" />&nbsp;&nbsp;&nbsp;Add Attachment</div>
+                    <div  onClick={this.sendMessage.bind(this)} className="send-reply-btn" style={{marginLeft: 'auto'}}>Send</div>
+                  </div>
+                </div>
+    }
    
-    if(Object.keys(this.state.lastMessages).length > 2){
+    if(Object.keys(this.state.lastMessages).length > 0){
       conversations = this.state.users.map(function(data, i){
                   if(data.id === this.props.auth.user.id){
 
@@ -188,8 +201,9 @@ truncate(string){
                         </div>
                       }
                 },this)
+      
     }else{
-      conversations = <div>Nope</div>
+      
     }
 		return(
 
@@ -209,7 +223,7 @@ truncate(string){
                 </div>
               </div>
               <div className="col-sm-9" style={{padding: 15, minHeight: 700}}>
-                <div className="conversation-inner-title">Converstaion with {this.state.recipient.first_name} {this.state.recipient.last_name}</div>
+                <div className="conversation-inner-title">Conversations with {this.state.recipient.first_name} {this.state.recipient.last_name}</div>
                 <div className="conversation-container">
                 {this.state.messages.map(function(data, i){
                   
@@ -239,16 +253,7 @@ truncate(string){
                 },this)}
                   
                 </div>
-                <div className="reply-container animated fadeInUp">
-                  <div className="reply-title">Write your reply to {this.state.recipient.first_name} {this.state.recipient.last_name}.</div>
-                  <div className="reply-text-area">
-                    <textarea onKeyPress={this._handleKeyPress.bind(this)} value={this.state.messageText}  onChange={this.onMessageChange.bind(this)} ref="messageBody" placeholder={"write your message..."} />
-                  </div>
-                  <div className="reply-bottom">
-                    <div className="load-more-btn" style={{margin: 0}}><i className="fa fa-paperclip" />&nbsp;&nbsp;&nbsp;Add Attachment</div>
-                    <div  onClick={this.sendMessage.bind(this)} className="send-reply-btn" style={{marginLeft: 'auto'}}>Send</div>
-                  </div>
-                </div>
+                {replyBox}
               </div>
             </div>
           </div>

@@ -78,7 +78,9 @@ function filterZips(zips, filters, callback){
         contentType: 'application/json',
         processData: false,
         success: function(data){
+            console.log(data);
             return callback(data);
+
         }
     })
 }

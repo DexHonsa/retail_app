@@ -12,3 +12,6 @@
 [0404/095049.262:ERROR:process_info.cc(625)] range at 0xf2634a4800000000, size 0x52 fully unreadable
 [0404/095049.262:ERROR:process_info.cc(625)] range at 0xf2634a6800000000, size 0x52 fully unreadable
 [0404/095049.262:ERROR:process_info.cc(625)] range at 0x0, size 0x52 fully unreadable
+[0407/084536.960:ERROR:process_info.cc(625)] range at 0x82264af800000000, size 0x9a fully unreadable
+[0407/084536.993:ERROR:process_info.cc(625)] range at 0x82264b1800000000, size 0x9a fully unreadable
+[0407/084536.993:ERROR:process_info.cc(625)] range at 0x0, size 0x9a fully unreadable

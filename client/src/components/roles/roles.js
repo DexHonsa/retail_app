@@ -70,7 +70,7 @@ render(){
         <div className="user-content">
           <div className="client-top-section">
             <div className="description-blurb">Roles are what you can use to limit users to certain portions of the application. </div>
-            <div onClick={this.expandPopup.bind(this)} className="add-client-btn" data-popup-type="role">Add Role</div>
+            {/*<div onClick={this.expandPopup.bind(this)} className="add-client-btn" data-popup-type="role">Add Role</div>*/}
           </div>
           <ul className="user-list">
           <ReactCSSTransitionGroup
@@ -80,7 +80,7 @@ render(){
                       transitionAppear={true}
                       transitionAppearTimeout={500}>
             {this.state.roles.map(function(data, i){
-              return <Role deleteRole={this.deleteRole.bind(this)} index={i} id={data.id} key={i} roleName={data.role_name} roleAccesses={data.role_accesses} />
+              return <Role index={i} id={data.id} key={i} roleName={data.role_name} roleAccesses={data.role_accesses} />
             },this)}
             </ReactCSSTransitionGroup>
           </ul>

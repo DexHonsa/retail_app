@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {Link} from 'react-router';
 
 
 class User extends React.Component {
@@ -20,7 +20,7 @@ render(){
 
     
     return (
-      <li className="user-list-item">
+      <Link to={'/user/' + this.props.id}><li className="user-list-item animated fadeInUp">
               <div className="user-list-img" style={{backgroundImage: 'url('+this.props.img+')'}}>{icon}</div>
               <div className="user-list-info">
                 <div className="user-list-name">{this.props.firstName} {this.props.lastName}</div>
@@ -33,7 +33,7 @@ render(){
                   
                 </div>
               
-        </li>
+        </li></Link>
 
     );
   }

@@ -42,9 +42,12 @@ toggleSettingsDropdown(){
 }
 getUser(){
   var this2 = this;
-   axios.get('/api/users/' + this.props.auth.user.id).then(function(res){
-    this2.setState({ user: res.data.User });
-  })
+  
+    if(this.props.auth.user.id !== undefined){
+     axios.get('/api/users/' + this.props.auth.user.id).then(function(res){
+      this2.setState({ user: res.data.User });
+    })
+   }
 }
 toggleDropdown(){
   this.getUserClients();
@@ -115,7 +118,7 @@ render(){
             <Link to="/admin/users" activeClassName="active">Admin</Link>
             
             <Link to="/map" activeClassName="active">Map</Link>
-            <Link to="/key_metrics" activeClassName="active">Key Metrics</Link>
+            {/*<Link to="/key_metrics" activeClassName="active">Key Metrics</Link>*/}
             <Link to="/rankings/population" activeClassName="active">Rankings</Link>
           </div>
           <ul className="user-nav">

@@ -106,6 +106,7 @@ class CreateUserPopup extends React.Component {
         });
         var userFirstName = this.refs.user_first_name.value;
         var userLastName = this.refs.user_last_name.value;
+        var parentUser = this.props.auth.user.id;
         var userRole = this.refs.user_role.value;
         var userAddress = this.refs.user_address.value;
         var userCity = this.refs.user_city.value;
@@ -122,6 +123,7 @@ class CreateUserPopup extends React.Component {
           "email" : this.state.user_email,
           "password": this.state.user_password,
           "role" : userRole,
+          "parent_user": parentUser,
           "address" : userAddress,
           "city" : userCity,
           "state": userState,
@@ -151,7 +153,6 @@ render(){
         return <option key={i}>{data.role_name}</option>
       },this)
     }
-
     var clients;
     if(this.state.clients.length > 0){
       clients = this.state.clients.map(function(data,i){
@@ -161,7 +162,7 @@ render(){
    
     return (
       <div id="user-popup" className="popup">
-        <div className="popup-container animated fadeInUp">
+        <div className="popup-container animated-slow bounceInUp">
         {this.state.cropperOpen &&
           <AvatarCropper
             onRequestHide={this.handleRequestHide.bind(this)}

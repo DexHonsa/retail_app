@@ -5,8 +5,9 @@ import classnames from 'classnames';
 const TextFieldGroup = ({ field, value, label, error, type, onChange, checkUserExists}) => {
 	return (
 		<div className={classnames('form-group', {'has-error': error})} >
-			<label className="login-input-title ">{label}</label>
+		
 			<input 
+				placeholder={label}
 				onChange={onChange}
 				onBlur={checkUserExists}
 				value={value}

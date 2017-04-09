@@ -73,7 +73,7 @@
 	line-height:40px;	
 }
 .profile-details-container{
-	margin-top:15px;
+	
 	width:100%;
 	overflow:auto;	
 }
@@ -295,4 +295,8 @@
 }
 .photo-content{
 	overflow: auto;
+}
+.edit-profile-btn-container{
+	text-align: right;
+    padding: 15px;
 }

@@ -10,7 +10,7 @@ class DemoEthnicity extends React.Component {
 		this.state = {
 			min_value: 0,
 			max_value : 12,
-			genderSelector : "",
+		
 			ethnicitySelector : ""
 		}
 	}
@@ -36,25 +36,21 @@ class DemoEthnicity extends React.Component {
 		return array;
 	}
 	addFilter(){
-		var title = "Ethnicity & Gender";
+		var title = "Ethnicity";
 		var gender = this.state.genderSelector;
 		var ethnicity = this.state.ethnicitySelector;
-		var filter = {"title" : title, "gender" : gender, "ethnicity" : ethnicity}
+		var filter = {"title" : title, "value" : ethnicity.value}
 		this.props.addFilter(filter);
 		this.props.hideAddFilters();
 
 	}
 	render() {
 
-		var genderData = [
-                { value: "male > female", label: 'Primarily Male' },
-                { value: "female > male", label: 'Primarily Female' },
-                
-            ];
+		
         var ethnicityData = [
             { value: "white", label: 'White' },
             { value: "black", label: 'Black' },
-            { value: "mexican", label: 'Mexican' },
+            { value: "hispanic", label: 'Hispanic' },
             { value: "asian", label: 'Asian' },
             
         ];
@@ -68,20 +64,8 @@ class DemoEthnicity extends React.Component {
 				<div>
 			     		<div>
 					        <div className="add-filter-instructions">Select Values</div>
-					        <div className="selector-main-container">
-						         <div className="selector-label"><div className="my-select-label">Gender Separation</div>
-						         		<Select
-					                      className="my-selector"
-					                      name="Gender"
-					                      value={this.state.genderSelector}
-					                      options={genderData}
-					                      clearable={false}
-					                      onChange={this.onGenderChange.bind(this)}
-					                  />
-						         </div>
-						         
-					         </div>
-					         <div className="selector-main-container">
+					        
+					         <div className="selector-main-container" style={{width:'100%'}}>
 						         <div className="selector-label"><div className="my-select-label">Ethnicity Separation</div>
 						         		<Select
 					                      className="my-selector"

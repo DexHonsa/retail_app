@@ -28,8 +28,12 @@ class DemographicPopout extends React.Component {
       })
     }
     toggleChange(){
+       if(this.state.checked === false){
+        this.filterZips();
+      }
       this.setState({ checked: !this.state.checked });
-      //this.filterZips();
+
+      
     }
     addFilter(options){
       var newArray = this.state.filters.slice();
@@ -92,8 +96,8 @@ class DemographicPopout extends React.Component {
     }else{
       noFilter = null;
       filters = this.state.filters.map(function(data, i){
-                if(data.bachelorsPercent){
-                  return <div key={i} className="demo-filter animated fadeInUp">{data.title.replace(/([A-Z])/g, ' $1').trim()}&nbsp;&nbsp;{data.bachelorsPercent}<i onClick={this.removeFilter.bind(this, i)} className="fa fa-times-rectangle"></i></div>
+                if(typeof data.minVal !== undefined){
+                  return <div key={i} className="demo-filter animated fadeInUp">{data.title.replace(/([A-Z])/g, ' $1').trim()}&nbsp;&nbsp;{data.value}<i onClick={this.removeFilter.bind(this, i)} className="fa fa-times-rectangle"></i></div>
                 }else{
                   return <div key={i} className="demo-filter animated fadeInUp">{data.title.replace(/([A-Z])/g, ' $1').trim()}&nbsp;&nbsp;{data.minVal}&nbsp;&nbsp;-&nbsp;&nbsp;{data.maxVal}<i onClick={this.removeFilter.bind(this, i)} className="fa fa-times-rectangle"></i></div>
                 }

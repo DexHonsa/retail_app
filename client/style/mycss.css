@@ -1098,6 +1098,7 @@ a {
 }
 .add-filter-title i{
 	float: right;
+	margin-top:3px;
 }
 .add-filter-title i:hover{
 	cursor: pointer;

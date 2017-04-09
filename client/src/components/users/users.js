@@ -6,6 +6,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CreateUserPopup from '../popups/users/create_user_popup';
 import {connect} from 'react-redux';
 
+
 class Users extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +24,8 @@ class Users extends React.Component {
 
   getUsers(){
     var this2 = this;
-    axios.get('/api/users').then(function(res){
+    axios.get('/api/getUsers/' + this.props.auth.user.parent_user).then(function(res){
+      console.log(res.data.User);
       this2.setState({ users: res.data.User });
       this2.getRoles();
     })
@@ -31,10 +33,14 @@ class Users extends React.Component {
   }
   getRoles(){
     var roles = [];
-    this.state.users.forEach(function(item){
-      
-      roles.push(item.role);
-    })
+    if(this.state.users.length > 0){
+      this.state.users.forEach(function(item){
+       roles.push(item.role);
+      })
+    }else{
+      //roles.push(this.state.users.role);
+    }
+    
     this.setState({
       roles : roles
     })
@@ -73,23 +79,36 @@ deleteUser(index, userId){
           });
 }
 
-setSearchTerm(term){
-  this.setState({
-    search: term
-  })
-}
+
 
 
 render(){
   var addUserBtn;
+  var filteredUsers;
+  var filteredUsersDisplay;
     if(this.props.auth.user.role == 'Admin'){
       addUserBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add User</div>;
     }
-    var filteredUsers = this.state.users.filter(
+    if(this.state.users.length > 0){
+      filteredUsers = this.state.users.filter(
         (data) => {
-          return data.role.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+          
+          return data.first_name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         }
         );
+
+      filteredUsersDisplay = filteredUsers.map(function(data, i){
+        
+               if(data.id === this.props.auth.user.id){
+                 return <User id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
+               }else if(this.props.auth.user.role == 'Admin'){
+                 return <User id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
+               }else{
+                 return <User id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
+               }
+              
+            },this)
+    }
     if(this.state.popup){
             var popup = <CreateUserPopup collapse={this.collapsePopup.bind(this)} />
         } else {
@@ -115,23 +134,9 @@ render(){
             {addUserBtn}
           </div>
           <ul className="user-list">
-          <ReactCSSTransitionGroup
-                      transitionName="fadeUp"
-                      transitionEnterTimeout={500}
-                      transitionLeaveTimeout={500}
-                      transitionAppear={true}
-                      transitionAppearTimeout={500}>
-            {filteredUsers.map(function(data, i){
-               if(data.id === this.props.auth.user.id){
-                 return <User id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
-               }else if(this.props.auth.user.role == 'Admin'){
-                 return <User deleteUser={this.deleteUser.bind(this)} id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
-               }else{
-                 return <User id={data.id} img={data.user_img_path} key={i} index={i} firstName={data.first_name} lastName={data.last_name} role={data.role} status={data.status}  />
-               }
-              
-            },this)}
-            </ReactCSSTransitionGroup>
+            
+            {filteredUsersDisplay}
+            
           </ul>
         </div>
       </div>

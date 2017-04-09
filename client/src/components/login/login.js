@@ -20,7 +20,7 @@ componentDidMount() {
 		if(this.props.auth.isAuthenticated){
 			browserHistory.push('/admin/users')
 		}else{
-
+			
 		}
 	}
 	
