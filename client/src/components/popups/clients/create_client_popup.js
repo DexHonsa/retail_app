@@ -8,6 +8,7 @@ import FileUploader from './file_uploader';
 import {connect} from 'react-redux';
 import validateInput from '../../validations/create_client_validation';
 import TextFieldGroup from './text_field_group';
+import axios from 'axios';
 
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
@@ -115,14 +116,24 @@ class CreateClientPopup extends React.Component {
 
             
             
-            var data = {'user_id': this.props.auth.user.id,"client_name" : clientName,"industry" : industryName,"address" : addressName,"city" : cityName, "state" : stateName,"zip" : zipName,"logo_path" : imgURL, contacts: [] };
+            var data = {'user_id': this.props.auth.user.id,"client_name" : clientName,"industry" : industryName,"address" : addressName,"city" : cityName, "associated_users" : [this.props.auth.user.id], "state" : stateName,"zip" : zipName,"logo_path" : imgURL, contacts: [] };
 
             $.ajax({
               type: "POST",
               url: "/api/clients",
               data: JSON.stringify(data),
               success: function(data){
-                this2.props.collapse();
+                
+                // var data = {
+                //   userId: this2.props.auth.user.id,
+                //   clientName: data[0].client_name,
+                //   clientId: data[0].id
+                // }
+                // axios.put('/api/addAssociatedUser', data).then(function(res){
+                //   //console.log(res);
+                   
+                // })
+               this2.props.collapse();
               },
               dataType: "json",
               contentType: "application/json"
@@ -245,7 +256,7 @@ render(){
                     </p>
                 </div>
               </div>
-              <div className="popup-small-title">Contact Info</div>
+              {/*<div className="popup-small-title">Contact Info</div>
               <div className="added-contacts">
                 <ul className="added-contacts-list">
                   {this.state.contacts.map(function(data, i) {
@@ -286,7 +297,7 @@ render(){
                 <div style={{flex: 1, marginLeft: 10}}>
                   <div onClick={this.addContact.bind(this)} className="add-contact-btn">Add Contact</div>
                 </div>
-              </div>
+              </div>*/}
               <div className="form-row" style={{borderTop: 'solid 1px #e0e0e0'}}>
                 <div onClick={this.submitForm.bind(this)} className="create-client-btn" style={{marginTop: 15}}>Create Client</div>
               </div>

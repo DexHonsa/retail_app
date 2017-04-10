@@ -10,6 +10,7 @@ import LoginHome from './components/login/login';
 import Admin from './components/admin';
 import Map from './components/map/map';
 import Clients from './components/clients/clients';
+import Reports from './components/reports/reports';
 import ViewClient from './components/clients/view_client';
 import Users from './components/users/users';
 import Roles from './components/roles/roles';
@@ -70,7 +71,7 @@ ReactDOM.render(
         <Route path="/rankings/households" component={Rankings} field="TotalHouseholds"></Route>
         <Route path="/rankings/education" component={Rankings} field="EducationBachelorOrGreater"></Route>
         <Route path="/rankings/income" component={Rankings} field="IncomePerHousehold"></Route>
-
+        <Route path="/reports" component={Reports}></Route>
     		<Route path="/admin" component={Admin}>
     			
     			<Route path="/admin/clients" component={Clients}></Route>

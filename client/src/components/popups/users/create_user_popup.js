@@ -7,6 +7,8 @@ import axios from 'axios';
 import validateInput from '../../validations/create_user_validation';
 import TextFieldGroup from './text_field_group';
 import {connect} from 'react-redux';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
@@ -25,8 +27,13 @@ class CreateUserPopup extends React.Component {
       user_password: '',
       roles: [],
       clients: [],
-      errors: {}
+      errors: {},
+      user_role: '',
+      associated_clients: ''
     }
+  }
+  onSelectorChange(val){
+    this.setState({associated_clients : val})
   }
   componentWillMount() {
     this.getRoles();
@@ -70,7 +77,7 @@ class CreateUserPopup extends React.Component {
       this2.setState({
         roles: res.data.data
       })
-      console.log(res.data.data);
+     
     })
   }
   getClients(){
@@ -79,7 +86,7 @@ class CreateUserPopup extends React.Component {
       this2.setState({
         clients: res.data.data
       })
-      console.log(res.data.data);
+      
     })
   }
   onChange(e){
@@ -89,6 +96,7 @@ class CreateUserPopup extends React.Component {
   }
   
   submitForm(event){
+    console.log('hit');
     var this2= this;
     if(this.isValid()){
     var upload = request.post(CLOUDINARY_UPLOAD_URL)
@@ -97,7 +105,7 @@ class CreateUserPopup extends React.Component {
 
     upload.end((err, response) => {
       if (err) {
-        console.error(err);
+        
       }
 
       if (response.body.secure_url !== '') {
@@ -112,6 +120,7 @@ class CreateUserPopup extends React.Component {
         var userCity = this.refs.user_city.value;
         var userState = this.refs.user_state.value;
         var userZip = this.refs.user_zip.value;
+        var token = this.makeId();
         
         //var userClientAssociation = this.refs.user_client_association.value;
         var imgURL = this.state.uploadedFileCloudinaryUrl;
@@ -121,17 +130,30 @@ class CreateUserPopup extends React.Component {
           "first_name" : userFirstName,
           "last_name" : userLastName,
           "email" : this.state.user_email,
-          "password": this.state.user_password,
+          "password": token,
           "role" : userRole,
           "parent_user": parentUser,
           "address" : userAddress,
+          "contacts" : [],
           "city" : userCity,
+          "associated_clients": [this.state.associated_clients],
+          "views" : {},
           "state": userState,
           "zip": userZip,
           "user_img_path": imgURL,
+          "active": 0
         }
+        console.log(data);
         axios.post('/api/users', data).then(function(res){
-        
+
+          
+          var data = {
+            clientId : this2.state.associated_clients.value,
+            userId : res.data.User.generated_keys[0]
+          };
+          axios.put('/api/addAssociatedUser', data).then(function(res){
+            console.log(res)
+          })
           this2.props.collapse();
         })
         
@@ -143,9 +165,23 @@ class CreateUserPopup extends React.Component {
     
 
   }
+makeId(){
+ console.log('hit');
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+
+}
   
 render(){
+  var clientArray = this.state.clients.map(function(data,i){
+    return { value: data.id, label: data.client_name }
+  });
+               
    const {user_password,user_email, errors} = this.state;
    var roles;
     if(this.state.roles.length > 0){
@@ -158,6 +194,23 @@ render(){
       clients = this.state.clients.map(function(data,i){
         return <option key={i}>{data.client_name}</option>
       },this)
+    }
+    var userClientAssociation;
+    if(this.state.user_role === 'Basic'){
+     
+      userClientAssociation = <div><div className="popup-small-title">Client Association</div>
+            <div className="form-row">
+              <div className="popup-selector-dropdown" style={{flex: 1, maxWidth: 300, marginLeft: 0}}>
+                <Select
+                                className="my-selector"
+                                name="associated_clients"
+                                value={this.state.associated_clients}
+                                options={clientArray}
+                                clearable={false}
+                                onChange={this.onSelectorChange.bind(this)}
+                            />
+              </div>
+            </div></div>
     }
    
     return (
@@ -197,7 +250,7 @@ render(){
                 </p>
               </div>
               <div className="popup-selector-dropdown" style={{flex: 1}}>
-                <select ref="user_role">
+                <select name="user_role" onChange={this.onChange.bind(this)} ref="user_role">
                   
                   {roles}
                 </select>
@@ -267,30 +320,7 @@ render(){
               </div>
 
             </div>
-            <div className="form-row">
-              <div style={{flex: 1, maxWidth: 300}}>
-                
-                  
-                  <TextFieldGroup
-                      field="user_password"
-                      label="Password"
-                      type="text"
-                      value={user_password}
-                      error={errors.user_password}
-                      onChange={this.onChange.bind(this)}
-                    />
-                
-              </div>
-              
-            </div>
-            <div className="popup-small-title">Client Association</div>
-            <div className="form-row">
-              <div className="popup-selector-dropdown" style={{flex: 1, maxWidth: 300, marginLeft: 0}}>
-                <select ref="user_client_association">
-                  {clients}
-                </select>
-              </div>
-            </div>
+            {userClientAssociation}
             <div className="form-row" style={{borderTop: 'solid 1px #e0e0e0', marginTop: 35}}>
               <div onClick={this.submitForm.bind(this)} className="create-client-btn" style={{marginTop: 15, marginLeft: 'auto', padding: '10px 45px', float: 'right'}}>Create User &amp;<br />Send Invite Email</div>
             </div>

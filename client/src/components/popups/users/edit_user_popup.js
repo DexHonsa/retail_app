@@ -66,7 +66,7 @@ class EditUserPopup extends React.Component {
   }
   getClients(){
     var this2 = this;
-    axios.get('/api/getUserClients/' + this.props.auth.user.id).then(function(res){
+    axios.get('/api/getUserClients/' + this.props.userId).then(function(res){
       this2.setState({
         clients: res.data.data
       })
@@ -80,20 +80,32 @@ class EditUserPopup extends React.Component {
   }
   
   submitForm(event){
-    var this2= this;
-    
-    
+    if(this.props.auth.user.role === 'Basic'){
+      var this2= this;
         const {firstName, lastName, address, city, zip} = this.state;
         const { user_role, user_state } = this.refs;
-
-
-       
         
         //var userClientAssociation = this.refs.user_client_association.value;
-       
-
+        var data = {'userId':this.props.userId,'data':{
+          "first_name" : firstName,
+          "last_name" : lastName,
+          "role" : 'Basic',
+          "address" : address,
+          "city" : city,
+          "state": user_state.value,
+          "zip": zip
+        }}
+        console.log(data);
+        axios.put('/api/updateUser', data).then(function(res){
+          this2.props.collapse();
+        })
+      }else{
+        var this2= this;
+        const {firstName, lastName, address, city, zip} = this.state;
+        const { user_role, user_state } = this.refs;
         
-        var data = {'userId':this.props.auth.user.id,'data':{
+        //var userClientAssociation = this.refs.user_client_association.value;
+        var data = {'userId':this.props.userId,'data':{
           "first_name" : firstName,
           "last_name" : lastName,
           "role" : user_role.value,
@@ -106,12 +118,16 @@ class EditUserPopup extends React.Component {
         axios.put('/api/updateUser', data).then(function(res){
           this2.props.collapse();
         })
+      }
+    
 
   }
 
   
 render(){
+  
    const {user_password,user_email, errors} = this.state;
+
    var roles;
     if(this.state.roles.length > 0){
       roles = this.state.roles.map(function(data,i){
@@ -129,7 +145,14 @@ render(){
         return <option key={i}>{data.client_name}</option>
       },this)
     }
-   
+   var role_selector;
+  if(this.props.auth.user.role === 'Admin'){
+    role_selector = <div className="popup-selector-dropdown" style={{flex: 1}}>
+                <select ref="user_role">
+                  {roles}
+                </select>
+              </div>
+  }
     return (
       <div id="user-popup" className="popup">
         <div className="popup-container animated-slow bounceInUp">
@@ -161,11 +184,7 @@ render(){
                   <input className="popup-input" name="lastName" onChange={this.onChange.bind(this)} value={this.state.lastName} placeholder="Last Name" type="text" ref="user_last_name" id="user-last-name" />
                 </p>
               </div>
-              <div className="popup-selector-dropdown" style={{flex: 1}}>
-                <select ref="user_role">
-                  {roles}
-                </select>
-              </div>
+              {role_selector}
             </div>
             <div className="form-row">
               <div style={{flex: 1}}>
@@ -246,7 +265,7 @@ render(){
                 
               </div>
               
-            </div>*/}
+            </div>
             <div className="popup-small-title">Client Association</div>
             <div className="form-row">
               <div className="popup-selector-dropdown" style={{flex: 1, maxWidth: 300, marginLeft: 0}}>
@@ -254,7 +273,7 @@ render(){
                   {clients}
                 </select>
               </div>
-            </div>
+            </div>*/}
             <div className="form-row" style={{borderTop: 'solid 1px #e0e0e0', marginTop: 35}}>
               <div onClick={this.submitForm.bind(this)} className="create-client-btn" style={{marginTop: 15, marginLeft: 'auto', padding: '10px 45px', float: 'right'}}>Save Changes</div>
             </div>

@@ -6,6 +6,7 @@ import axios from 'axios';
 import {connect} from 'react-redux';
 import { logout, setCurrentClient } from '../actions/auth_actions';
 import SettingsDropdown from './util/settings_dropdown';
+import ChangePassword from './util/change_password_popup';
 
 
 class Header extends React.Component{
@@ -18,7 +19,7 @@ class Header extends React.Component{
       client_name: "Select a Client",
       client_img : "",
       settings_dropdown: false,
-      user: {}
+      user: []
     }
   }
   logout(e){
@@ -40,9 +41,13 @@ toggleSettingsDropdown(){
     })
   }
 }
+setClientId(){
+    if(this.props.auth.user.role === 'Basic'){
+      this.props.setCurrentClient(this.props.auth.user.associated_clients[0].value, this.props.auth.user.associated_clients[0].label)
+    }
+   }
 getUser(){
   var this2 = this;
-  
     if(this.props.auth.user.id !== undefined){
      axios.get('/api/users/' + this.props.auth.user.id).then(function(res){
       this2.setState({ user: res.data.User });
@@ -72,6 +77,7 @@ getUserClients(){
 componentDidMount() {
   this.getUserClients();
    this.getUser();
+   this.setClientId();
 }
 componentWillReceiveProps(nextProps) {
   this.getUser();
@@ -97,21 +103,36 @@ activeClient(clientId, clientName){
 }
 
 render(){
- 
+  
     var clientDropdown;
     var settingsDropdown;
     if(this.state.dropdown){
       clientDropdown = <DropdownList activeClient={this.activeClient.bind(this)} clients={this.state.clients}/>
-    }else{
-
     }
     if(this.state.settings_dropdown){
       settingsDropdown = <SettingsDropdown logout={this.logout.bind(this)} activeClient={this.activeClient.bind(this)} clients={this.state.clients}/>
-    }else{
-
     }
+    var clientDropdownToggle;
+    if(this.state.user.role === 'Basic'){
+      clientDropdown = <li><div onClick={this.toggleDropdown.bind(this)} className="client-dropdown">Client: {this.state.client_name}<i className="fa fa-caret-down" />
+              {clientDropdown}
+            </div>            
+            </li>;
+    }else{
+      clientDropdownToggle = <li><div onClick={this.toggleDropdown.bind(this)} className="client-dropdown">Client: {this.state.client_name}<i className="fa fa-caret-down" />
+              {clientDropdown}
+            </div>            
+            </li>;
+    }
+
+    if(this.state.user.active === 0){
+      var changePasswordPopup = <ChangePassword />
+    }
+    
+
     return (
       <header className="header">
+      {changePasswordPopup}
         <div className="container-fluid">
           <div className="logo"><img alt="logo" style={{height: 20, display: 'inline-block', lineHeight: 50}} src={logo} /></div>
           <div className="main-nav">
@@ -125,10 +146,7 @@ render(){
             <li><a href="#"><i onClick={this.toggleSettingsDropdown.bind(this)} className="fa fa-gear"></i></a>
               {settingsDropdown}
             </li>
-            <li><div onClick={this.toggleDropdown.bind(this)} className="client-dropdown">Client: {this.state.client_name}<i className="fa fa-caret-down" />
-              {clientDropdown}
-            </div>            
-            </li>
+            {clientDropdownToggle}
             <li><Link to={"/user/" + this.props.auth.user.id}><span className="user-img" style={{backgroundImage: 'url('+this.state.user.user_img_path+')'}}></span></Link></li>
           </ul>
         </div>

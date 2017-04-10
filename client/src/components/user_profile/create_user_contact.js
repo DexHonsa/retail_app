@@ -32,14 +32,14 @@ class CreateContact extends React.Component{
       e.preventDefault();
     
       var data = {
-      	clientId : this.props.clientId,
+      	userId : this.props.userId,
       	contactName : this.state.contactName,
       	contactPhone : this.state.contactPhone,
       	contactEmail : this.state.contactEmail
       }
       console.log(data);
       
-      axios.put('/api/updateClientContact', data).then(function(res){
+      axios.put('/api/updateUserContact', data).then(function(res){
       	
       	this2.props.hideCreateContact();
       })
@@ -77,7 +77,7 @@ class CreateContact extends React.Component{
                       error={errors.contactEmail}
                       onChange={this.onChange.bind(this)}
                     />
-                    <div onClick={this.saveContact.bind(this)} className="save-client-btn">Save Client Contact</div><div onClick={this.props.hideCreateContact} className="add-filter-close-btn">close</div>
+                    <div onClick={this.saveContact.bind(this)} className="save-client-btn">Save Contact</div><div onClick={this.props.hideCreateContact} className="add-filter-close-btn">close</div>
                     </div>
 
           </div>

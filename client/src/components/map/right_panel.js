@@ -35,6 +35,18 @@ class RightPanel extends React.Component {
       twitterFeed: []
     }
   }
+  incrementViews(){
+
+    if(this.state.isSaved){
+      var data = {
+        searchId : this.state.searchId,
+        userId: this.props.auth.user.id
+      }
+        axios.put('/api/incrementViews', data).then(function(data){
+          console.log(data);
+        })
+    }
+  }
   getTwitterFeed(){
     var this2 = this;
     
@@ -78,6 +90,7 @@ class RightPanel extends React.Component {
 
   componentDidMount() {
  //var this2 = this;
+ 
    Client.drawZip(this.state.zip);
     this.setState({
       latitude: this.props.latitude,
@@ -123,6 +136,8 @@ class RightPanel extends React.Component {
       isSaved: nextProps.isSaved,
       searchId: nextProps.searchId,
       poi_filters: this.props.poiFilters
+    },function(){
+      this.incrementViews();
     })
     Client.flyToLocation(nextProps.latitude, nextProps.longitude);
     Client.drawZip(nextProps.zip);
@@ -258,7 +273,7 @@ class RightPanel extends React.Component {
         data: JSON.stringify(data),
         success: function(data) {
          
-          Client.createSavedMarker(lat, lng, data[0].id, street);
+          Client.createSavedMarker(lat, lng, data.generated_keys[0], street);
           this2.props.hide();
         },
         dataType: "json",

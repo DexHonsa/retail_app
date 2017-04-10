@@ -25,7 +25,6 @@ class Users extends React.Component {
   getUsers(){
     var this2 = this;
     axios.get('/api/getUsers/' + this.props.auth.user.parent_user).then(function(res){
-      console.log(res.data.User);
       this2.setState({ users: res.data.User });
       this2.getRoles();
     })

@@ -20,7 +20,7 @@ class ZipDemographics extends React.Component {
 				      borderWidth: 1,
 				      hoverBackgroundColor: 'rgba(48,128,232,1.00)',
 				      hoverBorderColor: 'rgba(48,128,232,1.00)',
-				      data: [this.props.zipDemographicItems.WhitePopulation, this.props.zipDemographicItems.BlackPopulation, this.props.zipDemographicItems.HispanicPopulation, this.props.zipDemographicItems.AsianPopulation]
+				      data: [this.props.zipDemographicItems.WhitePopulation.value, this.props.zipDemographicItems.BlackPopulation.value, this.props.zipDemographicItems.HispanicPopulation.value, this.props.zipDemographicItems.AsianPopulation.value]
 				    }
 				  ]
 				}
@@ -43,19 +43,19 @@ class ZipDemographics extends React.Component {
 		        <div className="zip-code-demo-list">
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Total Households</div>
-		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.TotalHouseholds}</div>
+		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.TotalHouseholds.value}</div>
 		          </div>
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Total Number Of Businesses</div>
-		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.TotalNumberOfBusinesses}</div>
+		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.TotalNumberOfBusinesses.value}</div>
 		          </div>
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Income Per Household</div>
-		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.IncomePerHousehold}</div>
+		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.IncomePerHousehold.value}</div>
 		          </div>
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Median Age</div>
-		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.MedianAge}</div>
+		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.MedianAge.value}</div>
 		          </div>
 		          {/*<div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">White Population</div>

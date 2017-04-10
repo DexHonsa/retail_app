@@ -71,9 +71,9 @@ class ViewClient extends React.Component{
         contactIndex: index,
         deleteContact: true
       }
-    axios.put('/api/updateClient', data).then(function(res){
+    axios.put('/api/updateClientContact', data).then(function(res){
         
-        this2.props.hideCreateContact();
+        this2.hideCreateContact();
       })
 }
   
@@ -158,7 +158,7 @@ class ViewClient extends React.Component{
                   {this.state.clientContacts.map(function(data, i){
                     return <div className="client-contact-item">
                             <div className="client-contact-desc">{data.contactName}<br /><span style={{fontSize: '10pt', color: '#808080'}}>{data.contactEmail}</span><br /><span style={{fontSize: '10pt', color: '#808080'}}>{data.contactPhone}</span></div>
-                            <div className="client-contact-icons"> <i onClick={this.deleteClientContact(i).bind(this)} className="fa fa-times-rectangle" /></div>
+                            <div className="client-contact-icons"> <i onClick={(index) => this.deleteClientContact(i).bind(this)} className="fa fa-times-rectangle" /></div>
                           </div>
                   },this)}
                   

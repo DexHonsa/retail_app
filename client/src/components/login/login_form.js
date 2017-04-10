@@ -45,6 +45,11 @@ class LoginForm extends React.Component {
 				);
 		}
 	}
+	setClientId(){
+    if(this.props.auth.user.role === 'Basic'){
+      this.props.setCurrentClient(this.props.auth.user.associated_clients[0].value, this.props.auth.user.associated_clients[0].label)
+    }
+ 	 }
 	openSignUp(){
 		this.setState({
 			signupPopup: true

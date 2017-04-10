@@ -79,12 +79,14 @@ app.route('/api/clients/:id').get(api.Client);
 app.route('/api/clients').post(api.addClient);
 app.route('/api/clients/:id').delete(api.deleteClient);
 app.route('/api/clients/:id').put(api.editClient);
-
-app.route('/api/updateClient').put(api.updateClient);
+app.route('/api/updateClientContact').put(api.updateClientContact);
+app.route('/api/addAssociatedUser').put(api.addAssociatedUser);
+app.route('/api/getAssociatedUsers/:clientId').get(api.getAssocaitedUsers);
 
 // Saved Searches API
 app.route('/api/getUserSearches/:userId').get(api.getUserSearches);
 app.route('/api/searches/:userId/:clientId').get(api.Searches);
+app.route('/api/getClientSearches/:clientId').get(api.getClientSearches);
 app.route('/api/search/:id').get(api.Search);
 app.route('/api/searches/:lat/:lng').get(api.checkIfSaved);
 app.route('/api/searches').post(api.addSearch);
@@ -100,6 +102,11 @@ app.route('/api/users/:id').delete(api.deleteUser);
 app.route('/api/users/:id').put(api.editUser);
 app.route('/api/changePicture').put(api.changePicture);
 app.route('/api/updateUser').put(api.updateUser);
+app.route('/api/updateUserContact').put(api.updateUserContact);
+app.route('/api/updateUserPassword').put(api.updateUserPassword);
+
+//views API
+app.route('/api/incrementViews').put(api.incrementViews);
 
 //Login API
 app.route('/api/login').post(api.LoginCheck);
@@ -109,6 +116,7 @@ app.route('/api/zip/:zip').get(api.Zip);
 app.route('/api/getZips/').post(api.getZips);
 app.route('/api/drawZips/').post(api.drawZips);
 app.route('/api/filterZips/').post(api.filterZips);
+app.route('/api/getZipDemographics/:zip').get(api.getZipDemographics);
 
 //Messages API
 app.route('/api/getMessages').post(api.getMessages);

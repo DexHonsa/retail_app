@@ -13,7 +13,8 @@ import Client from '../../scripts/myScript.js';
 import ZipDemographics from './zip_demographics';
 import MapStyles from './popouts/map_styles';
 import MoreZipDemographics from './popouts/more_zip_demographics';
-import setCurrentClient from '../../actions/auth_actions';
+import {setCurrentClient} from '../../actions/auth_actions';
+import {Link} from 'react-router';
 
 class Map extends React.Component {
   constructor(props) {
@@ -45,18 +46,19 @@ class Map extends React.Component {
     var that = this;
     $.ajax({
             type: "GET",
-            url: 'http://demographicmarketing.net/api/demographics/demographicDataasjsonp?customerKey=4447e7ba&zipcode=' + this.state.zip ,
+            url: '/api/getZipDemographics/' + this.state.zip ,
             success: function(data) {
               
                 that.setState({
-                  zipDemographicItems: data.d[0],
+                  zipDemographicItems: data.data[0],
                   zipDemographics : true
                 });
             },
-            dataType: "jsonp",
+            
             contentType: "application/json"
         });
   }
+
   hideZipDemographics(){
     this.setState({
       zipDemographics : false
@@ -121,7 +123,7 @@ class Map extends React.Component {
     if(this.props.client.clientId !== undefined){
       
     axios.get('/api/searches/' + this.props.auth.user.id + '/' + this.props.client.clientId).then(function(res){
-      console.log(res.data);
+      
       res.data.forEach(function(item){
         Client.createSavedMarker(item.lat, item.lng, item.id, item.street);
       })
@@ -132,6 +134,7 @@ class Map extends React.Component {
   }
   }
   componentDidMount() {
+    this.setClientId();
     var this2 = this;
     setTimeout(function(){
       if(this2.props.params.zip !== undefined){
@@ -273,6 +276,11 @@ class Map extends React.Component {
       poi_pop_open: false
     })
   }
+  setClientId(){
+    if(this.props.auth.user.role === 'Basic'){
+      this.props.setCurrentClient(this.props.auth.user.associated_clients[0].value, this.props.auth.user.associated_clients[0].label)
+    }
+  }
   render() {
     if(this.state.zipDemographics) {
       var zipDemographics = <ZipDemographics 
@@ -356,7 +364,7 @@ class Map extends React.Component {
                 </li>
                 {/*<li><div className="left-nav-btn"><i className="fa fa-area-chart" />Sales Forcast</div></li>
                 <li><div className="left-nav-btn"><i className="fa fa-home" />Find Spaces</div></li>*/}
-                <li><div className="left-nav-btn"><i className="fa fa-file" />Reports</div></li>
+                <Link to="/reports"><li><div className="left-nav-btn"><i className="fa fa-file" />Reports</div></li></Link>
                 <li><div onClick={this.toggleMapStyles.bind(this)} className="left-nav-btn"><i className="fa fa-map" />Map Styles</div>
                 <ReactCSSTransitionGroup
                 transitionName="slideRight"

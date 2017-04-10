@@ -38,6 +38,7 @@ deleteClient(index, clientId){
             type: "DELETE",
             url: "/api/clients/" + clientId,
             success: function(data){
+              
             },
             dataType: "json",
             contentType: "application/json"

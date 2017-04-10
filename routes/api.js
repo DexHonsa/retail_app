@@ -55,6 +55,7 @@ var User = thinky.createModel('User', {
     title: type.string(),
     phone: type.string(),
     address: type.string(),
+    
     city: type.string(),
     role: type.string(),
     state: type.string(),
@@ -63,7 +64,7 @@ var User = thinky.createModel('User', {
     user_img_path: type.string(),
     primary_contact: type.boolean(),
     role_id: type.string(),
-    associate_client_id: type.string(),
+   
     creator_id: type.string(),
     disabled: type.boolean(),
     created_at: type.date().default(r.now())
@@ -169,7 +170,7 @@ exports.signUpUser = function(req,res){
            
 
         }else{
-            r.db('retail_updated').table('User').insert({'first_name':userFirstName, 'last_name':userLastName, 'email':userEmail, 'password':userPassword,'role':'Admin','user_img_path':'http://res.cloudinary.com/dexhonsa/image/upload/v1491690201/user_af9gzm.jpg','created_at':r.now()}).run().then(function(User){
+            r.db('retail_updated').table('User').insert({'first_name':userFirstName, 'last_name':userLastName, 'email':userEmail, 'views': {}, 'associated_clients':[], 'password':userPassword,'contacts':[],'role':'Admin','user_img_path':'http://res.cloudinary.com/dexhonsa/image/upload/v1491690201/user_af9gzm.jpg','created_at':r.now()}).run().then(function(User){
                
                var id = User.generated_keys[0];
                 r.db('retail_updated').table('User').get(id).update({'parent_user':id}).run().then(function(User){
@@ -287,17 +288,33 @@ exports.LoginCheck = function(req, res){
     const { username, password } = req.body;
 
 
-    User.filter({'email' : username, 'password' : password}).run().then(function(User){
+    r.db('retail_updated').table('User').filter({'email' : username, 'password' : password}).run().then(function(User){
+        console.log(User);
         if(User.length >= 1){
-            const token = jwt.sign({
+            if(User[0].role === 'Basic'){
+                const token = jwt.sign({
+                id: User[0].id,
+                email: User[0].email,
+                role: User[0].role,
+                parent_user: User[0].parent_user,
+                associated_clients: User[0].associated_clients
+                }, config.jwtSecret);
+                res.json({
+                    token
+                 })
+
+            }else{
+                const token = jwt.sign({
                 id: User[0].id,
                 email: User[0].email,
                 role: User[0].role,
                 parent_user: User[0].parent_user
-            }, config.jwtSecret);
-            res.json({
-                token
-             })
+                }, config.jwtSecret);
+                res.json({
+                    token
+                 })
+            }
+           
 
         }else{
             res.status(401).json({errors: {form : "Invalid Credentials" } });
@@ -473,10 +490,17 @@ exports.Searches = function (req, res) {
     var userId = req.params.userId;
     var clientId = req.params.clientId;
 
-    Searches.filter(r.row('creatorId').eq(userId).and(r.row('clientId').eq(clientId))).orderBy(r.asc('created_at')).run().then(function(Searches) {
+    r.db('retail_updated').table('Searches').filter(r.row('clientId').eq(clientId)).orderBy(r.asc('created_at')).run().then(function(Searches) {
         res.json(Searches);
     }).error(handleError(res));
 };
+exports.getClientSearches = function(req,res){
+    r.db('retail_updated').table('Searches').filter(r.row('clientId').eq(req.params.clientId)).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
 exports.getUserSearches = function (req, res) {
     var userId = req.params.userId;
     Searches.filter(r.row('creatorId').eq(userId)).orderBy(r.asc('created_at')).run().then(function(Searches) {
@@ -518,7 +542,7 @@ exports.checkIfSaved = function (req, res){
 
 };
 exports.addSearch = function (req, res) {
-    Searches.save(req.body).then(function(result) {
+    r.db('retail_updated').table('Searches').insert(req.body).run().then(function(result) {
         res.json(result);
     }).error(handleError(res));
 };
@@ -532,7 +556,32 @@ exports.deleteSearch = function (req, res) {
         }).error(handleError(res));
     }).error(handleError(res));
 };
+exports.incrementViews = function(req,res){
+   r.db('retail_updated').table('User').get(req.body.userId)('views').hasFields(req.body.searchId).run().then(function(data){
+        
+        if(data === true){
+            r.db('retail_updated').table('User').get(req.body.userId)('views')(req.body.searchId).run().then(function(data){
+                var newAmount = data + 1;
+                r.db('retail_updated').table('User').get(req.body.userId).update({'views': r.object(req.body.searchId, newAmount)}).run().then(function(data){
+                    res.json({
+                        data
+                    })
+                })
+            })
+            
+        }else{
+            r.db('retail_updated').table('User').get(req.body.userId).update({'views': r.object(req.body.searchId, 1)}).run().then(function(data){
+                res.json({
+                    data
+                })
+            })
+        }
+   })
 
+   
+
+
+}
 // Retrieve a list of Clients ordered by date with its User and Roles
 exports.Clients = function (req, res) {
     Client.orderBy({index: r.desc('client_name')}).run().then(function(Client) {
@@ -581,7 +630,7 @@ exports.addClient = function (req, res) {
 
     //var newClient = new Client(req.body);
 
-    Client.save(req.body).then(function(result) {
+    r.db('retail_updated').table('Client').insert(req.body).run().then(function(result) {
         res.json(result);
     }).error(handleError(res));
 };
@@ -600,7 +649,15 @@ exports.deleteClient = function (req, res) {
         }).error(handleError(res));
     }).error(handleError(res));
 };
-exports.updateClient = function(req,res){
+exports.getZipDemographics = function (req,res){
+    var zip = req.params.zip;
+    r.db('retail_updated').table('Demographics').getAll(r.expr(zip).coerceTo('number'), {index: 'ZipCode'}).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+}
+exports.updateClientContact = function(req,res){
     var clientId = req.body.clientId;
     var contactIndex = req.body.contactIndex;
     var contactName = req.body.contactName;
@@ -610,12 +667,13 @@ exports.updateClient = function(req,res){
     
 
     if(deleteContact === true){
-        r.db('retail_updated').table('Client').get(clientId).getField('contacts').deleteAt(0).run().then(function(data){
+        r.db('retail_updated').table('Client').get(clientId).getField('contacts').deleteAt(contactIndex).run().then(function(data){
             console.log(data);
-
-        // res.json({
-        //     data
-        // })
+            r.db('retail_updated').table('Client').get(clientId).update({'contacts':data}).run().then(function(data){
+                res.json({
+                    data
+                })
+            })
     })
     }else{
         r.db('retail_updated').table('Client').get(clientId).update({'contacts': r.row('contacts').append({'contactName':contactName,'contactPhone':contactPhone,'contactEmail':contactEmail})}).run().then(function(data){
@@ -627,6 +685,69 @@ exports.updateClient = function(req,res){
     
 
     
+}
+exports.updateUserContact = function(req,res){
+    var userId = req.body.userId;
+    var contactIndex = req.body.contactIndex;
+    var contactName = req.body.contactName;
+    var contactEmail = req.body.contactEmail;
+    var contactPhone = req.body.contactPhone;
+    var deleteContact = req.body.deleteContact;
+    
+
+    if(deleteContact === true){
+        r.db('retail_updated').table('User').get(userId).getField('contacts').deleteAt(contactIndex).run().then(function(data){
+            console.log(data);
+            r.db('retail_updated').table('User').get(userId).update({'contacts':data}).run().then(function(data){
+                res.json({
+                    data
+                })
+            })
+    })
+    }else{
+        r.db('retail_updated').table('User').get(userId).update({'contacts': r.row('contacts').append({'contactName':contactName,'contactPhone':contactPhone,'contactEmail':contactEmail})}).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+    }
+    
+
+    
+}
+exports.getAssocaitedUsers = function(req,res){
+    r.db('retail_updated').table('Client').get(req.params.clientId).run().then(function(data){
+       
+        r.db('retail_updated').table('User').getAll(r.args(data.associated_users)).run().then(function(data){
+            res.json({
+                data
+            })
+        })
+    })
+}
+exports.addAssociatedUser = function(req,res){
+    var deleteContact = req.body.deleteContact;
+    
+
+    if(deleteContact === true){
+        r.db('retail_updated').table('Client').get(req.body.userId).getField('associated_users').deleteAt(0).run().then(function(data){
+            r.db('retail_updated').table('Client').get(req.body.userId).update({'associated_users':data}).run().then(function(data){
+                res.json({
+                    data
+                })
+            })
+    })
+    }else{
+        r.db('retail_updated').table('Client').get(req.body.clientId).update({'associated_users': r.row('associated_users').append(req.body.userId)}).run().then(function(data){
+        res.json({
+            data
+        })
+    })
+    }
+
+
+
+   
 }
 
 // Update a Client in the database
@@ -660,19 +781,25 @@ exports.getUsers = function (req, res) {
 exports.User = function (req, res) {
     var id = req.params.id;
 
-    User.get(id).run().then(function(User) {
-        res.json({
-            User: User
-        });
-    }).error(handleError(res));
+   r.db('retail_updated').table('User').get(id).run().then(function(User){
+    res.json({
+        User
+    })
+   })
 };
+
+exports.getClientUsers = function(req,res){
+    r.db('retail_updated').table('User').filter(r.row('associated_clients')())
+}
 
 
 // Save an User in the database
 exports.addUser = function (req, res) {
-    User.save(req.body).then(function(result) {
-        res.json(result);
-    }).error(handleError(res));
+    r.db('retail_updated').table('User').insert(req.body).run().then(function(User){
+        res.json({
+            User
+        })
+    })
 };
 
 
@@ -708,6 +835,19 @@ exports.updateUser = function(req,res){
         })
     })
 
+}
+exports.updateUserPassword = function(req,res){
+    r.db('retail_updated').table('User').get(req.body.userId)('password').run().then(function(data){
+        if(data === req.body.oldPassword){
+            r.db('retail_updated').table('User').get(req.body.userId).update({active:1, password: req.body.newPassword}).run().then(function(data){
+                res.json({
+                    data
+                })
+            })
+        }else{
+            res.status(401).json({errors: {form : "Invalid Password" } });
+        }
+    })
 }
 
 // Edit a User

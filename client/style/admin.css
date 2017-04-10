@@ -251,7 +251,7 @@ a{
 .popup-input{
 	background:#fff;
 	border:solid 1px #e0e0e0;
-	height:35px; 
+	height:36px; 
 	line-height: 35px;
 	padding-left:5px;
 	font-size:12pt;
@@ -280,7 +280,7 @@ a{
    line-height: 1;
    border: 0;
    border-radius: 0;
-   height: 35px;
+   height: 36px;
    -webkit-appearance: none;
 	overflow: auto;
 	
@@ -291,7 +291,7 @@ a{
 .popup-selector-dropdown {
    width: 100px;
    height: 35px;
-   overflow: hidden;
+   overflow: visible;
    background: url(../images/down_arrow_select.png) no-repeat right #fff;
    border: 1px solid #e0e0e0;
 	z-index: 1000;
@@ -300,6 +300,21 @@ a{
 	margin-left:10px;
 	
    }
+
+.popup-selector-dropdown .Select-placeholder, .Select--single > .Select-control .Select-value{
+	text-align:left;
+	border-radius: none;
+}
+.popup-selector-dropdown .Select-placeholder, .Select--single > .Select-control .Select-value{
+	border-radius: 0px;
+}
+.popup-selector-dropdown .Select-control{
+	border-radius: 0px;
+	border:none;
+}
+.popup-selector-dropdown .Select-control:hover{
+	border:none;
+}
 .popup-selector-dropdown select{
 	width:100%;
 }
@@ -756,4 +771,164 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 	font-size:10pt;
 	color:#808080;
 	margin:10px 0px;
+}
+.report-item{
+	border-bottom:solid 1px #eaeaea;
+	overflow: auto;
+}
+.report-item-demographics{
+	padding:15px;
+	overflow: auto;
+}
+.report-item-top{
+	display: flex;
+	align-items: center;
+	background:#f7f7f7;
+	margin-bottom:25px;
+}
+.report-item-img{
+	background-image: url(../images/199535-building.jpg);
+	background-size: cover;
+	background-position: center;
+	width: 453px;
+    height: 270px;
+    margin-left: auto;
+}
+.report-item-details{
+	font-size: 20pt;
+	text-align: left;
+	padding:20px;
+}
+.report-item-user-likes{
+	
+}
+.report-item-social{
+	padding:15px;
+	overflow: auto;
+}
+.report-item-social-row{
+	
+}
+.report-item-social-item{
+	width:33.33333333%;
+	padding:10px;
+	float: left;
+	overflow: auto;
+}
+.report-item-social-item-img{
+	background-image: url(../images/130.jpg);
+	background-size: cover;
+	background-position: center;
+	width:28px;
+	height:28px;
+	margin-right:10px;
+	float:left;
+}
+.report-item-social-item-name{
+	font-size: 10pt;
+	color:#000;
+}.report-item-social-item-name i{
+	float: right;
+	color: #0B91E7;
+	font-size: 12pt;
+	margin-top: -15px;
+}
+.report-item-social-item-body{
+	clear: both;
+	margin-top:10px;
+	font-size: 10pt;
+	color:#000;
+}
+.report-item-activity{
+	text-align: left;
+	padding:20px;
+}
+.report-item-social-inner{
+	background:#f0fbff;
+	padding:10px;
+	height:130px;
+	overflow: auto;
+	border-radius: 4px;
+    border: solid 1px #d6edfb;
+	transition:all .3s ease;
+}
+.report-item-social-inner:hover{
+	background:#DCF5FF;
+}
+.report-item-user-likes{
+	margin-top:20px;
+}
+.report-item-title-header{
+	    margin-bottom: 38px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    color: #000;
+    font-size: 14pt;
+    border-bottom: solid 1px #eaeaea;
+}
+.user-like-item{
+	padding: 10px;
+    float: left;
+    background: #3080e8;
+    border-radius: 4px;
+    /* width: 200px; */
+    color: #3080e8;
+    display: flex;
+    align-items: center;
+    overflow: auto;
+	margin:5px;
+}
+.user-like-img{
+	background-image: url(../images/134.jpg);
+	background-size: cover;
+	background-position: center;
+	width:35px;
+	height:35px;
+	border-radius: 35px;
+	float:left;
+	margin-right:10px;
+	border:solid 2px #fff;
+}
+.user-like-title{
+	font-size: 10pt;
+	color:#fff;
+	font-weight: bold;
+}
+.activity-item{
+	padding:15px;
+	display: flex;
+	align-items: center;
+}
+.activity-item-user-img{
+	background-image: url(../images/134.jpg);
+	background-size: cover;
+	background-position: center;
+	height:35px;
+	width:35px;
+	border-radius: 35px;
+	margin-right:10px;
+	
+}
+.activity-item-title{
+	font-size:10pt;
+	color:#000;
+}
+.activity-item-desc{
+	font-size: 12pt;
+    color: #3b85c4;
+    /* font-weight: bold; */
+    margin-left: 15px;
+    border-left: solid 1px #eaeaea;
+    padding-left: 10px;
+}
+.activity-item-time-ago{
+	font-size: 10pt;
+	color:#808080;
+	margin-left: auto;
+}
+.no-search-results-found{
+	font-size: 25pt;
+	color:#e0e0e0;
+	padding:300px;
+	text-align: center;
 }

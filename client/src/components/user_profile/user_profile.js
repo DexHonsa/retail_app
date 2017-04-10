@@ -7,6 +7,7 @@ import AvatarCropper from "react-avatar-cropper";
 import img from '../../../images/camera_upload.jpg';
 import FileUploaderUser from './file_uploader_user';
 import EditUserPopup from '../popups/users/edit_user_popup';
+import CreateContact from './create_user_contact';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
@@ -24,7 +25,10 @@ class UserProfile extends React.Component{
       cropperOpen: false,
       img: null,
       myProfile: false,
-       editUserPopup: false,
+      editUserPopup: false,
+      createContactPopup: false,
+      userContacts: [],
+      errors: {}
 
 		}
 	}
@@ -52,10 +56,13 @@ class UserProfile extends React.Component{
         myProfile:true
       })
     }
+
+   
 		axios.get('/api/users/' + this.state.userId).then(function(res){
+      console.log(res);
 			this2.setState({
-				user: res.data.User
-				
+				user: res.data.User,
+        userContacts: res.data.User.contacts
 			})
 		})
 	}
@@ -117,8 +124,37 @@ class UserProfile extends React.Component{
   showEditUserPopup(){
     this.setState({editUserPopup : true});
   }
+  showCreateContact(){
+    this.setState({createContactPopup:true})
+  }
+  hideCreateContact(){
+    this.setState({createContactPopup:false})
+    this.getUser();
+  }
+  deleteUserContact(index, userId){
+    var this2 = this;
+    var newData = this.state.userContacts.slice(); //copy array
+      newData.splice(index, 1); //remove element
+      this.setState({userContacts: newData}); //update state
 
+      var data = {
+        userId :  this.props.params.id,
+        contactIndex: index,
+        deleteContact: true
+      }
+    axios.put('/api/updateUserContact', data).then(function(res){
+        
+        this2.hideCreateContact();
+      })
+}
 	render(){
+    var createContactPopup;
+    if(this.state.createContactPopup === true){
+      createContactPopup = <CreateContact hideCreateContact={this.hideCreateContact.bind(this)} userId={this.props.params.id} />;
+    }else{
+      createContactPopup = '';
+    }
+    const {contactName, contactEmail, contactPhone, errors} = this.state;
     var popup;
      if(this.state.editUserPopup){
             popup = <EditUserPopup userId={this.state.userId} edit={true} collapse={this.hideEditUserPopup.bind(this)} />
@@ -142,13 +178,29 @@ class UserProfile extends React.Component{
       searches = <div className="no-searches">No Saved Searches</div>;
     }
     var editBtn;
+    var addClientContactBtn;
+    if(this.props.auth.user.role === 'Admin'){
     if(this.state.userId === this.props.auth.user.id){
-     editBtn = <div onClick={this.showEditUserPopup.bind(this)} className=" load-more-btn">Edit</div>
+     editBtn = <div onClick={this.showEditUserPopup.bind(this)} className=" load-more-btn">Edit</div>;
+     addClientContactBtn = <div className="client-contact-create">
+                    <div onClick={this.showCreateContact.bind(this)} className="client-contact-create-title">Add Contact</div>
+                  </div>;
+    }else{
+      editBtn = <div onClick={this.showEditUserPopup.bind(this)} className=" load-more-btn">Edit</div>;
+      
     }
-		
+		}else{
+      if(this.state.userId === this.props.auth.user.id){
+      editBtn = <div onClick={this.showEditUserPopup.bind(this)} className=" load-more-btn">Edit</div>
+      addClientContactBtn = <div className="client-contact-create">
+                    <div onClick={this.showCreateContact.bind(this)} className="client-contact-create-title">Add Contact</div>
+                  </div>;
+    }
+    }
 		return(
 			<main className="main">
       {popup}
+      {createContactPopup}
       {this.state.cropperOpen &&
           <AvatarCropper
             onRequestHide={this.handleRequestHide.bind(this)}
@@ -198,22 +250,20 @@ class UserProfile extends React.Component{
               <div className="col-sm-4">
                 <div className="client-contacts">
                   <div className="client-contact-header">Related Contacts</div>
-                  <div className="client-contact-item">
-                    <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
-                    <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
-                  </div>
-                  <div className="client-contact-item">
-                    <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
-                    <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
-                  </div>
-                  <div className="client-contact-item">
-                    <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
-                    <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
-                  </div>
-                  <div className="client-contact-item">
-                    <div className="client-contact-desc">Jeffery Ortiz<br /><span style={{fontSize: '10pt', color: '#808080'}}>Coordinator</span></div>
-                    <div className="client-contact-icons"><i className="fa fa-envelope" /> <i className="fa fa-phone" /> <i className="fa fa-times-rectangle" /></div>
-                  </div>
+                  {this.state.userContacts.map(function(data, i){
+                    if(this.state.userId === this.props.auth.user.id){
+                        return <div className="client-contact-item">
+                            <div className="client-contact-desc">{data.contactName}<br /><span style={{fontSize: '10pt', color: '#808080'}}>{data.contactEmail}</span><br /><span style={{fontSize: '10pt', color: '#808080'}}>{data.contactPhone}</span></div>
+                            <div className="client-contact-icons"> <i onClick={(index) => this.deleteUserContact(i).bind(this)} className="fa fa-times-rectangle" /></div>
+                          </div>;
+                    }else{
+                    return <div className="client-contact-item">
+                            <div className="client-contact-desc">{data.contactName}<br /><span style={{fontSize: '10pt', color: '#808080'}}>{data.contactEmail}</span><br /><span style={{fontSize: '10pt', color: '#808080'}}>{data.contactPhone}</span></div>
+                            <div className="client-contact-icons"> </div>
+                          </div>;
+                        }
+                  },this)}
+                   {addClientContactBtn}
                 </div>
               </div>
             </div>
