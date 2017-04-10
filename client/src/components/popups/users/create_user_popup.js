@@ -145,7 +145,13 @@ class CreateUserPopup extends React.Component {
         }
         console.log(data);
         axios.post('/api/users', data).then(function(res){
-
+          var data = {
+            email: this2.state.user_email,
+            token : token
+          }
+            axios.post('/api/sendInviteMailer',data).then(function(res){
+              console.log(res);
+            })
           
           var data = {
             clientId : this2.state.associated_clients.value,

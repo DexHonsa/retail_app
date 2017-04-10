@@ -125,7 +125,7 @@ app.route('/api/sendMessage').post(api.sendMessage);
 app.route('/api/readMessage').put(api.readMessage);
 
 //Mailer API
-app.route('/api/signup/:email').get(api.sendMailer);
+app.route('/api/sendInviteMailer').post(api.sendInviteMailer);
 
 // Role API
 app.route('/api/roles').post(api.addRole);

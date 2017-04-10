@@ -19,7 +19,8 @@ class Header extends React.Component{
       client_name: "Select a Client",
       client_img : "",
       settings_dropdown: false,
-      user: []
+      user: [],
+      changePasswordPopup: false
     }
   }
   logout(e){
@@ -51,6 +52,11 @@ getUser(){
     if(this.props.auth.user.id !== undefined){
      axios.get('/api/users/' + this.props.auth.user.id).then(function(res){
       this2.setState({ user: res.data.User });
+      if(this2.state.user.active === 0){
+          this2.setState({
+            changePasswordPopup: true
+          })
+      }
     })
    }
 }
@@ -75,6 +81,7 @@ getUserClients(){
       })
 }
 componentDidMount() {
+
   this.getUserClients();
    this.getUser();
    this.setClientId();
@@ -101,11 +108,17 @@ activeClient(clientId, clientName){
   })
 
 }
+hideChangePasswordPopup(){
+  this.setState({
+    changePasswordPopup:false
+  })
+}
 
 render(){
   
     var clientDropdown;
     var settingsDropdown;
+
     if(this.state.dropdown){
       clientDropdown = <DropdownList activeClient={this.activeClient.bind(this)} clients={this.state.clients}/>
     }
@@ -124,9 +137,11 @@ render(){
             </div>            
             </li>;
     }
+    var changePasswordPopup;
 
-    if(this.state.user.active === 0){
-      var changePasswordPopup = <ChangePassword />
+   
+    if(this.state.changePasswordPopup){
+      changePasswordPopup = <ChangePassword hideChangePasswordPopup={this.hideChangePasswordPopup.bind(this)} />
     }
     
 

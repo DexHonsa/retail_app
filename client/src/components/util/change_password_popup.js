@@ -2,6 +2,7 @@ import React from 'react';
 import TextFieldGroup from './text_field_group';
 import validateInput from '../validations/change_password_validation';
 import axios from 'axios';
+import {connect} from 'react-redux';
 
 class ChangePassword extends React.Component{
 	constructor(props) {
@@ -28,21 +29,22 @@ class ChangePassword extends React.Component{
       [e.target.name] : e.target.value
     })
   }
-  saveContact(e){
+  submitPassword(e){
   	var this2 = this;
     if(this.isValid()){
       e.preventDefault();
     
       var data = {
+        userId : this.props.auth.user.id,
         oldPassword: this.state.oldPassword,
       	newPassword : this.state.password
       }
       
       
-      axios.put('/api/updateUser', data).then(function(res){
-      	
-      	this2.props.hideChangePasswordPopup();
-      })
+      axios.put('/api/updateUserPassword', data).then(
+        (res) => this2.props.hideChangePasswordPopup(),
+        (err) => this2.setState({errors: err.response.data.errors})
+      )
       
     }
   }
@@ -78,7 +80,7 @@ class ChangePassword extends React.Component{
                       onChange={this.onChange.bind(this)}
                     />
                     {errors.form && <div className="alert alert-danger">{errors.form}</div>}
-                    <div onClick={this.saveContact.bind(this)} className="save-client-btn">Change Password</div>{/*<div onClick={this.props.hideChangePasswordPopup} className="add-filter-close-btn">close</div>*/}
+                    <div onClick={this.submitPassword.bind(this)} className="save-client-btn">Change Password</div>{/*<div onClick={this.props.hideChangePasswordPopup} className="add-filter-close-btn">close</div>*/}
                     </div>
 
           </div>
@@ -86,4 +88,10 @@ class ChangePassword extends React.Component{
 			);
 	}
 }
-export default ChangePassword;
+function mapStateToProps(state){
+  return {
+    auth: state.auth,
+    client: state.client
+  };
+}
+export default connect(mapStateToProps)(ChangePassword);
