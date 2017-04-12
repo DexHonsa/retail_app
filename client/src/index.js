@@ -5,6 +5,7 @@ import { Router, Route } from 'react-router';
 import { browserHistory, IndexRoute } from 'react-router';
 import {Provider} from 'react-redux';
 import App from './components/app';
+import {connect} from 'react-redux';
 
 import LoginHome from './components/login/login';
 import Admin from './components/admin';
@@ -59,7 +60,7 @@ if(localStorage.jwtToken){
 
 
 ReactDOM.render(
-	
+
   <Provider store={store}>
     <Router history={browserHistory}>
     	<Route path="/" component={App}>
@@ -73,7 +74,7 @@ ReactDOM.render(
         <Route path="/rankings/income" component={Rankings} field="IncomePerHousehold"></Route>
         <Route path="/reports" component={Reports}></Route>
     		<Route path="/admin" component={Admin}>
-    			
+
     			<Route path="/admin/clients" component={Clients}></Route>
     			<Route path="/admin/users" component={Users}></Route>
                 <Route path="/admin/roles" component={Roles}></Route>
@@ -84,8 +85,8 @@ ReactDOM.render(
         <Route path="map/:zip" component={Map}></Route>
         <Route path="key_metrics" component={KeyMetrics}></Route>
     	</Route>
-    	
-    	
+
+
     </Router>
   </Provider>
   , document.querySelector('.everything'));
