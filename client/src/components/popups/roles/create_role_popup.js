@@ -7,12 +7,12 @@ import Checkbox from './checkbox';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
-const items = [
-  'Create Clients',
-  'Create Users',
-  'Edit Existing Users',
-  'Create Roles'
-];
+// const items = [
+//   'Create Clients',
+//   'Create Users',
+//   'Edit Existing Users',
+//   'Create Roles'
+// ];
 
 class CreateRolePopup extends React.Component {
 
@@ -23,7 +23,8 @@ class CreateRolePopup extends React.Component {
       role_name: '',
       roles: [],
       role_accesses: [],
-      errors: {}
+      errors: {},
+      items:[]
     }
   }
 isValid(){
@@ -50,10 +51,19 @@ isValid(){
   }
 
   toggleCheckbox = label => {
-    if (this.selectedCheckboxes.has(label)) {
-      this.selectedCheckboxes.delete(label);
+    let id = ''; 
+    let data = this.props.data.data;
+    for(var i in data)
+    {
+      if(data[i].role_name===label)
+      {
+        id = data[i].id;
+      }
+    }
+    if (this.selectedCheckboxes.has(id)) {
+      this.selectedCheckboxes.delete(id);
     } else {
-      this.selectedCheckboxes.add(label);
+      this.selectedCheckboxes.add(id);
     }
   }
 
@@ -83,17 +93,31 @@ isValid(){
     }
   
 
-  createCheckbox = label => (
+  createCheckbox = () => {
+    var data = this.props.data.data;
+    return data.map((data)=>{
+    return(
     <Checkbox
-            label={label}
+            label={data.role_name}
             handleCheckboxChange={this.toggleCheckbox}
-            key={label}
+            key={data.id}
+            id={data.id}
         />
-  )
+    )
+  })
+  }
 
-  createCheckboxes = () => (
-    items.map(this.createCheckbox)
-  )
+//   createCheckboxes = () => {
+
+//        console.log(this.state.items,"data")
+
+//       // this.state.items.map((data)=>this.createCheckbox(data))
+//       var data = this.state.items;
+//       for(var i in data)
+//       {
+//         this.createCheckbox(data[i])
+//       }
+// }
   
 
   
@@ -125,7 +149,7 @@ render(){
             <div className="form-row" style={{display: 'inline-block', width: 400, paddingBottom:25}}>
               <div className="control-group">
                 <div className="popup-small-title">Role Access</div>
-                {this.createCheckboxes()}
+                {this.createCheckbox()}
                 {/*<label className="control control--checkbox">Create Clients
                   <input type="checkbox" />
                   <div className="control__indicator" />

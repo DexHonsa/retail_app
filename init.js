@@ -91,6 +91,20 @@ var createCommentIndex = function() {
         else {
             console.log('Error: Index `postId` not created');
         }
+        createTableRoleAttributes()
+    });
+}
+
+var createTableRoleAttributes = function() {
+    r.db(config.db).tableCreate('RoleAttributes').run(connection, function(error, result) {
+        if (error) console.log(error);
+    
+        if ((result != null) && (result.tables_created === 1)) {
+            console.log('Table `RoleAttributes` created');
+        }
+        else {
+            console.log('Error: Table `RoleAttributes` not created');
+        }
         insertAuthors()
     });
 }
@@ -136,9 +150,23 @@ var insertComments = function() {
         else {
             console.log('Error: Failed to add comment data');
         }
+        insertRoleAttributesTable()
+    });
+}
+
+var insertRoleAttributesTable = function() {
+    r.db(config.db).table('RoleAttributes').insert([{role_name:'Create Clients'},{role_name:'Create Users'},{role_name:'Edit Existing Users'},{role_name:'Create Roles'}]).run(connection, function(error, result) {
+        if (error) console.log(error);
+
+        if ((result != null) && (result.errors === 0)) {
+            console.log('Added RoleAttributes data');
+        }
+        else {
+            console.log('Error: Failed to add RoleAttributes data');
+        }
         connection.close();
         process.exit();
-    });
+    }); 
 }
 
 // Roll out everything

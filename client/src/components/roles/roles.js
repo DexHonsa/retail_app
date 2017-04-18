@@ -12,7 +12,8 @@ class Roles extends React.Component {
     this.state = {
       roles : [],
       search : "",
-      popup: false
+      popup: false,
+      items:[]
     }
   }
 
@@ -50,16 +51,24 @@ deleteRole(index, roleId){
             contentType: "application/json"
           });
 }
+componentWillMount(){
+  var this2 = this;
+        axios.get('/api/roleAttributes').then(function(res){
+          this2.setState({items:res.data});
+      })
+  }
+
 componentDidMount() {
   this.getRoles();
-  }
+}
+
 
 
 
 render(){
     
     if(this.state.popup){
-            var popup = <CreateRolePopup collapse={this.collapsePopup.bind(this)} />
+            var popup = <CreateRolePopup collapse={this.collapsePopup.bind(this)} data={this.state.items} />
         } else {
            
         }
@@ -70,7 +79,7 @@ render(){
         <div className="user-content">
           <div className="client-top-section">
             <div className="description-blurb">Roles are what you can use to limit users to certain portions of the application. </div>
-            {/*<div onClick={this.expandPopup.bind(this)} className="add-client-btn" data-popup-type="role">Add Role</div>*/}
+            <div onClick={this.expandPopup.bind(this)} className="add-client-btn" data-popup-type="role">Add Role</div>
           </div>
           <ul className="user-list">
           <ReactCSSTransitionGroup
@@ -80,7 +89,7 @@ render(){
                       transitionAppear={true}
                       transitionAppearTimeout={500}>
             {this.state.roles.map(function(data, i){
-              return <Role index={i} id={data.id} key={i} roleName={data.role_name} roleAccesses={data.role_accesses} />
+              return <Role index={i} id={data.id} key={i} roleName={data.role_name} roleAccesses={data.role_accesses} data={this.state.items}  />
             },this)}
             </ReactCSSTransitionGroup>
           </ul>

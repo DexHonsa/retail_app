@@ -148,6 +148,9 @@ app.route('/api/geocoder/:zip').get(api.geoCoder);
 //Twitter API
 app.route('/api/twitter/:longitude/:latitude').get(api.TwitterPlaceLookup);
 
+//roleattributes
+app.route('/api/roleAttributes').get(api.roleAttributes);
+
 // Redirect all others to the index
 // A 404 page is probably a better move
 app.route('*').get(routes.index);
