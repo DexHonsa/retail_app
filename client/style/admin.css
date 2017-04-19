@@ -62,12 +62,12 @@ a{
 .client-content{
 	flex:1;
 	margin:15px;
-	
+
 }
 .user-content{
 	flex:1;
 	margin:15px;
-	
+
 }
 
 .client-top-section{
@@ -88,7 +88,7 @@ a{
 }
 .client-search{
 	background:#fff;
-	
+
 	border:none;
 	padding:7px;
 	border:solid 1px #eaeaea;
@@ -115,13 +115,13 @@ a{
 	border-bottom:solid 1px #e0e0e0;
 }
 .client-list li:hover{
-	
-	
+
+
 }
 .client-list li:hover .client-list-title{
 	color:#469df5;
 	cursor: pointer;
-	
+
 }
 .delete-client-btn{
 	color:#808080;
@@ -149,7 +149,7 @@ a{
 	background-position: center center;
 	height:50px;
 	width:50px;
-	
+
 	margin-right:15px;
 }
 .client-list-title{
@@ -251,7 +251,7 @@ a{
 .popup-input{
 	background:#fff;
 	border:solid 1px #e0e0e0;
-	height:36px; 
+	height:36px;
 	line-height: 35px;
 	padding-left:5px;
 	font-size:12pt;
@@ -283,7 +283,7 @@ a{
    height: 36px;
    -webkit-appearance: none;
 	overflow: auto;
-	
+
 }
 .form-row{
 	display: flex;
@@ -298,7 +298,7 @@ a{
 	transition:all .3s ease;
 	color:#808080;
 	margin-left:10px;
-	
+
    }
 
 .popup-selector-dropdown .Select-placeholder, .Select--single > .Select-control .Select-value{
@@ -348,7 +348,7 @@ a{
 	color:#3080e8;
 	font-weight: bold;
 	font-size:10pt;
-	
+
 }
 .added-contacts-list li span i{
 	position: absolute;
@@ -378,7 +378,7 @@ a{
 	width:100%;
 }
 .AvatarCropper-canvas canvas{
-	border-radius: 400px; 
+	border-radius: 400px;
 }
 .upload-picture i{
 	font-size:20pt;
@@ -401,7 +401,7 @@ a{
 	margin-left: auto;
 	border-radius: 4px;
 	text-align: center;
-	
+
 }
 .create-client-btn:hover{
 	background:#469df5;
@@ -436,7 +436,7 @@ a{
 	margin-right:15px;
 }
 .user-list-info{
-	
+
 }
 .user-list-name{
 	color:#3080e8;
@@ -485,7 +485,7 @@ a{
 	text-align: left;
 	background: #fff;
 	display:inline-block;
-	
+
 }
 .control {
 	font-size: 8pt;
@@ -494,7 +494,7 @@ a{
 	margin-bottom: 10px;
 	padding-left: 20px;
 	padding-bottom:5px;
-	
+
 	cursor: pointer;
 	border-bottom:solid 1px #e0e0e0;
 }
@@ -503,7 +503,7 @@ a{
 	position: absolute;
 	z-index: -1;
 	opacity: 0;
-	
+
 }
 .control__indicator {
 	position: absolute;
@@ -612,14 +612,14 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 .login-container{
 	height:100%;
 	background:#f7f7f7;
-	width:500px;
+	width:550px;
 	margin-left: auto;
 	padding:15px;
 	display: flex;
 	align-items: center;
 }
 .login-box{
-	
+
 	height:300px;
 	width:100%;
 	text-align: left;
@@ -800,14 +800,14 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 	padding:20px;
 }
 .report-item-user-likes{
-	
+
 }
 .report-item-social{
 	padding:15px;
 	overflow: auto;
 }
 .report-item-social-row{
-	
+
 }
 .report-item-social-item{
 	width:33.33333333%;
@@ -907,7 +907,7 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 	width:35px;
 	border-radius: 35px;
 	margin-right:10px;
-	
+
 }
 .activity-item-title{
 	font-size:10pt;
@@ -931,4 +931,14 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 	color:#e0e0e0;
 	padding:300px;
 	text-align: center;
+}
+.empty-list{
+	font-size: 20pt;
+    color: #aeaeae;
+    margin-top: 60px;
+    font-weight: 300;
+    padding: 15px 30px;
+    background: #f7f7f7;
+    display: inline-block;
+    border-radius: 3px;
 }

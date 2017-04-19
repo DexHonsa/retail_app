@@ -12,31 +12,25 @@ class LoginHome extends React.Component {
 		this.state = {
 			username : '',
 			password : '',
-			errors : {}, 
+			errors : {},
 			isLoading : ''
-		}		
+		}
 	}
 componentDidMount() {
 		if(this.props.auth.isAuthenticated){
 			browserHistory.push('/admin/users')
 		}else{
-			
+
 		}
 	}
-	
+
 	render() {
-		
+
 		return(
 			<div className="wrapper">
-		        <header className="header">
-		          <div className="container-fluid">
-		            <div className="logo"><img alt="" style={{height: 20, display: 'inline-block', lineHeight: 50}} src={logo} /></div>
-		            <div className="main-nav">
-		            </div>
-		          </div>
-		        </header>{/* /.header */}
+		        
 		        <div className="stage">
-		          <div className="main-message">Tenant Management Redefined.<br /><span style={{fontSize: '30pt'}}>Site selection made easy.</span></div>
+		          <div className="main-message">Tenant Relationships Redefined.<br /><span style={{fontSize: '30pt'}}>Site selection made easy.</span></div>
 		          <div className="login-container">
 		            <LoginForm/>
 		          </div>
@@ -44,7 +38,7 @@ componentDidMount() {
 		      </div>
 
 			);
-	}	
+	}
 }
 
 function mapStateToProps(state){

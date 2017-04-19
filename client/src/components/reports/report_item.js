@@ -50,13 +50,13 @@ class ReportItem extends React.Component {
 	}
 	getTwitterFeed(){
     var this2 = this;
-    
+
     axios.get('/api/twitter/' + this.props.longitude + "/" + this.props.latitude).then(function(res){
-      
+
       this2.setState({
         twitterFeed : res.data.tweets.statuses
       })
-     
+
     })
   }
 
@@ -64,7 +64,7 @@ class ReportItem extends React.Component {
 		this.setState({
 			search : e.target.value
 		})
-		
+
 	}
 	render(){
 		var incomeChart;
@@ -121,7 +121,7 @@ class ReportItem extends React.Component {
                   <div className="detail-title">Female Age Median</div>
                   <div className="detail-value">41.9</div>
                 </div></div>;
-       	
+
        	var data2 = {
 
 				labels: ["< 25k", "25k - 50k", "50k - 100k", "100k - 200k", "> 200k"],
@@ -159,13 +159,13 @@ class ReportItem extends React.Component {
 											return parseInt(label*100)+'%';
 										}
 									},
-									
+
 								}],
 								"xAxes": [{
 									"gridLines": {
 										color: "rgba(0, 0, 0, 0)",
 									}
-									
+
 								}]
 							}
 						}}
@@ -175,7 +175,7 @@ class ReportItem extends React.Component {
 		var data = (canvas) => {
 			 const ctx = canvas.getContext("2d")
        		 const gradient = ctx.createLinearGradient(0,100,0,0);
-	       		 gradient.addColorStop(0, 'rgba(250,174,50,1)');   
+	       		 gradient.addColorStop(0, 'rgba(250,174,50,1)');
 			 	 gradient.addColorStop(1, 'rgba(250,174,50,0)');
        		 	return{
 				labels: [ "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54","55<"],
@@ -216,20 +216,20 @@ class ReportItem extends React.Component {
 											return Math.round(parseInt(label/1000) * 100) /100 +'k';
 										}
 									},
-									
+
 								}],
 								"xAxes": [{
 									"gridLines": {
 										color: "rgba(0, 0, 0, 0)",
 									}
-									
+
 								}]
 							}
 						}}
 			           />;
 			           //education chart
 			           var educationChart;
-       
+
 						var data3 = {
 								labels: ["Bachelors or Greater", "Highschool Graduate"],
 								datasets: [{
@@ -253,7 +253,7 @@ class ReportItem extends React.Component {
 											},
 											"responsive" : true,
 											"maintainAspectRatio": false,
-											
+
 										}}
 							           />;
 							           //race chart
@@ -268,7 +268,7 @@ class ReportItem extends React.Component {
 														"#3765DB",
 														"#37BBDB",
 														"#34D1C6",
-														
+
 													]
 												}]
 											};
@@ -283,7 +283,7 @@ class ReportItem extends React.Component {
 															},
 															"responsive" : true,
 															"maintainAspectRatio": false,
-															
+
 														}}
 											           />;
 
@@ -372,19 +372,19 @@ class ReportItem extends React.Component {
                   <div className="detail-value">Middle Atlantic</div>*/}
                 </div>
               </div>
-              
+
               {demographicValues}
-                
-              
+
+
             </div>
             <div className="report-item-social">
               <div className="report-item-title-header">Social Information</div>
               <div className="report-item-social-row">
                 {twitterItems}
-                
+
               </div>
             </div>
-            <div className="report-item-activity">
+            {/*<div className="report-item-activity">
               <div className="report-item-title-header">Recent Activity</div>
               <div className="activity-item">
                 <div className="activity-item-user-img" />
@@ -410,7 +410,7 @@ class ReportItem extends React.Component {
                 <div className="activity-item-desc">Liked this Property</div>
                 <div className="activity-item-time-ago">2 days ago</div>
               </div>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>

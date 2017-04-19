@@ -14,7 +14,7 @@ class ZipDemographics extends React.Component {
 				  labels: ['White', 'Black', 'Mexican', 'Asian'],
 				  datasets: [
 				    {
-				     
+
 				      backgroundColor: 'rgba(70,157,245,1.00)',
 				      borderColor: 'rgba(70,157,245,1.00)',
 				      borderWidth: 1,
@@ -27,7 +27,7 @@ class ZipDemographics extends React.Component {
 		}
 	}
 	componentDidMount() {
-		
+
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState({
@@ -35,11 +35,11 @@ class ZipDemographics extends React.Component {
 		})
 	}
 	render() {
-		
+
 		return(
 			<div className="zip-code-popup">
 		        <div className="zip-code-top">Zip Code Demographics</div>
-		        <div className="zip-code-label">{this.props.zip}</div>
+		        <div className="zip-code-label"><span style={{fontSize:'14pt'}}>Zip Code</span><br />{this.props.zip}</div>
 		        <div className="zip-code-demo-list">
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Total Households</div>
@@ -78,7 +78,7 @@ class ZipDemographics extends React.Component {
 			          data={this.state.data}
 			          width={100}
 			          height={80}
-			          
+
 			          options={{
 			            maintainAspectRatio: true,
 			            legend : {

@@ -8,7 +8,7 @@ import $ from "jquery";
 
 class Clients extends React.Component{
     constructor(props) {
-    super(props);    
+    super(props);
 
     this.state = {
       clients: [],
@@ -38,7 +38,7 @@ deleteClient(index, clientId){
             type: "DELETE",
             url: "/api/clients/" + clientId,
             success: function(data){
-              
+
             },
             dataType: "json",
             contentType: "application/json"
@@ -59,6 +59,7 @@ componentDidMount() {
 
 
   render(){
+    var clientList;
     var addClientBtn;
     if(this.props.auth.user.role == 'Admin'){
       addClientBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>;
@@ -72,8 +73,20 @@ componentDidMount() {
       if(this.state.popup){
             var popup = <CreateClientPopup collapse={this.collapsePopup.bind(this)} />
         } else {
-            
+
         }
+
+    if(this.state.clients.length > 0){
+      clientList = filteredClients.map((data, i) => {
+        if(this.props.auth.user.role == 'Admin'){
+          return <ClientItem deleteClient={this.deleteClient.bind(this)} key={i} index={i} id={data.id} clientName={data.client_name} industry={data.industry} imgUrl={data.logo_path} />;
+        }else{
+        return <ClientItem key={i} index={i} id={data.id} clientName={data.client_name} industry={data.industry} imgUrl={data.logo_path} />;
+        }
+      })
+    }else{
+      clientList = <div className="empty-list">No Clients To Display<br /><div className="add-client-btn" style={{display: 'inline-block',marginTop:10}} onClick={this.expandPopup.bind(this)}>Add a client</div></div>
+    }
       return (
         <div >
         {popup}
@@ -104,22 +117,15 @@ componentDidMount() {
                       transitionAppear={true}
                       transitionAppearTimeout={500}>
 
-                      {filteredClients.map((data, i) => {
-                        if(this.props.auth.user.role == 'Admin'){
-                          return <ClientItem deleteClient={this.deleteClient.bind(this)} key={i} index={i} id={data.id} clientName={data.client_name} industry={data.industry} imgUrl={data.logo_path} />;
-                        }else{
-                        return <ClientItem key={i} index={i} id={data.id} clientName={data.client_name} industry={data.industry} imgUrl={data.logo_path} />;
-                        }
-                      })
-                    }
+                      {clientList}
 
                       </ReactCSSTransitionGroup>
-                      
+
                     </ul>
                   </div>
             </div>
           </div>
-      
+
       );
   }
 }

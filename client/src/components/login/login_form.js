@@ -9,10 +9,10 @@ import UserSignup from './user_signup';
 class LoginForm extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { 
+		this.state = {
 			username : '',
 			password : '',
-			errors : {}, 
+			errors : {},
 			isLoading : '',
 			signupPopup: false
 		}
@@ -75,10 +75,11 @@ class LoginForm extends React.Component {
 		              <div className="login-username">
 		                <div className="login-label">Your Email Address</div>
 
-		                {/*<input value={this.state.username} onChange={this.onChange.bind(this)} name="username" type="text" />*/}
+		                <input style={{display:'none'}} name="username" type="text" />
+										<input style={{display:'none'}}  name="password" type="text" />
 		                <TextFieldGroup
 		                	field="username"
-		                	label="username"
+		                	label="Email Address"
 		                	type="text"
 		                	value={username}
 		                	error={errors.username}
@@ -89,7 +90,7 @@ class LoginForm extends React.Component {
 		                <div className="login-label">Password</div>
 		                <TextFieldGroup
 		                	field="password"
-		                	label="password"
+		                	label="Password"
 		                	type="password"
 		                	value={password}
 		                	error={errors.password}

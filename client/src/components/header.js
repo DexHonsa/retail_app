@@ -62,7 +62,7 @@ getUser(){
 }
 toggleDropdown(){
   this.getUserClients();
-  
+
   if(this.state.dropdown){
     this.setState({
       dropdown : false
@@ -72,7 +72,7 @@ toggleDropdown(){
       dropdown : true
     })
   }
-  
+
 }
 getUserClients(){
   var this2 = this;
@@ -99,10 +99,10 @@ activeClient(clientId, clientName){
 
   $.getJSON('/api/clients/' + clientId)
       .then((data) => {
-       
+
         this.setState({ client_name: this.props.client.clientName });
       });
-  
+
   this.setState({
     client_id : this.props.client.clientId
   })
@@ -115,7 +115,11 @@ hideChangePasswordPopup(){
 }
 
 render(){
-  
+    var headerStyle
+    if(this.props.auth.isAuthenticated == false){
+      console.log('hit');
+       headerStyle = {display:'none'};
+    }
     var clientDropdown;
     var settingsDropdown;
 
@@ -129,30 +133,30 @@ render(){
     if(this.state.user.role === 'Basic'){
       clientDropdown = <li><div onClick={this.toggleDropdown.bind(this)} className="client-dropdown">Client: {this.state.client_name}<i className="fa fa-caret-down" />
               {clientDropdown}
-            </div>            
+            </div>
             </li>;
     }else{
       clientDropdownToggle = <li><div onClick={this.toggleDropdown.bind(this)} className="client-dropdown">Client: {this.state.client_name}<i className="fa fa-caret-down" />
               {clientDropdown}
-            </div>            
+            </div>
             </li>;
     }
     var changePasswordPopup;
 
-   
+
     if(this.state.changePasswordPopup){
       changePasswordPopup = <ChangePassword hideChangePasswordPopup={this.hideChangePasswordPopup.bind(this)} />
     }
-    
+
 
     return (
-      <header className="header">
+      <header className="header" style={headerStyle}>
       {changePasswordPopup}
         <div className="container-fluid">
           <div className="logo"><img alt="logo" style={{height: 20, display: 'inline-block', lineHeight: 50}} src={logo} /></div>
           <div className="main-nav">
             <Link to="/admin/users" activeClassName="active">Admin</Link>
-            
+
             <Link to="/map" activeClassName="active">Map</Link>
             {/*<Link to="/key_metrics" activeClassName="active">Key Metrics</Link>*/}
             <Link to="/rankings/population" activeClassName="active">Rankings</Link>
@@ -179,15 +183,15 @@ class DropdownList extends React.Component{
   }
   render(){
   return(
-            
+
               <div className="client-dropdown-dd animated fadeInUp">
               {this.props.clients.map((data,i) => {
                 return <div key={i} onClick={() => this.props.activeClient(data.id, data.client_name)} className="client-dd-option">{data.client_name}</div>;
               })
               }
-                
+
               </div>
-              
+
       );
 }
 }

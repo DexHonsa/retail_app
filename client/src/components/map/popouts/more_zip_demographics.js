@@ -9,7 +9,7 @@ class MoreZipDemographics extends React.Component {
 			search : '',
 			demographics : [],
 			imgUrl : ''
-			
+
 
 		}
 	}
@@ -37,10 +37,10 @@ class MoreZipDemographics extends React.Component {
 				// 	i2 = i2.replace( /Plus/, " Plus ");
 				// 	i2 = i2.replace( /plus/, " plus ");
 
-					
+
 				// 	tempArr.push([i2,v]);
 				// });
-            	
+
                 that.setState({
                   imgUrl: "https://maps.googleapis.com/maps/api/streetview?location=" + data.data[0].Latitude + "," + data.data[0].Longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs",
                   demographics: data.data[0]
@@ -54,14 +54,14 @@ class MoreZipDemographics extends React.Component {
 		this.setState({
 			search : e.target.value
 		})
-		
+
 	}
 	render() {
 		// var chart    = this.refs.chart.getContext('2d');
-   			
+
 
 		// var gradient = chart.createLinearGradient(0, 0, 0, 400);
-		// 	gradient.addColorStop(0, 'rgba(250,174,50,1)');   
+		// 	gradient.addColorStop(0, 'rgba(250,174,50,1)');
 		// 	gradient.addColorStop(1, 'rgba(250,174,50,0)');
 		var incomeChart;
 		var demographicValues;
@@ -94,7 +94,7 @@ class MoreZipDemographics extends React.Component {
 			            <div className="detail-value">${this.state.demographics.IncomePerHousehold.value}</div>
 			          </div>
 			        </div></div>;
-       
+
        	var data2 = {
 
 				labels: ["< 25k", "25k - 50k", "50k - 100k", "100k - 200k", "> 200k"],
@@ -132,13 +132,13 @@ class MoreZipDemographics extends React.Component {
 											return parseInt(label*100)+'%';
 										}
 									},
-									
+
 								}],
 								"xAxes": [{
 									"gridLines": {
 										color: "rgba(0, 0, 0, 0)",
 									}
-									
+
 								}]
 							}
 						}}
@@ -148,7 +148,7 @@ class MoreZipDemographics extends React.Component {
 		var data = (canvas) => {
 			 const ctx = canvas.getContext("2d")
        		 const gradient = ctx.createLinearGradient(0,100,0,0);
-	       		 gradient.addColorStop(0, 'rgba(250,174,50,1)');   
+	       		 gradient.addColorStop(0, 'rgba(250,174,50,1)');
 			 	 gradient.addColorStop(1, 'rgba(250,174,50,0)');
        		 	return{
 				labels: [ "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54","55<"],
@@ -189,20 +189,20 @@ class MoreZipDemographics extends React.Component {
 											return Math.round(parseInt(label/1000) * 100) /100 +'k';
 										}
 									},
-									
+
 								}],
 								"xAxes": [{
 									"gridLines": {
 										color: "rgba(0, 0, 0, 0)",
 									}
-									
+
 								}]
 							}
 						}}
 			           />;
 			           //education chart
 			           var educationChart;
-       
+
 						var data3 = {
 								labels: ["Bachelors or Greater", "Highschool Graduate"],
 								datasets: [{
@@ -226,7 +226,7 @@ class MoreZipDemographics extends React.Component {
 											},
 											"responsive" : true,
 											"maintainAspectRatio": false,
-											
+
 										}}
 							           />;
 							           //race chart
@@ -241,7 +241,7 @@ class MoreZipDemographics extends React.Component {
 														"#3765DB",
 														"#37BBDB",
 														"#34D1C6",
-														
+
 													]
 												}]
 											};
@@ -256,21 +256,21 @@ class MoreZipDemographics extends React.Component {
 															},
 															"responsive" : true,
 															"maintainAspectRatio": false,
-															
+
 														}}
 											           />;
 
        }
 
-       
-		
+
+
 		// var filteredDemographics = this.state.demographics.filter(
   //       (data) => {
-        	
+
   //         return data[0].toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
   //       }
   //       );
-		
+
 		return(
 				<div className="modal-overlay">
         <div className="add-demo-filter-popup-container">
@@ -278,7 +278,7 @@ class MoreZipDemographics extends React.Component {
             <div className="add-filter-title">More Demographics <i onClick={this.props.hideMoreZipDemographics} className="fa fa-close" /></div>
             <div className="add-filter-stage" style={{height: '70vh', width: '100%', position: 'relative', overflow: 'auto'}}>
               <div className="demographic-info-container">
-               
+
                 <div className="property-info-container">
 			        <div className="property-img" style={{backgroundImage:'url('+this.state.imgUrl+')'}} />
 			        <div className="property-info-title">{this.props.street} {this.props.city} {this.state.demographics.StateAbbreviation}, {this.state.demographics.ZipCode} </div>
@@ -353,15 +353,15 @@ class MoreZipDemographics extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="other-demographics">
+              {/*  <div className="other-demographics">
                   <div style={{fontSize: '12pt', margin: 15}}>All Demographic Items</div>
                   <div className="demographic-info-search"><input onChange={this.onSearchChange.bind(this)} placeholder="Search" type="text" /></div>
                   <div className="demographic-list-container">
-                    {/*filteredDemographics.map(function(data,i){
+                    filteredDemographics.map(function(data,i){
 			                	return <DemographicInfoItem key={i} title={data[0]} value={data[1]} />;
-			                },this)*/}
+			                },this)
                   </div>
-                </div>
+                </div>*/}
               </div>
             </div>
             <div className="add-filter-footer"><div onClick={this.props.hideMoreZipDemographics} className="add-filter-close-btn">close</div></div>
@@ -376,8 +376,8 @@ class MoreZipDemographics extends React.Component {
 
 class DemographicInfoItem extends React.Component {
 	render() {
-		
-	
+
+
 	return(
 		<div className="demographic-info-item animated fadeIn">
           <div className="demographic-info-title">{this.props.title}</div>

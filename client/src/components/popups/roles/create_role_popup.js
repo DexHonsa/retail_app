@@ -10,8 +10,8 @@ const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/up
 const items = [
   'Create Clients',
   'Create Users',
-  'Edit Existing Users',
-  'Create Roles'
+  'Access All Clients'
+
 ];
 
 class CreateRolePopup extends React.Component {
@@ -19,7 +19,7 @@ class CreateRolePopup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
       role_name: '',
       roles: [],
       role_accesses: [],
@@ -41,9 +41,9 @@ isValid(){
       [e.target.name] : e.target.value
     })
   }
-   
 
-  
+
+
 
   componentWillMount = () => {
     this.selectedCheckboxes = new Set();
@@ -72,7 +72,7 @@ isValid(){
           "role_name" : this2.state.role_name,
           "role_accesses" : role_accesses
         }
-      
+
         axios.post('/api/roles', data).then(function(res){
           this2.setState({
             roles: res.data
@@ -81,7 +81,7 @@ isValid(){
         })
       }
     }
-  
+
 
   createCheckbox = label => (
     <Checkbox
@@ -94,9 +94,9 @@ isValid(){
   createCheckboxes = () => (
     items.map(this.createCheckbox)
   )
-  
 
-  
+
+
 render(){
   const {role_name, errors} = this.state;
     return (
@@ -109,7 +109,7 @@ render(){
             <div className="create-role-badge" style={{display: 'inline-block'}}>
               <i className="fa fa-glass" />
             </div>*/}
-           
+
             <div className="form-row" style={{width: 400, display: 'inline-block'}}>
               <div>
                 <TextFieldGroup
