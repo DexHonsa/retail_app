@@ -5,6 +5,7 @@ var api = require('./routes/api');
 var config = require('./config.js');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
+var path = require('path');
 
 
 var app = express();
@@ -30,10 +31,15 @@ var app = express();
 
 
 
-app.use(serveStatic('public', {'index': ['index.html', 'index.htm']}))
+// app.use(serveStatic('public', {'index': ['index.html', 'index.htm']}))
 //app.use(express.static(__dirname + '/public'));
 //app.use(bodyParser());
-
+if (process.env.NODE_ENV === 'production') {
+var publicPath = path.resolve(__dirname, './client/build');
+app.use(express.static(publicPath));
+}else{
+app.use(serveStatic('public', {'index': ['index.html', 'index.htm']}))
+}
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // // parse application/json
