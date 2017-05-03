@@ -28,16 +28,16 @@ class UserSignup extends React.Component{
     return isValid;
   }
   onChange(e){
-  	console.log(e.target.name);
+  	
     this.setState({
       [e.target.name] : e.target.value
     })
   }
-  
-    
+
+
   submitUserSignup(e){
   	var this2 = this;
-    
+
     if(this.isValid()){
       e.preventDefault();
       this.setState({errors: {}});

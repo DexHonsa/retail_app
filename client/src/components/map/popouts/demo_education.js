@@ -17,14 +17,14 @@ class DemoEducation extends React.Component {
 	}
 	onBachelorsChange(val){
 		this.setState({bachelorsData : val})
-		console.log(val.value);
+		
 	}
-	
-	
+
+
 	addFilter(){
 		var title = "EducationBachelorOrGreater";
 		var bachelorsPercent = this.state.bachelorsData;
-		console.log(bachelorsPercent);
+
 		var filter = {"title" : title, "value" : bachelorsPercent.value}
 		this.props.addFilter(filter);
 		this.props.hideAddFilters();
@@ -32,7 +32,7 @@ class DemoEducation extends React.Component {
 	}
 	render() {
 
-		
+
         var bachelorsData = [
             { value: "0", label: '0%' },
                 { value: "0.05", label: '5%' },
@@ -55,13 +55,13 @@ class DemoEducation extends React.Component {
                 { value: "0.9", label: '90%' },
                 { value: "0.95", label: '95%' },
                 { value: "1", label: '100%' },
-            
+
         ];
 
-		
-		
-		
-		
+
+
+
+
 
 		return(
 				<div>
@@ -78,7 +78,7 @@ class DemoEducation extends React.Component {
 					                      onChange={this.onBachelorsChange.bind(this)}
 					                  />
 						         </div>
-						         
+
 					         </div>
 					        <div className="add-filter-footer"><div style={{marginLeft:'auto'}}><div onClick={this.addFilter.bind(this)} className="add-filter-add-btn">Add</div><div onClick={this.props.hideAddFilters} className="add-filter-close-btn">close</div></div></div>
 					      </div>

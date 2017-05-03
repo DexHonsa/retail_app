@@ -30,20 +30,20 @@ class CreateContact extends React.Component{
   	var this2 = this;
     if(this.isValid()){
       e.preventDefault();
-    
+
       var data = {
       	clientId : this.props.clientId,
       	contactName : this.state.contactName,
       	contactPhone : this.state.contactPhone,
       	contactEmail : this.state.contactEmail
       }
-      console.log(data);
-      
+    
+
       axios.put('/api/updateClientContact', data).then(function(res){
-      	
+
       	this2.props.hideCreateContact();
       })
-      
+
     }
   }
 	render(){

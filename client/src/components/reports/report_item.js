@@ -298,7 +298,7 @@ class ReportItem extends React.Component {
         <div className="report-item">
           <div className="report-item-top">
             <div className="report-item-details">
-              <div>{this.props.street} {this.props.city} </div><span style={{fontSize: '.8em', color: '#808080'}}>Option 1</span>
+              <div>{this.props.street} {this.props.city} </div><span style={{fontSize: '.8em', color: '#808080'}}><div className="send-report-btn">Email Report</div></span>
               <div className="report-item-user-likes">
               {userBadges}
                 {/*<div className="user-like-item">
@@ -318,6 +318,7 @@ class ReportItem extends React.Component {
                   <div className="user-like-title"><i className="fa fa-thumbs-up" /> Brad Guthry</div>
                 </div>*/}
               </div>
+
             </div>
             <div className="report-item-img" style={{backgroundImage:'url('+this.state.imgUrl+')'}} />
           </div>

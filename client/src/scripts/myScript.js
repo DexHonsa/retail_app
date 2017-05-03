@@ -7,7 +7,7 @@ var geocoder;
 var popup;
 
 $(document).arrive('#map', function() {
-   
+
     refreshMap();
     map.on('style.load', function() {
         addLayers();
@@ -33,12 +33,12 @@ function changeMap(val){
     map.on('style.load', function() {
         addLayers();
     });
-    
+
 }
 function removeSourcesAndLayers(){
     map.removeSource('zip_layer');
     map.removeSource('poi_markers');
-    
+
 }
 function getZipsFromBounds(callback){
         var bounds = map.getBounds();
@@ -93,7 +93,7 @@ function clearDrawnZips(){
     });
 }
 function drawFilteredZips(array){
-        
+
         var zipArray = []
         array.forEach(function(item){
             zipArray.push(item.ZipCode)
@@ -105,7 +105,7 @@ function drawFilteredZips(array){
                         item = "0" + item;
                     newArray.push(item);
                 })
-        
+
                 $.ajax({
                     type:'POST',
                     url: '/api/drawZips/',
@@ -113,7 +113,7 @@ function drawFilteredZips(array){
                     contentType: "application/json",
                     processData: false,
                     success: function(data){
-                       
+
                         map.setFilter("zip-border", null);
                         map.setFilter("zip-fill", null);
                         map.getSource('zip_layer').setData({
@@ -131,7 +131,8 @@ function refreshMap() {
         center: [-74.005941, 40.712784], // starting position
         zoom: 10 // starting zoom
     });
-    map.doubleClickZoom.disable();
+
+  
     draw = new window.MapboxDraw({
         displayControlsDefault: false,
         controls: {
@@ -166,9 +167,9 @@ function refreshMap() {
     });
     map.on('dragend', function() {
         updateMap();
-         
-         
-         
+
+
+
     });
     map.on('zoomend', function() {
         updateMap();
@@ -176,7 +177,7 @@ function refreshMap() {
     map.on('load', function() {
         $('.map-preloader').addClass('hide-loader');
         map.doubleClickZoom.disable();
-        
+
     });
 
     map.addControl(geocoder);
@@ -244,7 +245,7 @@ function refreshMap() {
     });
 }
 function addLayers(){
-    
+
         map.addSource('zip_layer', {
             "type": 'geojson',
             "data": {
@@ -367,7 +368,7 @@ function addLayers(){
         //     },
         //     "filter": ["==", "name", ""]
         // });
-        
+
         // map.addLayer({
         //     "id": "zip-fill-active",
         //     "type": "fill",
@@ -378,7 +379,7 @@ function addLayers(){
         //     },
         //     "filter": ["==", "ZCTA5CE10", ""]
         // });
-        
+
 
 
 
@@ -477,14 +478,14 @@ function addLayers(){
             map.setFilter("zip-fill-hover", ["==", "ZCTA5CE10", ""]);
         });
 
-       
+
 }
 function drawZip(zip) {
     $.ajax({
         type: "GET",
         url: "/api/zip/" + zip,
         success: function(data) {
-           
+
             map.setFilter("zip-border", null);
             map.setFilter("zip-fill", null);
             map.getSource('zip_layer').setData({
@@ -505,7 +506,7 @@ function drawZipAndFlyTo(zip){
         url: '/api/geocoder/' + zip,
         async : false,
         success: function(res){
-          
+
           var parse = JSON.parse(res.body);
           console.log(parse);
           lat = parse.results[0].geometry.location.lat;
@@ -719,7 +720,7 @@ function getMapPois(filters) {
 
     setTimeout(function() {
 
-            
+
         foursquarePois.forEach(function(item) {
             var source2 = {
                 "type": "Feature",
@@ -775,7 +776,7 @@ function getMapPois(filters) {
         });
 
     }, 1000)
-    
+
     return googlePois;
 
 

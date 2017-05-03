@@ -9,22 +9,22 @@ class KeyMetrics extends React.Component {
     this.state = {
       showPage: ""
     }
-    
+
   }
 
-   
- 
-  
-  
+
+
+
+
 
 
   render(){
 
     return (
       <main className="main">
-        
+
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
-        <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', height: 'calc(100vh - 70px)', padding: 0}}>
+        <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', minHeight: 'calc(100vh - 70px)', padding: 0}}>
           <div className="key-metrics-top">
             <div className="key-metrics-title"><h3>Key Metrics</h3><br />See the potential impact of your prospective locations on your key financial metrics.</div>
             <div className="client-selector-dropdown">

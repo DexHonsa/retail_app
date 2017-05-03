@@ -1,0 +1,149 @@
+/* CSS Document */
+
+.saved-search-img{
+	height:200px;
+	width:300px;
+
+	background-position: center;
+	background-size: cover;
+}
+.saved-search-title{
+	font-size: 25pt;
+	color:#469df5;
+	margin-left:20px;
+}
+.detail-tabs{
+	width:100%;
+	display: flex;
+	border-bottom:solid 1px #eaeaea;
+	margin-bottom:15px;
+	align-items: center;
+}
+.detail-tab{
+	padding:15px;
+	font-size: 12pt;
+	color:#808080;
+	border-bottom:solid 3px transparent;
+}
+.detail-tab:hover{
+	color:#000;
+	cursor: pointer;
+}
+.detail-tab.active{
+	color:#3080e8;
+	border-bottom:solid 3px #3080e8;
+}
+.input-segment{
+	padding:15px;
+}
+.input-segment-inputs{
+	display: -webkit-flex;
+   display: flex;
+
+   align-items: center;
+
+   justify-content: center;
+   /* You can set flex-wrap and flex-direction individually */
+
+   flex-direction: row;
+
+   flex-wrap: wrap;
+   /* Or do it all in one line with flex flow */
+
+   flex-flow: row wrap;
+   /* tweak the where items line up on the row */
+   /* valid values are: flex-start, flex-end, space-between, space-around, stretch */
+
+   align-content: flex-end;
+}
+.input-segment-item{
+
+	width:calc(50% - 50px);
+	margin-top:5px;
+	align-items:center;
+
+	border-bottom:solid 1px #eaeaea;
+	padding-left:10px;
+	position: relative;
+}
+.input-segment-item:nth-child(odd){
+	margin-right:50px;
+}
+.input-segment-item:nth-child(even){
+	margin-left:50px;
+}
+.input-segment-title{
+	font-size: 14pt;
+	color:#3080e8;
+	text-align: left;
+	padding-bottom:10px;
+	border-bottom:solid 2px #808080;
+	margin-bottom:15px;
+}
+.input-segment-item input{
+	float: right;
+	margin-left: auto;
+	background:#fff;
+	text-align: right;
+	border:none;
+	padding:10px;
+	font-size: 12pt;
+}
+.input-title{
+	font-size: 12pt;
+	color:#808080;
+	float: left;
+	font-weight: bold;
+	margin-top:10px;
+}
+.input-active-bar{
+	height:2px;
+	background:#3080e8;
+	width:100%;
+	position: absolute;
+	bottom:0;
+	left:0;
+	transform:scaleX(0);
+	transition: all .2s ease;
+	transform-origin: left;
+}
+.input-segment-item input:focus + .input-active-bar{
+	transform:scaleX(1);
+}
+.input-segment-item input:focus + .input-title{
+	color:#3080e8 !important;
+}
+.add-document-dropdown-area{
+	padding:50px;
+	background:#eaeaea;
+	border:dashed 1.5px #808080;
+	color:#8A8A8A;
+	font-size: 14pt;
+	margin-top:15px;
+}
+.related-document-item{
+	text-align: left;
+	padding:12px;
+	background:#eaeaea;
+	margin-bottom:5px;
+	color:#000;
+	font-size: 12pt;
+	display: flex;
+	align-items: center;
+}
+.download-btn{
+	margin-left: auto;
+	background:#fff;
+	padding:6px 15px;
+	border:solid 1px #e0e0e0;
+	border-radius: 4px;
+	font-size: 10pt;
+	color:#808080;
+}
+.download-btn:hover{
+	cursor: pointer;
+	color:#000;
+}
+.details-container{
+	margin-top:35px;
+}

@@ -3,11 +3,12 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 import $ from "jquery";
 import {connect} from "react-redux";
+import {Link} from 'react-router';
 import CreateContact from './create_client_contact';
 
 class ViewClient extends React.Component{
     constructor(props) {
-    super(props);    
+    super(props);
 
     this.state = {
       id : this.props.params.id,
@@ -26,7 +27,7 @@ class ViewClient extends React.Component{
   getClient(){
     var this2 = this;
     axios.get('/api/clients/' + this.props.params.id).then(function(res){
-      console.log(res.data.Client);
+
       this2.setState({
         clientContacts: res.data.Client.contacts
       })
@@ -42,7 +43,7 @@ class ViewClient extends React.Component{
     })
     $.getJSON('/api/clients/' + this.state.id )
       .then((data) => {
-        this.setState({ 
+        this.setState({
           client_name : data.Client.client_name,
           city : data.Client.city,
           address : data.Client.address,
@@ -72,11 +73,11 @@ class ViewClient extends React.Component{
         deleteContact: true
       }
     axios.put('/api/updateClientContact', data).then(function(res){
-        
+
         this2.hideCreateContact();
       })
 }
-  
+
   render(){
     var searches;
     var createContactPopup;
@@ -88,17 +89,17 @@ class ViewClient extends React.Component{
     const {contactName, contactEmail, contactPhone, errors} = this.state;
     if(this.state.searches.length > 0){
       searches = this.state.searches.map(function(data, i){
-        return <div key={i} className="saved-location-item">
+        return <Link to={"/property/propertydetails" + '/' + data.id}><div key={i} className="saved-location-item">
                     <div className="saved-location-img" style={{backgroundImage: 'url('+data.imgUrl+')'}}/>
                     <div className="saved-location-title">{data.street}<br /> <span style={{fontSize: '10pt'}}>{data.city}</span></div>
                     <i className="fa fa-map-marker" />
-                  </div>
+                  </div></Link>
       })
     }else{
       searches = <div className="no-searches">No Saved Searches</div>;
     }
     return (
-      
+
         <main className="main">
 
         {createContactPopup}
@@ -144,12 +145,12 @@ class ViewClient extends React.Component{
                     <div className="field-title">Address</div>
                     <div className="field-value">{this.state.address + ' ' + this.state.state + ', ' + this.state.zip}</div>
                   </div>
-                  
+
                 </div>
                 <div className="saved-locations-container">
                   <div className="field-header">Saved Searches</div>
                   {searches}
-                  
+
                 </div>
               </div>
               <div className="col-sm-4">
@@ -161,21 +162,21 @@ class ViewClient extends React.Component{
                             <div className="client-contact-icons"> <i onClick={(index) => this.deleteClientContact(i).bind(this)} className="fa fa-times-rectangle" /></div>
                           </div>
                   },this)}
-                  
+
 
                   <div className="client-contact-create">
                     <div onClick={this.showCreateContact.bind(this)} className="client-contact-create-title">Add Contact</div>
-                    
+
                   </div>
-                  
+
                 </div>
               </div>
             </div>
              </ReactCSSTransitionGroup>
-          </div>         
+          </div>
         </div>
       </main>
-      
+
     );
   }
   }

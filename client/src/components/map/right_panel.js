@@ -5,7 +5,8 @@ import Client from '../../scripts/myScript.js';
 import InsertFinancialInfo from './insert_financial_info';
 import { connect } from 'react-redux';
 //import ReactTimeAgo from 'react-time-ago';
-import Linkify from 'react-linkify'
+import Linkify from 'react-linkify';
+import {Link} from 'react-router';
 
 class RightPanel extends React.Component {
   constructor(props) {
@@ -43,19 +44,19 @@ class RightPanel extends React.Component {
         userId: this.props.auth.user.id
       }
         axios.put('/api/incrementViews', data).then(function(data){
-          console.log(data);
+          
         })
     }
   }
   getTwitterFeed(){
     var this2 = this;
-    
+
     axios.get('/api/twitter/' + this.state.longitude + "/" + this.state.latitude).then(function(res){
-      console.log(res.data);
+
       this2.setState({
         twitterFeed : res.data.tweets.statuses
       })
-     
+
     })
   }
   getDemographics() {
@@ -90,7 +91,7 @@ class RightPanel extends React.Component {
 
   componentDidMount() {
  //var this2 = this;
- 
+
    Client.drawZip(this.state.zip);
     this.setState({
       latitude: this.props.latitude,
@@ -103,7 +104,7 @@ class RightPanel extends React.Component {
     })
 
       this.getTwitterFeed();
-  
+
     if(this.state.searchId !== "" || this.state.searchId !== "N/A") {
       $.getJSON('/api/searches/' + this.state.searchId)
         .then((data) => {
@@ -150,7 +151,7 @@ class RightPanel extends React.Component {
        that.setState({
         pois: poiArray
        });
-      
+
     },1000)
   }
   editLeaseInfo() {
@@ -241,14 +242,14 @@ class RightPanel extends React.Component {
   }
   addToSearches() {
     var this2 = this;
-   
-      
+
+
       var lat = this.state.latitude;
       var lng = this.state.longitude;
       var street = this.state.street;
       var city = this.state.city;
       var zip = this.state.zip;
-     
+
       var img_path = "https://maps.googleapis.com/maps/api/streetview?location=" + this.state.latitude + "," + this.state.longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs";
       var data = {
         "creatorId": this.props.auth.user.id,
@@ -272,14 +273,14 @@ class RightPanel extends React.Component {
         url: "/api/searches",
         data: JSON.stringify(data),
         success: function(data) {
-         
+
           Client.createSavedMarker(lat, lng, data.generated_keys[0], street);
           this2.props.hide();
         },
         dataType: "json",
         contentType: "application/json"
       });
-    
+
   }
   addFinancialInfo(){
     this.setState({
@@ -304,7 +305,7 @@ class RightPanel extends React.Component {
     var addFinancialInfoBtn;
     if(this.state.addFinancialInfo){
       insertFinancialInfo = <InsertFinancialInfo saveFinancialInfo={this.saveFinancialInfo.bind(this)} />
-      
+
     }
     if(this.state.leaseRate !== "") {
       leaseRate = this.state.leaseRate;
@@ -364,7 +365,7 @@ class RightPanel extends React.Component {
                     }
     var basicInfoTable = <div className="view-result-demographic-table">
                         <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Basic Information
-                        
+
                         </div>
                         <ul className="demographics-list">
                           <li>
@@ -387,7 +388,7 @@ class RightPanel extends React.Component {
                             <div className="demo-title">Latitude</div>
                             <div className="demo-value">{this.state.latitude}</div>
                           </li>
-                          
+
                         </ul>
                       </div>;
     return(
@@ -397,7 +398,7 @@ class RightPanel extends React.Component {
             <div onClick={() => this.props.hide(this.props.markerId)} className="view-result-close"><i className="fa fa-chevron-left" /></div>
             <span>{this.trunc(this.state.street + this.state.city)}</span>
           </div>
-          <div className="view-result-img" style={{backgroundImage: "url(https://maps.googleapis.com/maps/api/streetview?location="+this.state.latitude+","+this.state.longitude+"&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)"}} />
+          <Link to={'/property/propertydetails' + '/' + this.state.searchId}><div className="view-result-img" style={{backgroundImage: "url(https://maps.googleapis.com/maps/api/streetview?location="+this.state.latitude+","+this.state.longitude+"&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)"}} /></Link>
           <div className="view-result-details">
             <div className="view-result-title">{this.state.street + this.state.city}<br /></div>
             {/*<div className="view-result-demographic-table">
@@ -423,7 +424,7 @@ class RightPanel extends React.Component {
                   <div className="demo-title">Female Population Count</div>
                   <div className="demo-value">{this.numberWithCommas(this.state.femalePop)}</div>
                 </li>
-                
+
               </ul>
             </div>*/}
             {addButton}
@@ -460,13 +461,13 @@ class RightPanel extends React.Component {
                         return <PoiItem findPoi={this.findPoi.bind(this)} name={data.name} type={data.types[0]}  key={i} rating={data.rating} lat={data.geometry.location.lat()} lng={data.geometry.location.lng()}  />;
                       })
                     }
-                
+
               </ul>
             </div>*/}
 
-            
+
             {addFinancialInfoBtn}
-            
+
           </div>
         </div>
     );

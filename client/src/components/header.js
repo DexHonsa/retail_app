@@ -117,7 +117,7 @@ hideChangePasswordPopup(){
 render(){
     var headerStyle
     if(this.props.auth.isAuthenticated == false){
-      console.log('hit');
+    
        headerStyle = {display:'none'};
     }
     var clientDropdown;
@@ -158,7 +158,7 @@ render(){
             <Link to="/admin/users" activeClassName="active">Admin</Link>
 
             <Link to="/map" activeClassName="active">Map</Link>
-            {/*<Link to="/key_metrics" activeClassName="active">Key Metrics</Link>*/}
+            <Link to="/keymetrics" activeClassName="active">Key Metrics</Link>
             <Link to="/rankings/population" activeClassName="active">Rankings</Link>
           </div>
           <ul className="user-nav">

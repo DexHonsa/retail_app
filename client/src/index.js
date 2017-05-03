@@ -7,6 +7,7 @@ import {Provider} from 'react-redux';
 import App from './components/app';
 import {connect} from 'react-redux';
 
+
 import LoginHome from './components/login/login';
 import Admin from './components/admin';
 import Map from './components/map/map';
@@ -18,14 +19,17 @@ import Roles from './components/roles/roles';
 import UserProfile from './components/user_profile/user_profile';
 import Messages from './components/messages/messages';
 import Rankings from './components/rankings/rankings';
-import KeyMetrics from './components/key_metrics/key_metrics';
+import KeyMetrics from './components/key_metrics/key_metrics_map';
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import setAuthoizationToken from './utils/set_authorization_token';
 import RootReducer from './rootreducer';
 import jwtDecode from 'jwt-decode';
 import { setCurrentUser } from './actions/auth_actions';
-
+import Property from './components/property/property';
+import PropertyDetails from './components/property/property_details';
+import FinancialDetails from './components/property/financial_details';
+import LeaseInformation from './components/property/lease_information';
 
 
 import '../style/admin.css';
@@ -37,6 +41,7 @@ import '../style/key_metrics.css';
 import '../style/messages.css';
 import '../bootstrap/css/bootstrap.min.css';
 import '../style/font-awesome.min.css';
+import '../style/view_property.css';
 
 
 const store = createStore(
@@ -83,7 +88,13 @@ ReactDOM.render(
         <Route path="/admin/clients/:id" component={ViewClient}></Route>
 		<Route path="map" component={Map}></Route>
         <Route path="map/:zip" component={Map}></Route>
-        <Route path="key_metrics" component={KeyMetrics}></Route>
+        <Route path="keymetrics" component={KeyMetrics}></Route>
+        <Route path="/property/:id" component={Property}>
+          <IndexRoute Component={PropertyDetails}/>
+          <Route path="/property/propertydetails/:id" component={PropertyDetails}></Route>
+          <Route path="/property/financialdetails/:id" component={FinancialDetails}></Route>
+          <Route path="/property/leaseinformation/:id" component={LeaseInformation}></Route>
+        </Route>
     	</Route>
 
 

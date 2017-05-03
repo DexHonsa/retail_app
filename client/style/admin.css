@@ -942,3 +942,15 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
     display: inline-block;
     border-radius: 3px;
 }
+.send-report-btn{
+	background:#3080e8;
+	padding:7px 15px;
+	border-radius: 3px;
+	font-size: 12pt;
+	color:#fff;
+	display: inline-block;
+}
+.send-report-btn:hover{
+	background:#469df5;
+	cursor: pointer;
+}

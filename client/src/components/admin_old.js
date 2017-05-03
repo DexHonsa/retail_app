@@ -21,9 +21,9 @@ class Admin extends React.Component {
     })
 
   }
- 
-  
-  
+
+
+
 
 
   render(){
@@ -34,7 +34,7 @@ class Admin extends React.Component {
       if(this.state.showPage == "users"){
         page =  <Users />;
       }
-     
+
 
 
     return (
@@ -160,7 +160,7 @@ class Admin extends React.Component {
           </div>
         </div>
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
-          <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', height: 'calc(100vh - 70px)', padding: 0}}>
+          <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', minHeight: 'calc(100vh - 70px)', padding: 0}}>
             <div className="retail-tabs">
               <div onClick={() => this.onNav('clients')} className="retail-tab">Clients</div>
               <div onClick={() => this.onNav('users')} className="retail-tab" >Users</div>
@@ -170,8 +170,8 @@ class Admin extends React.Component {
             <div>
             {page}
             </div>
-            
-           
+
+
           </div>
         </div>
       </main>

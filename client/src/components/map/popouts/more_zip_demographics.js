@@ -14,6 +14,7 @@ class MoreZipDemographics extends React.Component {
 		}
 	}
 	componentDidMount() {
+
 		var that = this;
 		$.ajax({
             type: "GET",
@@ -21,30 +22,31 @@ class MoreZipDemographics extends React.Component {
             success: function(data) {
             	var tempArr = [];
 				var s = data.data[0];
-				console.log(s);
-
-				// $.each(s,function(i,v){
-				// 	var i2 = i.replace( /([a-z])([A-Z])/g, "$1 $2");
-				// 	i2 = i2.replace(/Population/, "Population ");
-				// 	i2 = i2.replace(/to/, " - ");
-				// 	i2 = i2.replace( /([a-z])([0-9])/g, "$1 $2");
-				// 	i2 = i2.replace( /MSA/, "MSA ");
-				// 	i2 = i2.replace( /USD/, "USD ");
-				// 	i2 = i2.replace( /FIPS/, "FIPS ");
-				// 	i2 = i2.replace( /CSA/, "CSA ");
-				// 	i2 = i2.replace( /CBSA/, "CBSA ");
-				// 	i2 = i2.replace( /Mo - r/, "Motor");
-				// 	i2 = i2.replace( /Plus/, " Plus ");
-				// 	i2 = i2.replace( /plus/, " plus ");
 
 
-				// 	tempArr.push([i2,v]);
-				// });
+				$.each(s,function(i,v){
+					var i2 = i.replace( /([a-z])([A-Z])/g, "$1 $2");
+					i2 = i2.replace(/Population/, "Population ");
+					i2 = i2.replace(/to/, " - ");
+					i2 = i2.replace( /([a-z])([0-9])/g, "$1 $2");
+					i2 = i2.replace( /MSA/, "MSA ");
+					i2 = i2.replace( /USD/, "USD ");
+					i2 = i2.replace( /FIPS/, "FIPS ");
+					i2 = i2.replace( /CSA/, "CSA ");
+					i2 = i2.replace( /CBSA/, "CBSA ");
+					i2 = i2.replace( /Mo - r/, "Motor");
+					i2 = i2.replace( /Plus/, " Plus ");
+					i2 = i2.replace( /plus/, " plus ");
+
+
+					tempArr.push([i2,v]);
+				});
 
                 that.setState({
                   imgUrl: "https://maps.googleapis.com/maps/api/streetview?location=" + data.data[0].Latitude + "," + data.data[0].Longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs",
                   demographics: data.data[0]
                 });
+
             },
             contentType: "application/json"
         });
@@ -262,14 +264,45 @@ class MoreZipDemographics extends React.Component {
 
        }
 
+		// 	 var filteredDemographics
+		var demographicsList;
+		var demo = this.state.demographics;
+		 if(Object.keys(this.state.demographics).length > 0){
+			 //console.log(this.state.demographics);
+				demographicsList = Object.keys(demo).map(function(item, i){
+					var i2 = item.replace( /([a-z])([A-Z])/g, "$1 $2");
+					i2 = i2.replace(/Population/, "Population ");
+					i2 = i2.replace(/to/, " - ");
+					i2 = i2.replace( /([a-z])([0-9])/g, "$1 $2");
+					i2 = i2.replace( /MSA/, "MSA ");
+					i2 = i2.replace( /USD/, "USD ");
+					i2 = i2.replace( /FIPS/, "FIPS ");
+					i2 = i2.replace( /CSA/, "CSA ");
+					i2 = i2.replace( /CBSA/, "CBSA ");
+					i2 = i2.replace( /Mo - r/, "Motor");
+					i2 = i2.replace( /Plus/, " Plus ");
+					i2 = i2.replace( /plus/, " plus ");
+
+						if(demo[item].value != undefined){
+							return <DemographicInfoItem key={i} title={i2} value={demo[item].value} />;
+						}else{
+							return <DemographicInfoItem key={i} title={i2} value={demo[item]} />;
+						}
 
 
-		// var filteredDemographics = this.state.demographics.filter(
-  //       (data) => {
+					},this)
 
-  //         return data[0].toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
-  //       }
-  //       );
+
+
+		//  filteredDemographics = this.state.demographics.filter(
+    //     (data) => {
+		//
+    //       return data[0].toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+    //     }
+    //     );
+		// 	}else{
+		// 		filteredDemographics = [];
+		 	}
 
 		return(
 				<div className="modal-overlay">
@@ -353,15 +386,13 @@ class MoreZipDemographics extends React.Component {
                     </div>
                   </div>
                 </div>
-              {/*  <div className="other-demographics">
+                <div className="other-demographics">
                   <div style={{fontSize: '12pt', margin: 15}}>All Demographic Items</div>
                   <div className="demographic-info-search"><input onChange={this.onSearchChange.bind(this)} placeholder="Search" type="text" /></div>
                   <div className="demographic-list-container">
-                    filteredDemographics.map(function(data,i){
-			                	return <DemographicInfoItem key={i} title={data[0]} value={data[1]} />;
-			                },this)
+                    {demographicsList}
                   </div>
-                </div>*/}
+                </div>
               </div>
             </div>
             <div className="add-filter-footer"><div onClick={this.props.hideMoreZipDemographics} className="add-filter-close-btn">close</div></div>

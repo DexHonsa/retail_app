@@ -51,12 +51,12 @@ class Rankings extends React.Component {
       clientSearchesRankings: []
     })
     this2.getClientSearches(this2.props.auth.user.id, this2.props.client.clientId, nextProps.route.field);
-    
+
     this.getRankingsResults(nextProps.route.field);
  }
-    
-    
-    
+
+
+
   }
 
   getResultsDetails(zipCode, callback){
@@ -65,9 +65,9 @@ class Rankings extends React.Component {
         url: '/api/geocoder/' + zipCode,
         async : true,
         success: function(res){
-          
+
           var parse = JSON.parse(res.body);
-         
+
           var address = parse.results[0].formatted_address;
           callback(address);
         }
@@ -83,7 +83,7 @@ class Rankings extends React.Component {
       var city = item.City;
       var state = item.StateAbbreviation;
       var zip = item.ZipCode;
-     
+
        resultsInfo[i] = {
          // "img": img_path,
           "value":value,
@@ -96,12 +96,12 @@ class Rankings extends React.Component {
         resultsInfo: newArray
       });
       if(i === 9){
-        
+
         this2.setState({
           resultsDone: true
         })
-       
-        
+
+
       }
     })
   }
@@ -126,19 +126,19 @@ class Rankings extends React.Component {
         results: res.data.data
       })
       this2.getResultsInfo(field);
-     
+
     })
-    
-    
+
+
   }
   getClientSearchesRankings(zips, field){
     var this2 = this;
     axios.post('/api/getSearchRankings', {'zips': zips, 'field': field }).then(function(res){
-    
+
       this2.setState({
         clientSearchesRankings: res.data.data
       })
-    
+
     })
 
   }
@@ -147,14 +147,14 @@ class Rankings extends React.Component {
       if(this.state.resultsDone){
 
         results = this.state.results.map(function(data, i){
-                                
+
                                return <div key={i} className="rankings-results-item animated fadeInUp">
-                                  
+
                                   <div className="rankings-results-item-title"><Link to={'/map/' + data.ZipCode}>{this.state.resultsInfo[i][i].address}</Link><br /> <span style={{fontSize: '.8em', color: '#808080'}}>{this.state.resultsInfo[i][i].field}: {this.state.resultsInfo[i][i].value} </span></div>
                                   <div className="rankings-results-item-rank">#{i+1}</div>
                                 </div>
                               },this)
-        
+
       }else{
 
         results = <div><img style={{width: 35}} src={spinner} /></div>;
@@ -180,7 +180,7 @@ class Rankings extends React.Component {
               }else{
                   return (
                   <div key={i}>
-                  
+
                   <div className="ranking-search-item animated fadeInUp">
                         <div className="ranking-search-item-img" style={{backgroundImage: 'url('+item.imgUrl+')'}} />
                         <div className="ranking-search-item-title">{item.street}<br /><span style={{fontSize: '.8em', color: '#aeaeae'}}>{item.city}</span></div>
@@ -190,36 +190,36 @@ class Rankings extends React.Component {
                   </div>);
                }
                 },this)
-        
+
       }else{
 
         clientResults = <div className="rankings-saved-searches-title">Select a Client</div>;
       }
 
-      
+
 		return(
 			<main className="main">
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
           <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', padding: 0, paddingBottom: 150}}>
             <div className="retail-tabs">
-           
+
               <Link to="/rankings/population" data-tab-label="clients" className="retail-tab" activeClassName="active">Population</Link>
               <Link to="/rankings/households" data-tab-label="clients" className="retail-tab" activeClassName="active">Households</Link>
               <Link to="/rankings/income" data-tab-label="users" className="retail-tab" activeClassName="active">Household Income</Link>
               <Link to="/rankings/education" data-tab-label="users" className="retail-tab" activeClassName="active">Education</Link>
-              <div data-tab-label="users" className="retail-tab">Custom</div>
+              {/*}<div data-tab-label="users" className="retail-tab">Custom</div>*/}
             </div>
             {/*Rankings*/}
             <div>
               <div className="rankings-saved-searches">
-                
+
                 {clientResults}
-                
+
               </div>
               <div className="rankings-results">
 
                 {results}
-                
+
                 <div className="rankings-results-item">
                   <div className="load-more-btn">load more</div>
                 </div>

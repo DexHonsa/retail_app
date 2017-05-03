@@ -8,6 +8,7 @@ import img from '../../../images/camera_upload.jpg';
 import FileUploaderUser from './file_uploader_user';
 import EditUserPopup from '../popups/users/edit_user_popup';
 import CreateContact from './create_user_contact';
+import {Link} from 'react-router';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
@@ -57,7 +58,7 @@ class UserProfile extends React.Component{
       })
     }
 
-   
+
 		axios.get('/api/users/' + this.state.userId).then(function(res){
       console.log(res);
 			this2.setState({
@@ -113,8 +114,8 @@ class UserProfile extends React.Component{
         }
 
 
-        
-      
+
+
     });
   }
   hideEditUserPopup(){
@@ -143,7 +144,7 @@ class UserProfile extends React.Component{
         deleteContact: true
       }
     axios.put('/api/updateUserContact', data).then(function(res){
-        
+
         this2.hideCreateContact();
       })
 }
@@ -168,11 +169,11 @@ class UserProfile extends React.Component{
      }
     if(this.state.searches.length > 0){
       searches = this.state.searches.map(function(data, i){
-        return <div key={i} className="saved-location-item">
+        return <Link key={i} to={"/property/propertydetails" + '/'+ data.id}><div  className="saved-location-item">
                     <div className="saved-location-img" style={{backgroundImage: 'url('+data.imgUrl+')'}}/>
                     <div className="saved-location-title">{data.street}<br /> <span style={{fontSize: '10pt'}}>{data.city}</span></div>
                     <i className="fa fa-map-marker" />
-                  </div>
+                  </div></Link>
       })
     }else{
       searches = <div className="no-searches">No Saved Searches</div>;
@@ -187,7 +188,7 @@ class UserProfile extends React.Component{
                   </div>;
     }else{
       editBtn = <div onClick={this.showEditUserPopup.bind(this)} className=" load-more-btn">Edit</div>;
-      
+
     }
 		}else{
       if(this.state.userId === this.props.auth.user.id){
@@ -212,12 +213,12 @@ class UserProfile extends React.Component{
           />
         }
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
-          <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', height: 'calc(100vh - 70px)', padding: 0}}>
+          <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', minHeight: 'calc(100vh - 70px)', padding: 0}}>
             <div className="view-client-top">
               <div className="view-client-logo-container">
                 <div className="view-client-logo-img" style={{backgroundImage: 'url('+this.state.user.user_img_path+')'}} />
                 {changePictureBtn}
-                
+
               </div>
 
               <div className="view-client-title">{this.state.user.first_name} {this.state.user.last_name}<br /><span style={{fontSize: '15pt', color: '#808080'}}>{this.state.user.role}</span></div>
@@ -243,10 +244,10 @@ class UserProfile extends React.Component{
                 <div className="saved-locations-container">
                   <div className="field-header">Saved Searches</div>
                   {searches}
-                  
+
                 </div>
               </div>
-              
+
               <div className="col-sm-4">
                 <div className="client-contacts">
                   <div className="client-contact-header">Related Contacts</div>

@@ -99,6 +99,9 @@ app.route('/api/searches').post(api.addSearch);
 app.route('/api/searches/:id').delete(api.deleteSearch);
 app.route('/api/searches/:id').put(api.editSearch);
 
+//Property API
+app.route('/api/UpdateProperty/:id').put(api.UpdateProperty);
+
 // User API
 app.route('/api/signUpUser').post(api.signUpUser);
 app.route('/api/getUsers/:id').get(api.getUsers);
