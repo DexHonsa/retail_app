@@ -10,7 +10,7 @@ class DemoHome extends React.Component {
 		          <div className="filter-type-container">
 		            <div className="add-filter-row">
 		              <div onClick={() => this.props.updatePage("crime")} className="add-filter-type">Crime</div>
-		              <div onClick={() => this.props.updatePage("population")} className="add-filter-type">Popuplation</div>
+		              <div onClick={() => this.props.updatePage("population")} className="add-filter-type">Population</div>
 		              <div onClick={() => this.props.updatePage("ethnicity")} className="add-filter-type">Ethnicity</div>
 		            </div>
 		            <div className="add-filter-row">
