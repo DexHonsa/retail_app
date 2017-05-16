@@ -7,7 +7,7 @@
          url('../fonts/proximanova-regular-webfont.ttf') format('truetype'),
          url('../fonts/proximanova-regular-webfont.svg#proxima_nova') format('svg');*/
     font-weight: normal;
-	
+
     font-style: normal;
 
 }
@@ -51,7 +51,7 @@ body {
 	background-image:url('../images/map_bg.png');
 	background-size: cover;
 	color: #000;
-	
+
 	min-width: 320px;
 	height:calc(100vh - 50px);
 	-webkit-font-smoothing: subpixel-antialiased;
@@ -64,12 +64,12 @@ a { color: #469df5; text-decoration: none; cursor: pointer;	transition: color .2
 a:hover { text-decoration: none; }
 a img { border: 0; }
 
-input, 
-textarea, 
+input,
+textarea,
 select {  font-family: 'proxima_nova', sans-serif; }
 textarea { overflow: auto; resize: none; -webkit-overflow-scrolling: touch; }
 
-.mobile input, 
+.mobile input,
 .mobile textarea { -webkit-appearance: none; border-radius: 0; box-shadow: none; }
 .mobile input[type="checkbox"] { -webkit-appearance: checkbox; }
 .mobile input[type="radio"] { -webkit-appearance: radio; }
@@ -285,7 +285,7 @@ ul.social-feed li .post-body p { margin: 0; }
 @media (max-width: 1023px) {
 	.widgets { width: 40%; clear: left; }
 	.content { width: 60%; }
-	
+
 	.user-info .avatar { width: 60px; height: 60px; }
 	.user-info .welcome-text h3 { font-size: 16px; }
 }
@@ -313,3 +313,7 @@ ul.social-feed li .post-body p { margin: 0; }
 #google-map{
 	display: none !important;
 }
+.mapboxgl-popup {
+        max-width: 400px !important;
+
+    }

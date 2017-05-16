@@ -40,7 +40,7 @@ class LoginForm extends React.Component {
 			e.preventDefault();
 			this.setState({errors: {}, isLoading: true});
 			this.props.userLogin(this.state).then(
-				(res) => browserHistory.push('/admin/users'),
+				(res) => browserHistory.push('/map'),
 				(err) => this.setState({errors: err.response.data.errors, isLoading: false})
 				);
 		}

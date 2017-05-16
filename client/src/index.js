@@ -30,6 +30,15 @@ import Property from './components/property/property';
 import PropertyDetails from './components/property/property_details';
 import FinancialDetails from './components/property/financial_details';
 import LeaseInformation from './components/property/lease_information';
+import Terms from './components/property/lease_abstract/terms';
+import Revenue from './components/property/lease_abstract/revenue';
+import Capex from './components/property/lease_abstract/capex';
+import Options from './components/property/lease_abstract/options';
+import Clauses from './components/property/lease_abstract/clauses';
+import Documents from './components/property/lease_abstract/documents';
+import Insurance from './components/property/lease_abstract/insurance';
+import Tenant from './components/property/lease_abstract/tenant';
+
 
 
 import '../style/admin.css';
@@ -93,7 +102,16 @@ ReactDOM.render(
           <IndexRoute Component={PropertyDetails}/>
           <Route path="/property/propertydetails/:id" component={PropertyDetails}></Route>
           <Route path="/property/financialdetails/:id" component={FinancialDetails}></Route>
-          <Route path="/property/leaseinformation/:id" component={LeaseInformation}></Route>
+          <Route path="/property/leaseinformation/:id" component={LeaseInformation}>
+            <Route path="/property/leaseinformation/terms/:id" component={Terms}></Route>
+            <Route path="/property/leaseinformation/revenue/:id" component={Revenue}></Route>
+            <Route path="/property/leaseinformation/capex/:id" component={Capex}></Route>
+            <Route path="/property/leaseinformation/options/:id" component={Options}></Route>
+            <Route path="/property/leaseinformation/clauses/:id" component={Clauses}></Route>
+            <Route path="/property/leaseinformation/documents/:id" component={Documents}></Route>
+            <Route path="/property/leaseinformation/insurance/:id" component={Insurance}></Route>
+            <Route path="/property/leaseinformation/tenant/:id" component={Tenant}></Route>
+          </Route>
         </Route>
     	</Route>
 

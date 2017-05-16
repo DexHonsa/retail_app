@@ -18,6 +18,8 @@ class RightPanel extends React.Component {
       street: this.props.street,
       city: this.props.city,
       zip: this.props.zip,
+      listingId:this.props.listingId,
+      isListing:false,
       medianAge: "",
       averageIncome: "",
       medianIncome: "",
@@ -33,7 +35,8 @@ class RightPanel extends React.Component {
       pois: [],
       poi_filters: this.props.poiFilters,
       addFinancialInfo : false,
-      twitterFeed: []
+      twitterFeed: [],
+      spaces:[]
     }
   }
   incrementViews(){
@@ -44,7 +47,7 @@ class RightPanel extends React.Component {
         userId: this.props.auth.user.id
       }
         axios.put('/api/incrementViews', data).then(function(data){
-          
+
         })
     }
   }
@@ -88,10 +91,26 @@ class RightPanel extends React.Component {
         })
       });
   }
-
+  getListingInfo(){
+    var this2 = this;
+    axios.get('https://api.realmassive.com/buildings'+ '/' + this.state.listingId + '/spaces').then(function(res){
+      console.log(res.data);
+      this2.setState({
+        spaces:res.data
+      })
+    })
+  }
   componentDidMount() {
  //var this2 = this;
+  if(this.state.listingId !== undefined){
 
+    this.setState({
+      isListing:true
+    })
+    this.getListingInfo();
+  }else{
+
+  }
    Client.drawZip(this.state.zip);
     this.setState({
       latitude: this.props.latitude,
@@ -303,6 +322,30 @@ class RightPanel extends React.Component {
     var buildingSize;
     var insertFinancialInfo;
     var addFinancialInfoBtn;
+    var spaceOptions;
+    var spacesList;
+    if(Object.keys(this.state.spaces).length > 0){
+      spaceOptions = <div>Spaces available: {this.state.spaces.meta.count}</div>;
+      spacesList = <div className="view-result-demographic-table">
+        <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Spaces Available for Lease</div>
+        <ul className="demographics-list">
+          {this.state.spaces.data.map(function(data, i){
+            return <li>
+              <div className="demo-title">{data.attributes.space_type}</div>
+              <div className="demo-value">{Math.round(data.attributes.space_size.value)} SF</div>
+            </li>;
+          },this)}
+
+
+        </ul>
+      </div>
+
+
+
+
+    }
+
+
     if(this.state.addFinancialInfo){
       insertFinancialInfo = <InsertFinancialInfo saveFinancialInfo={this.saveFinancialInfo.bind(this)} />
 
@@ -400,7 +443,10 @@ class RightPanel extends React.Component {
           </div>
           <Link to={'/property/propertydetails' + '/' + this.state.searchId}><div className="view-result-img" style={{backgroundImage: "url(https://maps.googleapis.com/maps/api/streetview?location="+this.state.latitude+","+this.state.longitude+"&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)"}} /></Link>
           <div className="view-result-details">
+
             <div className="view-result-title">{this.state.street + this.state.city}<br /></div>
+            {spaceOptions}
+            {spacesList}
             {/*<div className="view-result-demographic-table">
               <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Block Demographics</div>
               <ul className="demographics-list">

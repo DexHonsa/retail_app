@@ -18,7 +18,7 @@ class LoginHome extends React.Component {
 	}
 componentDidMount() {
 		if(this.props.auth.isAuthenticated){
-			browserHistory.push('/admin/users')
+			browserHistory.push('/map')
 		}else{
 
 		}
@@ -28,7 +28,7 @@ componentDidMount() {
 
 		return(
 			<div className="wrapper">
-		        
+
 		        <div className="stage">
 		          <div className="main-message">Tenant Relationships Redefined.<br /><span style={{fontSize: '30pt'}}>Site selection made easy.</span></div>
 		          <div className="login-container">

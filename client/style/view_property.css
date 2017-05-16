@@ -72,6 +72,15 @@
 .input-segment-item:nth-child(even){
 	margin-left:50px;
 }
+.input-segment-table-item{
+	width:100%;
+	margin-top:5px;
+	align-items:center;
+	border-bottom:solid 1px #eaeaea;
+	padding-left:10px;
+	position: relative;
+	overflow:auto;
+}
 .input-segment-title{
 	font-size: 14pt;
 	color:#3080e8;
@@ -87,6 +96,29 @@
 	text-align: right;
 	border:none;
 	padding:10px;
+	font-size: 12pt;
+}
+.input-segment-table-item input{
+	float: right;
+	margin-left: auto;
+	background:#fff;
+	text-align: right;
+	border:none;
+	padding:10px;
+	font-size: 12pt;
+	width:100%;
+}
+.input-segment-table-item textarea{
+
+	width:100%;
+	float: right;
+	margin-left: auto;
+	background:#fff;
+	text-align: left;
+	border:solid 1px #eaeaea;
+	height:200px;
+	padding:10px;
+	margin-bottom:10px;
 	font-size: 12pt;
 }
 .input-title{
@@ -107,7 +139,7 @@
 	transition: all .2s ease;
 	transform-origin: left;
 }
-.input-segment-item input:focus + .input-active-bar{
+.input-segment-item input:focus + .input-active-bar, .input-segment-table-item input:focus + .input-active-bar{
 	transform:scaleX(1);
 }
 .input-segment-item input:focus + .input-title{
@@ -146,4 +178,53 @@
 }
 .details-container{
 	margin-top:35px;
+}
+.sub-tabs{
+	display: flex;
+	margin-bottom:25px;
+}
+.sub-tab{
+	padding:10px 15px;
+	color:#3080e8;
+}
+.sub-tabs a.active{
+	border-bottom:solid 3px #3080e8;
+}
+.lease-revenue-table{
+	width:100%;
+
+}
+.lease-revenue-table th{
+	font-size: 10pt;
+	color:#808080;
+
+	border-bottom:solid 1px #dadada;
+	font-weight: 300;
+	background:#fff;
+	padding:10px;
+	text-align: right;
+}
+.lease-revenue-table td{
+
+
+
+}
+.lease-information-top{
+	display: flex;
+	align-items: center;
+	padding:25px;
+	justify-content: space-between;
+	width:75%;
+}
+.lease-information-item{
+	text-align:left;
+	margin-right:15px;
+}
+.lease-information-title{
+	color:#808080;
+	font-size:12pt;
+}
+.lease-information-value{
+	font-size:14pt;
+	color:#3080e8;
 }

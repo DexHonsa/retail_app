@@ -5,7 +5,7 @@ class DemoHome extends React.Component {
 	render() {
 		return(
 			<div>
-				
+
 		          <div className="add-filter-instructions">Choose a filter bucket and add it to the list of demographic filters.</div>
 		          <div className="filter-type-container">
 		            <div className="add-filter-row">
@@ -22,9 +22,9 @@ class DemoHome extends React.Component {
 		              <div onClick={() => this.props.updatePage("gender")} className="add-filter-type">Gender</div>
 		              <div onClick={() => this.props.updatePage("gender")} style={{opacity: '0', pointerEvents: 'none'}} className="add-filter-type"></div>
 		              <div onClick={() => this.props.updatePage("gender")} style={{opacity: '0', pointerEvents: 'none'}} className="add-filter-type"></div>
-		              
+
 		            </div>
-		            
+
 		          </div>
 		          <div className="add-filter-footer"><div style={{marginLeft:'auto'}}><div onClick={this.props.hideAddFilters} className="add-filter-close-btn">close</div></div></div>
 			</div>

@@ -6,9 +6,66 @@ var config = require('./config.js');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
 var path = require('path');
+var json2xls = require('json2xls');
+var multer = require('multer');
+var xlsxtojson = require("xlsx-to-json-lc");
+var bodyParser = require('body-parser');
 
 
 var app = express();
+
+
+
+
+
+
+
+
+
+
+ var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, './uploads/')                                 //folder to save uploading file
+        },
+        filename: function (req, file, cb) {
+            var datetimestamp = Date.now();
+            cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+        }
+    });
+
+    var upload = multer({
+                    storage: storage
+                }).single('file');
+
+    app.post('/upload', function(req, res) {
+
+        upload(req,res,function(err){
+            if(err){
+                 res.json({error_code:1,err_desc:err});
+                 return;
+            }
+            if(!req.file){
+                res.json({error_code:1,err_desc:"No file passed"});
+                return;
+            }
+              try {
+                xlsxtojson({
+                    input: req.file.path,
+                    output: null, //since we don't need output.json
+                    lowerCaseHeaders:true
+                }, function(err,result){
+                    if(err) {
+                        return res.json({error_code:1,err_desc:err, data: null});
+                    }
+                    res.json({error_code:0,err_desc:null, data: result});
+                });
+            } catch (e){
+                res.json({error_code:1,err_desc:"Corrupted excel file or Not valid excel file"});
+            }
+            console.log(req.file.path);
+        })
+
+    });
 
 // var server = require('http').createServer(app);
 // var io = require('socket.io').listen(server);
@@ -28,6 +85,26 @@ var app = express();
 //     connections.splice(connections.indexOf(socket), 1)
 //     console.log('Disconnected: %s sockets connected', connections.length);
 // });
+var jsonArr = [{
+    'Location #': '',
+    'Location Name': '',
+    'Address': '',
+    'State': '',
+    'City': '',
+    'Zip Code': '',
+    'Square Feet': '',
+    'Lat': '',
+    'Long':''
+}];
+
+app.use(json2xls.middleware);
+app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.urlencoded({limit: '5mb'}));
+
+
+app.get('/xlfile',function(req, res) {
+    res.xls('template.xlsx', jsonArr);
+})
 
 
 
@@ -150,6 +227,11 @@ app.route('/api/geocoder/:zip').get(api.geoCoder);
 
 //Twitter API
 app.route('/api/twitter/:longitude/:latitude').get(api.TwitterPlaceLookup);
+
+//File Upload API
+app.route('/uploadData').post(api.excelData);
+app.route('/getUploadedLocations/:clientId').get(api.getUploadedLocations);
+
 
 // Redirect all others to the index
 // A 404 page is probably a better move

@@ -69,7 +69,7 @@ class App extends React.Component {
 		     <Header clientId={this.getClient.bind(this)} />
 		     { React.Children.map( this.props.children, child => React.cloneElement(child, {clientId : this.state.clientId}))}
 
-	          <Script url="https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js"
+	          <Script url="https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js"
               onCreate={this.handleScriptCreate.bind(this)}
               onError={this.handleScriptError.bind(this)}
               onLoad={this.handleScriptLoad.bind(this)}

@@ -721,6 +721,8 @@ a {
     height: 40px;
     cursor: pointer;
 	transition:filter .3s ease;
+	margin-left: 4px;
+margin-top: 6px;
 
 }
 .marker:hover{
@@ -1733,6 +1735,15 @@ a {
 .basic-btn-blue:hover{
 	cursor: pointer;
 	background:#469df5;
+}
+.listing-options-selector-container{
+	font-size:10pt;
+	text-align: left;
+}
+.listing-options-selector-select select{
+	padding:10px;
+	width:100%;
+	border:none;
 }
 /* Large desktop */
 @media (min-width: 1200px) {

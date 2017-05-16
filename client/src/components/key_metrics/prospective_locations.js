@@ -21,7 +21,7 @@ class ProspectiveLocations extends React.Component{
       return <li key={i}>
         <div className="pros-loc-details">
           <div className="pros-loc-img" style={{backgroundImage: 'url('+data.imgUrl+')'}} />
-          <div className="pros-loc-name"><span className="pros-location-click" style={{color: '#3080e8', fontSize: '11pt'}}>{data.street}</span><br />{data.city}<br />Strip Ctr.</div>
+          <div className="pros-loc-name"><span className="pros-location-click" style={{color: '#3080e8', fontSize: '11pt'}}>{data.street}</span><br />{data.city}</div>
         </div>
         <div className="pros-loc-metric">Sales <br /><span style={{color: '#3080e8', fontWeight: 'bold', fontSize: '12pt'}}><input type="text" placeholder="--"/></span></div>
         <div className="pros-loc-metric">Profit <br /><span style={{color: '#3080e8', fontWeight: 'bold', fontSize: '12pt'}}><input type="text" placeholder="--"/></span></div>

@@ -14,6 +14,7 @@ var nodemailer = require('nodemailer');
 var html = '../public/mailer.html';
 var CryptoJS = require("crypto-js");
 
+
 var pusher = new Pusher({appId: "323748", key: "d3d161be3854778f5031", secret: "bd446427d3c80f0a9b02", encrypted: true});
 
 var client = new Twitter({consumer_key: 'bcaU1xnKnYzbROA1z8NmNgZ59', consumer_secret: 'rhVQdZW2LkvDFm1Liu3aGPRnR8fBj0I5naTAyVIbbs88RYzMLO', access_token_key: '3894184813-OIaxL97zVpT5DreH1sgpbognZXoy9pFOjsgacK0', access_token_secret: '7W4ySBLfecG4NCPqrWgXXdqtRdEp5sjNA2TciJJxXoMc8'});
@@ -150,6 +151,22 @@ Searches.ensureIndex("created_at");
 exports.Property = function(req,res){
 
 }
+exports.getUploadedLocations = function(req,res){
+    var clientId = req.params.clientId;
+    r.db('retail_updated').table('ExcelData').getAll(clientId, {index:"clientId"}).run().then(function(data){
+      res.json({
+        data
+      })
+    })
+};
+exports.excelData = function(req, res) {
+    r.db('retail_updated').table('ExcelData').insert(req.body).run().then(function(result) {
+      r.db('retail_updated').table('ExcelData').indexCreate('clientId').run().then(function(result){
+        console.log('index created!')
+      });
+        res.json(result);
+    }).error(handleError(res));
+};
 exports.UpdateProperty = function(req,res){
   var data = req.body;
   var id = req.params.id;
@@ -211,7 +228,7 @@ exports.signUpUser = function(req, res) {
 exports.TwitterPlaceLookup = function(req, res) {
 
     var params = {
-        q: 'the',
+        q: ' ',
         geocode: req.params.latitude + ',' + req.params.longitude + ',1mi'
     };
     client.get('search/tweets', params, function(error, tweets, response) {

@@ -132,7 +132,7 @@ function refreshMap() {
         zoom: 10 // starting zoom
     });
 
-  
+
     draw = new window.MapboxDraw({
         displayControlsDefault: false,
         controls: {
@@ -337,6 +337,26 @@ function addLayers(){
                 }]
             }
         });
+        map.addSource('listing_markers', {
+            "type": 'geojson',
+            "data": {
+                "type": "FeatureCollection",
+                "features": [{
+                    "type": "Feature",
+                    "properties": {
+                        "description": "<strong>Make it Mount Pleasant</strong><p><a href=\"http://www.mtpleasantdc.com/makeitmtpleasant\" target=\"_blank\" title=\"Opens in a new window\">Make it Mount Pleasant</a> is a handmade and vintage market and afternoon of live entertainment and kids activities. 12:00-6:00 p.m.</p>",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-77.038659, 38.931567]
+                    }
+                }]
+            },
+            cluster: true,
+            clusterMaxZoom: 14, // Max zoom to cluster points on
+            clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+        });
         // map.addLayer({
         //     "id": "block_boundaries",
         //     "type": "fill",
@@ -405,6 +425,65 @@ function addLayers(){
         // map.on("mouseout", function() {
         //     map.setFilter("block_boundaries-border-hover", ["==", "name", ""]);
         // });
+        map.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "listing_markers",
+        filter: ["has", "point_count"],
+        paint: {
+            "circle-color": {
+                property: "point_count",
+                type: "interval",
+                stops: [
+                    [0, "#51bbd6"],
+                    [100, "#f1f075"],
+                    [750, "#f28cb1"],
+                ]
+            },
+            "circle-radius": {
+                property: "point_count",
+                type: "interval",
+                stops: [
+                    [0, 20],
+                    [100, 30],
+                    [750, 40]
+                ]
+            }
+        }
+    });
+
+    map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "listing_markers",
+        filter: ["has", "point_count"],
+        layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12
+        }
+    });
+    map.addLayer({
+        id: "unclustered-point",
+        type: "symbol",
+        source: "listing_markers",
+        filter: ["!has", "point_count"],
+        "layout": {
+                 "icon-image": "marker",
+                 "icon-size": .7,
+                 "text-field": "{title}",
+                 "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+                 "text-offset": [0, 0.6],
+                 "text-anchor": "top",
+                 "icon-allow-overlap": true
+             }
+        // paint: {
+        //     "circle-color": "#11b4da",
+        //     "circle-radius": 4,
+        //     "circle-stroke-width": 1,
+        //     "circle-stroke-color": "#fff"
+        // }
+    });
          map.addLayer({
             "id": "pois",
             "type": "symbol",
@@ -420,6 +499,21 @@ function addLayers(){
 
             }
         });
+      //   map.addLayer({
+      //      "id": "listings",
+      //      "type": "symbol",
+      //      "source": "listing_markers",
+      //      "layout": {
+      //          "icon-image": "marker-15",
+      //          "icon-size": 1,
+      //          "text-field": "{title}",
+      //          "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+      //          "text-offset": [0, 0.6],
+      //          "text-anchor": "top",
+      //          "icon-allow-overlap": true
+       //
+      //      }
+      //  });
         map.addLayer({
             "id": "zip-border",
             "type": "line",
@@ -451,8 +545,13 @@ function addLayers(){
         });
         map.on("mousemove", function(e) {
             var features = map.queryRenderedFeatures(e.point, {
-                layers: ["zip-fill"]
+                layers: ["zip-fill","unclustered-point"]
             });
+
+            // var listingLayer = map.queryRenderedFeatures(e.point, {
+            //     layers: ["unclustered-point"]
+            // });
+
             map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
             if (features.length) {
                 map.setFilter("zip-fill-hover", ["==", "ZCTA5CE10", features[0].properties.ZCTA5CE10]);
@@ -464,6 +563,34 @@ function addLayers(){
             var features = map.queryRenderedFeatures(e.point, {
                 layers: ["zip-fill"]
             });
+            var listings = map.queryRenderedFeatures(e.point, {
+                layers: ["unclustered-point"]
+            });
+            if(listings.length){
+              console.log(listings[0].properties);
+              var lat = listings[0].properties.lat;
+              var lng = listings[0].properties.lng;
+              var listingId = listings[0].properties.listing_id;
+
+              var id = "marker-" + Math.floor((Math.random() * 100) + 1);
+              var address = "";
+              var settings = {
+                  "async": true,
+                  "crossDomain": true,
+                  "url": "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "%2C" + lng + "&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs",
+                  "method": "GET",
+                  "headers": {}
+              }
+              $.ajax(settings).done(function(response) {
+                  address = response.results[0].formatted_address;
+                  createListingMarker(lat, lng, id, listingId, address);
+                  setTimeout(function(){
+                    var l = document.getElementById(id);
+                    l.click();
+                  },100)
+
+              });
+            }
             if (features.length) {
                 flyToLocation(features[0].properties.INTPTLAT10, features[0].properties.INTPTLON10);
                 // map.setFilter("zip-fill-active", ["==", "ZCTA5CE10", features[0].properties.ZCTA5CE10]);
@@ -479,6 +606,183 @@ function addLayers(){
         });
 
 
+}
+// function getListings(){
+//   var bounds = map.getBounds();
+//   var polygon = [bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng, bounds._ne.lat, bounds._sw.lng, bounds._sw.lat,bounds._ne.lng]
+//   var url = "https://api.realmassive.com/buildings?include=spaces.leases&page[limit]=100&filter[polygon]="+polygon[0]+","+polygon[1]+","+polygon[2]+","+polygon[3]+","+polygon[4]+","+polygon[5]+","+polygon[6]+","+polygon[7]+"&filter[where][spaces.leases.id][ge]=0&filter[where][spaces.leases.archived]=false"
+//  console.log(url);
+//   var settings = {
+//   "async": true,
+//   "crossDomain": true,
+//   "url": url,
+//   "method": "GET",
+//   "headers": {
+//     "content-type": "application/json",
+//     "authorization": "Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJyZWFsbWFzc2l2ZSIsInNjb3BlIjoiIiwic3ViIjoiZGV4QHRoZWFtcC5jb20iLCJleHAiOjE0OTQzNTI1MzN9.NTitbV6tUdyTkvLjwpCltht0bXrOHBVgm1YGcbBzFx0",
+//     "cache-control": "no-cache",
+//     "postman-token": "c2034c1e-1135-6e6d-68b3-a61775556125"
+//   },
+//   "processData": false,
+//   "data": "{\"email\": \"dex@theamp.com\", \"password\":\"Awesomeo21!\"}"
+// }
+//
+// $.ajax(settings).done(function (response) {
+// var results = response.data;
+// var data = [];
+//
+//   results.forEach(function(item){
+//     console.log(item);
+//     data.push({
+//         "type": "Feature",
+//         "properties": {
+//             "description": "blank",
+//             "icon": "theatre",
+//             "lng":item.attributes.address.longitude,
+//             "lat":item.attributes.address.latitude,
+//             "listing_id":item.attributes.id
+//         },
+//         "geometry": {
+//             "type": "Point",
+//             "coordinates": [item.attributes.address.longitude, item.attributes.address.latitude]
+//         }
+//     })
+//     //console.log(item.attributes.address.latitude);
+//   })
+// setTimeout(function(){
+//   console.log(data.length)
+//   map.getSource('listing_markers').setData({
+//       "type": "FeatureCollection",
+//       "features": data
+//   });
+// },2000)
+//
+//
+//
+// });
+//
+// }
+function updateListings(filters){
+  var bounds = map.getBounds();
+  var polygon = [bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng, bounds._ne.lat, bounds._sw.lng, bounds._sw.lat,bounds._ne.lng];
+  var typeOption;
+  var sizeOption;
+  var forOption;
+  var upperSize;
+  var lowerSize;
+
+  if(filters.type == "Retail"){
+    typeOption = "retail";
+  }
+  if(filters.type == "Office"){
+    typeOption = "office";
+  }
+  if(filters.type == "Industrial"){
+    typeOption = "industrial";
+  }
+
+
+  if(filters.size == "Under 1,000 SF"){
+    upperSize = "1000";
+    lowerSize = "0";
+  }
+  if(filters.size == "1,000 - 2,500 SF"){
+    upperSize = "2500";
+    lowerSize = "1000";
+  }
+  if(filters.size == "2,500 - 5,000 SF"){
+    upperSize = "5000";
+    lowerSize = "2500";
+  }
+  if(filters.size == "5,000 - 10,000 SF"){
+    upperSize = "10000";
+    lowerSize = "5000";
+  }
+  if(filters.size == "Over 10,000 SF"){
+    upperSize = "1000000";
+    lowerSize = "10000";
+  }
+var url;
+  if(filters.for == "Lease"){
+    url = "https://api.realmassive.com/buildings?include=spaces.leases&page[limit]=100&filter[polygon]="+polygon[0]+","+polygon[1]+","+polygon[2]+","+polygon[3]+","+polygon[4]+","+polygon[5]+","+polygon[6]+","+polygon[7]+","+polygon[0]+","+polygon[1]+"&filter[where][spaces.leases.id][ge]=0&filter[where][spaces.leases.archived]=false&filter[where][building_type]="+typeOption+"&filter[where][spaces.min_divisible.value][lt]="+upperSize+"&filter[where][spaces.max_contiguous.value][gt]="+lowerSize;
+
+  }
+  if(filters.for == "Sub Lease"){
+    url = "https://api.realmassive.com/buildings?include=spaces.subleases&page[limit]=100&filter[polygon]="+polygon[0]+","+polygon[1]+","+polygon[2]+","+polygon[3]+","+polygon[4]+","+polygon[5]+","+polygon[6]+","+polygon[7]+","+polygon[0]+","+polygon[1]+"&filter[where][spaces.subleases.id][ge]=0&filter[where][spaces.subleases.archived]=false&filter[where][building_type]="+typeOption+"&filter[where][spaces.min_divisible.value][lt]="+upperSize+"&filter[where][spaces.max_contiguous.value][gt]="+lowerSize;
+
+  }
+  if(filters.for == "Sale"){
+    url = "https://api.realmassive.com/buildings?include=sales&page[limit]=100&filter[polygon]="+polygon[0]+","+polygon[1]+","+polygon[2]+","+polygon[3]+","+polygon[4]+","+polygon[5]+","+polygon[6]+","+polygon[7]+","+polygon[0]+","+polygon[1]+"&filter[where][sales.id][ge]=0&filter[where][sales.archived]=false&filter[where][building_type]="+typeOption;
+  }
+
+
+  drawListings(url);
+
+
+
+  map.on('dragend', function() {
+    console.log('hit');
+    drawListings(url);
+  });
+  // map.off('dragend',function(){
+  //   console.log('off');
+  // })
+
+
+
+
+
+}
+
+
+function drawListings(url){
+  var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": url,
+  "method": "GET",
+  "headers": {
+    "content-type": "application/json",
+    "authorization": "Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJyZWFsbWFzc2l2ZSIsInNjb3BlIjoiIiwic3ViIjoiZGV4QHRoZWFtcC5jb20iLCJleHAiOjE0OTQzNTI1MzN9.NTitbV6tUdyTkvLjwpCltht0bXrOHBVgm1YGcbBzFx0",
+    "cache-control": "no-cache",
+    "postman-token": "c2034c1e-1135-6e6d-68b3-a61775556125"
+  },
+  "processData": false,
+  "data": "{\"email\": \"dex@theamp.com\", \"password\":\"Awesomeo21!\"}"
+}
+
+$.ajax(settings).done(function (response) {
+var results = response.data;
+var data = [];
+
+  results.forEach(function(item){
+    console.log(item);
+    data.push({
+        "type": "Feature",
+        "properties": {
+            "description": "blank",
+            "icon": "theatre",
+            "lng":item.attributes.address.longitude,
+            "lat":item.attributes.address.latitude,
+            "listing_id":item.id
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [item.attributes.address.longitude, item.attributes.address.latitude]
+        }
+    })
+    //console.log(item.attributes.address.latitude);
+  })
+
+  console.log(data.length)
+  map.getSource('listing_markers').setData({
+      "type": "FeatureCollection",
+      "features": data
+  });
+
+
+
+});
 }
 function drawZip(zip) {
     $.ajax({
@@ -538,25 +842,25 @@ function updateMap() {
         "sw_lat": swLat,
         "sw_lon": swLng
     };
-    $.ajax({
-        type: "POST",
-        url: "https://retailapi.theamp.com/demographics/get_geojson?search_by=bounding_box_area",
-        data: JSON.stringify(coords),
-        contentType: "json",
-        success: function(data) {
-            var block_ids = [];
-            var block_coordinates = [];
-            data.results.forEach(function(item) {
-                var lat = item.properties.INTPTLAT;
-                var lng = item.properties.INTPTLON;
-                var boundaries = item.geometry.coordinates;
-                block_coordinates.push(boundaries);
-                block_ids.push(item.id);
-            });
-            //drawBlocks(block_coordinates);
-            //getProperties(block_ids)
-        }
-    });
+    // $.ajax({
+    //     type: "POST",
+    //     url: "https://retailapi.theamp.com/demographics/get_geojson?search_by=bounding_box_area",
+    //     data: JSON.stringify(coords),
+    //     contentType: "json",
+    //     success: function(data) {
+    //         var block_ids = [];
+    //         var block_coordinates = [];
+    //         data.results.forEach(function(item) {
+    //             var lat = item.properties.INTPTLAT;
+    //             var lng = item.properties.INTPTLON;
+    //             var boundaries = item.geometry.coordinates;
+    //             block_coordinates.push(boundaries);
+    //             block_ids.push(item.id);
+    //         });
+    //         //drawBlocks(block_coordinates);
+    //         //getProperties(block_ids)
+    //     }
+    // });
     //lalala
     //getPois();
 }
@@ -897,6 +1201,36 @@ function createMarker(lat, lng, id, popupText, img) {
         .addTo(map);
 }
 
+function createListingMarker(lat, lng, id, listingId, popupText, img) {
+    $('.marker').remove();
+    var lngLat = [lng, lat];
+    var popup = new window.mapboxgl.Popup({
+            offset: 25
+        })
+        .setHTML('<div class="marker-popup"><div class="marker-popup-img" style="background-image: url(https://maps.googleapis.com/maps/api/streetview?location=' + lat + ',' + lng + '&size=300x300&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs);"></div><div class="marker-popup-desc"><span style="font-size:12pt; color:#000;">' + popupText + '</span></div></div>');
+    // create DOM element for the marker
+    var el = document.createElement('div');
+    el.id = id;
+    el.className = 'marker listingmarker';
+    el.setAttribute('lat', lat);
+    el.setAttribute('lng', lng);
+    el.setAttribute('address', popupText);
+    el.setAttribute('listing_id', listingId);
+    el.onclick = function() {
+        map.flyTo({
+            center: [lng, lat],
+            zoom: 14
+        });
+    }
+    // create the marker
+    new window.mapboxgl.Marker(el, {
+            offset: [-25, -25]
+        })
+        .setLngLat(lngLat)
+        .setPopup(popup)
+        .addTo(map);
+}
+
 function createSavedMarker(lat, lng, id, popupText, img) {
     var lngLat = [lng, lat];
     var popup = new window.mapboxgl.Popup({
@@ -963,6 +1297,8 @@ const Client = {
     drawFilteredZips,
     filterZips,
     clearDrawnZips,
-    drawZipAndFlyTo
+    drawZipAndFlyTo,
+
+    updateListings
 };
 export default Client;

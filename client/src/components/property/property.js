@@ -2,7 +2,7 @@ import React from 'react';
 import TextInput from './text_input.js';
 import {Link, IndexLink} from 'react-router';
 import axios from 'axios';
-
+//import './scripts/mini_map.js';
 
 class Property extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class Property extends React.Component {
             <div className="detail-tabs">
               <IndexLink to={"/property/propertydetails" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Property Details</IndexLink>
               <Link to={"/property/financialdetails" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Financial Details</Link>
-              <Link to={"/property/leaseinformation" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Lease Information</Link>
+              <Link to={"/property/leaseinformation/terms" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Lease Abstract</Link>
               {/*<Link to={"/property/thirdpartyreports" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Third Party Reports</Link>
               <Link to={"/property/insurance" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Insurance</Link>
               <Link to={"/property/feedback" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Feedback</Link>

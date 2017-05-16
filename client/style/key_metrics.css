@@ -97,6 +97,9 @@
 }
 .prospective-locations-list{
 	margin-top:25px;
+	margin-bottom:100px;
+	height:500px;
+	overflow: auto;
 }
 .prospective-locations-list li{
 	padding:15px;
