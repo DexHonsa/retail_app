@@ -330,10 +330,10 @@ class RightPanel extends React.Component {
         <div style={{display: 'inline-block', fontSize: '12pt', padding: 10, background: '#469df5', color: '#fff', width: '100%'}}>Spaces Available for Lease</div>
         <ul className="demographics-list">
           {this.state.spaces.data.map(function(data, i){
-            return <li>
-              <div className="demo-title">{data.attributes.space_type}</div>
+            return <Link key={i} to={"/listing"+ "/" + data.id}><li>
+              <div className="demo-title">Available {i}</div>
               <div className="demo-value">{Math.round(data.attributes.space_size.value)} SF</div>
-            </li>;
+            </li></Link>;
           },this)}
 
 

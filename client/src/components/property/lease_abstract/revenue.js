@@ -13,8 +13,15 @@ class Revenue extends React.Component {
   }
   componentDidMount(){
     var this2 = this;
-    axios.get('/api/search' + '/' + this.props.params.id).then(function(res){
-      this2.setState({property: res.data.Searches});
+    var id = this.props.params.id;
+    axios.get('/api/search/' + id).then(function(res){
+      this2.setState({property:res.data.Searches})
+    }).catch(function (error) {
+      if (error.response) {
+        axios.get('/api/getUploadedLocation' + '/' + id).then(function(res2){
+               this2.setState({property:res2.data.data,isOwned:true});
+         })
+      }
     })
   }
     render() {

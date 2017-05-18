@@ -11,7 +11,7 @@ class ZipDemographics extends React.Component {
 			on : true,
 			zipDemographicItems : this.props.zipDemographicItems,
 			data : {
-				  labels: ['White', 'Black', 'Mexican', 'Asian'],
+				  labels: ['White', 'Black', 'Hispanic', 'Asian'],
 				  datasets: [
 				    {
 

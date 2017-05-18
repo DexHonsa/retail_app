@@ -48,8 +48,9 @@ body {
 	font-size: 12px;
 	line-height: 1.2;
 	font-family: 'proxima_nova', sans-serif !important;
-	background-image:url('../images/map_bg.png');
+	background-image:url('../images/blue_bg.jpg');
 	background-size: cover;
+  background-attachment: fixed;
 	color: #000;
 
 	min-width: 320px;

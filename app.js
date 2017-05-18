@@ -38,7 +38,6 @@ var app = express();
                 }).single('file');
 
     app.post('/upload', function(req, res) {
-
         upload(req,res,function(err){
             if(err){
                  res.json({error_code:1,err_desc:err});
@@ -230,7 +229,10 @@ app.route('/api/twitter/:longitude/:latitude').get(api.TwitterPlaceLookup);
 
 //File Upload API
 app.route('/uploadData').post(api.excelData);
-app.route('/getUploadedLocations/:clientId').get(api.getUploadedLocations);
+app.route('/api/getUploadedLocations/:clientId').get(api.getUploadedLocations);
+app.route('/api/getUploadedLocation/:id').get(api.getUploadedLocation);
+app.route('/api/getUploadedFilteredLocations/:clientId/:filter/:type').get(api.getUploadedFilteredLocations);
+app.route('/api/UpdateUploadedLocation/:id').put(api.UpdateUploadedLocation);
 
 
 // Redirect all others to the index

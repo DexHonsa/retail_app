@@ -159,6 +159,34 @@ exports.getUploadedLocations = function(req,res){
       })
     })
 };
+exports.getUploadedLocation = function(req,res){
+    var id = req.params.id;
+    r.db('retail_updated').table('ExcelData').get(id).run().then(function(data){
+      res.json({
+        data
+      })
+    })
+};
+exports.getUploadedFilteredLocations = function(req,res){
+    var filter = req.params.filter;
+    var type = req.params.type;
+    var clientId = req.params.clientId;
+    console.log(filter + ' ,' + type + ' ,' + clientId);
+    if (type == 'asc'){
+      r.db('retail_updated').table('ExcelData').getAll(clientId, {index:"clientId"}).orderBy(r.asc(filter)).limit(10).run().then(function(data){
+        res.json({
+          data
+        })
+      })
+    }else{
+      r.db('retail_updated').table('ExcelData').getAll(clientId, {index:"clientId"}).orderBy(r.desc(filter)).limit(10).run().then(function(data){
+        res.json({
+          data
+        })
+      })
+    }
+
+};
 exports.excelData = function(req, res) {
     r.db('retail_updated').table('ExcelData').insert(req.body).run().then(function(result) {
       r.db('retail_updated').table('ExcelData').indexCreate('clientId').run().then(function(result){
@@ -171,6 +199,15 @@ exports.UpdateProperty = function(req,res){
   var data = req.body;
   var id = req.params.id;
   r.db('retail_updated').table('Searches').get(id).update(data).run().then(function(data){
+    res.json({
+      data
+    })
+  })
+}
+exports.UpdateUploadedLocation = function(req,res){
+  var data = req.body;
+  var id = req.params.id;
+  r.db('retail_updated').table('ExcelData').get(id).update(data).run().then(function(data){
     res.json({
       data
     })
@@ -572,14 +609,10 @@ exports.Search = function(req, res) {
 };
 // Edit a User
 exports.editSearch = function(req, res) {
-    Searches.get(req.body.id).update(req.body).run().then(function(Searches) {
-        Searches.leaseInfo.leaseRate = req.body.leaseInfo.leaseRate;
-        Searches.leaseInfo.leaseType = req.body.leaseInfo.leaseType;
-        Searches.leaseInfo.leaseFrequency = req.body.leaseInfo.leaseFrequency;
-        Searches.leaseInfo.size = req.body.leaseInfo.size;
-        Searches.leaseInfo.buildingSize = req.body.leaseInfo.buildingSize;
-        res.json({Searches: Searches})
-    }).error(handleError(res));
+    r.db('retail_updated').table('Searches').get(req.params.id).update(req.body).run().then(function(Searches){
+      res.json({Searches: Searches})
+    })
+
 };
 
 exports.checkIfSaved = function(req, res) {

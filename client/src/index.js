@@ -38,6 +38,7 @@ import Clauses from './components/property/lease_abstract/clauses';
 import Documents from './components/property/lease_abstract/documents';
 import Insurance from './components/property/lease_abstract/insurance';
 import Tenant from './components/property/lease_abstract/tenant';
+import ViewLising from './components/listing/view_listing';
 
 
 
@@ -46,6 +47,7 @@ import '../style/mycss.css';
 import '../style/style.css';
 import '../style/animate.css';
 import '../style/view_client.css';
+import '../style/view_listing.css';
 import '../style/key_metrics.css';
 import '../style/messages.css';
 import '../bootstrap/css/bootstrap.min.css';
@@ -98,6 +100,7 @@ ReactDOM.render(
 		<Route path="map" component={Map}></Route>
         <Route path="map/:zip" component={Map}></Route>
         <Route path="keymetrics" component={KeyMetrics}></Route>
+        <Route path="/listing/:id" component={ViewLising}></Route>
         <Route path="/property/:id" component={Property}>
           <IndexRoute Component={PropertyDetails}/>
           <Route path="/property/propertydetails/:id" component={PropertyDetails}></Route>

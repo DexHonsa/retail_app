@@ -11,7 +11,7 @@ class ImportFinancialInfo extends React.Component{
 			              <div className="financial-input-container">
 			                <div className="input-item">
 			                  <div className="financial-input-main-value">
-			                    <div className="financial-input-main-title">Annual Sales</div>$200,000</div>
+			                    <div className="financial-input-main-title">Annual Sales</div>$0</div>
 			                  <div className="input-label"># of transations</div>
 			                  <input type="text" />
 			                  <div className="input-label">Average Dollars per Transaction</div>
@@ -19,15 +19,15 @@ class ImportFinancialInfo extends React.Component{
 			                </div>
 			                <div className="input-item">
 			                  <div className="financial-input-main-value">
-			                    <div style={{float:'left'}}><div className="financial-input-main-title">Annual Profits</div>$20,000</div>
-			                    <div style={{marginLeft:'auto', textAlign: 'right'}}><div className="financial-input-main-title">Profit Percent</div>20%</div>
+			                    <div style={{float:'left'}}><div className="financial-input-main-title">Annual Profits</div>$0</div>
+			                    <div style={{marginLeft:'auto', textAlign: 'right'}}><div className="financial-input-main-title">Profit Percent</div>0%</div>
 			                  </div>
 			                  <div className="input-label">Profit Margin (%)</div>
 			                  <input type="text" />
 			                </div>
 			                <div className="input-item">
 			                  <div className="financial-input-main-value">
-			                    <div className="financial-input-main-title">Total Square Feet</div>401,455</div>
+			                    <div className="financial-input-main-title">Total Square Feet</div>0</div>
 			                  <div className="input-label">Total SF</div>
 			                  <input type="text" />
 			                </div>
@@ -35,7 +35,7 @@ class ImportFinancialInfo extends React.Component{
 			              <div className="financial-input-container">
 			                <div className="input-item">
 			                  <div className="financial-input-main-value">
-			                    <div className="financial-input-main-title">Average Annual Headcount</div>1,902</div>
+			                    <div className="financial-input-main-title">Average Annual Headcount</div>0</div>
 			                  <div className="input-label">Headcount</div>
 			                  <input type="text" />
 			                  <div className="input-label">Average Dollar per Headcount</div>
@@ -43,14 +43,14 @@ class ImportFinancialInfo extends React.Component{
 			                </div>
 			                <div className="input-item">
 			                  <div className="financial-input-main-value">
-			                    <div className="financial-input-main-title">Total Annual Expenses</div>$200,000</div>
+			                    <div className="financial-input-main-title">Total Annual Expenses</div>$0</div>
 			                  <div className="input-label">YTD expense Dollars</div>
 			                  <input type="text" />
 			                </div>
 			                <div className="input-item">
 			                  <div className="financial-input-main-value">
-			                   <div style={{float:'left'}}><div className="financial-input-main-title">Annual Labor % to Sales</div>30.3%</div>
-			                    <div style={{marginLeft:'auto', textAlign: 'right'}}><div className="financial-input-main-title">Labor Dollars</div>$1,200</div>
+			                   <div style={{float:'left'}}><div className="financial-input-main-title">Annual Labor % to Sales</div>0%</div>
+			                    <div style={{marginLeft:'auto', textAlign: 'right'}}><div className="financial-input-main-title">Labor Dollars</div>$0</div>
 
 			                    </div>
 

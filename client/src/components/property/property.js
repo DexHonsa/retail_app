@@ -8,25 +8,48 @@ class Property extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOwned:false,
       property : []
     }
 
   }
   componentDidMount(){
+    window.scrollTo(0, 0);
     var this2 = this;
-    axios.get('/api/search/' + this.props.params.id).then(function(res){
-      this2.setState({property:res.data.Searches})
+    var id = this.props.params.id;
 
+    axios.get('/api/search/' + id).then(function(res){
+      this2.setState({property:res.data.Searches})
+    }).catch(function (error) {
+      if (error.response) {
+        axios.get('/api/getUploadedLocation' + '/' + id).then(function(res2){
+               this2.setState({property:res2.data.data,isOwned:true});
+         })
+      }
     })
+
+
+
+
+
   }
   render(){
+    var address;
+
+    if(this.state.isOwned){
+      address = this.state.property.address + ' ' + this.state.property.city + ' ' + this.state.property.state + ' ' + this.state.property.zip;
+    }else{
+      address = this.state.property.city
+    }
 
     return(
       <div className="main-wrapper" style={{textAlign: 'center', position: 'relative', marginTop:50}}>
         <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', padding: 0}}>
           <div className="view-client-top" style={{display:'flex', alignItems:'center'}}>
-            <div className="saved-search-img" style={{backgroundImage: 'url('+ this.state.property['imgUrl'] +')'}} />
-            <div className="saved-search-title">{this.state.property['city']}</div>
+            <div className="saved-search-img" style={{
+                backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + this.state.property.lat + ',' + this.state.property.lng + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
+            }} />
+            <div className="saved-search-title">{address}</div>
           </div>
           <div className="details-container">
             <div className="detail-tabs">

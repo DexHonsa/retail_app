@@ -39,7 +39,11 @@ class TextArea extends React.Component {
     data[title] = e.target.value;
 
     axios.put('/api/UpdateProperty' + '/' + this2.props.id, data).then(function(res){
-      console.log(res.data);
+      if(res.data.skipped > 0){
+        axios.put('/api/UpdateUploadedLocation' + '/' + this2.props.id, data).then(function(res2){
+          console.log(res2.data);
+        })
+      }
     })
 
   }

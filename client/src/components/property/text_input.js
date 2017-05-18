@@ -30,7 +30,7 @@ class TextInput extends React.Component {
   //   }).replace(/\s+/g, '');
   // }
   handleBlur(e){
-    console.log(this.state.id);
+
     var this2 = this;
     var title = this.props.title;
 
@@ -39,7 +39,12 @@ class TextInput extends React.Component {
     data[title] = e.target.value;
 
     axios.put('/api/UpdateProperty' + '/' + this2.props.id, data).then(function(res){
-      console.log(res.data);
+
+      if(res.data.data.skipped > 0){
+        axios.put('/api/UpdateUploadedLocation' + '/' + this2.props.id, data).then(function(res2){
+          console.log(res2);
+        })
+      }
     })
 
   }
