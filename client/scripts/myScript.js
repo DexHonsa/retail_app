@@ -1,4 +1,4 @@
-$(document).arrive('#map', function() {
+document.arrive('#map', function() {
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGV4aG9uc2EiLCJhIjoiY2luejFndTViMThsNnUya2o5bThpemRsaSJ9.GFlYLJmm5XmM-cGc57UH9g';
     var map = new mapboxgl.Map({

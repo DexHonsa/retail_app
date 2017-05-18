@@ -6,7 +6,7 @@ var draw;
 var geocoder;
 var popup;
 
-$(document).arrive('#map', function() {
+document.arrive('#map', function() {
 
     refreshMap();
     map.on('style.load', function() {

@@ -4,7 +4,7 @@ var map;
 
 
 
-$(document).arrive('#mini-map', function() {
+document.arrive('#mini-map', function() {
 window.mapboxgl.accessToken = 'pk.eyJ1IjoiZGV4aG9uc2EiLCJhIjoiY2luejFndTViMThsNnUya2o5bThpemRsaSJ9.GFlYLJmm5XmM-cGc57UH9g';
  map = new window.mapboxgl.Map({
     container: 'mini-map', // container id

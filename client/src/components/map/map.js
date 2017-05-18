@@ -123,7 +123,7 @@ class Map extends React.Component {
 
         var this2 = this;
         this.refreshSearchList();
-        $(document).arrive(".marker", function() {
+        document.arrive(".marker", function() {
             $('.marker').click(function() {
 
 
