@@ -237,7 +237,10 @@ app.route('/api/UpdateUploadedLocation/:id').put(api.UpdateUploadedLocation);
 
 // Redirect all others to the index
 // A 404 page is probably a better move
-app.route('*').get(routes.index);
+//app.route('*').get(routes.index);
+app.get('*',function(req,res){
+    res.redirect('/')
+});
 
 // Start server
 const server = app.listen(config.expressPort, function(){
