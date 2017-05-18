@@ -20,6 +20,7 @@ map.on('mouseenter', function(e){
 
 
 map.on('load', function() {
+  map.addControl(new window.mapboxgl.NavigationControl());
 
   map.on('mouseenter',function(e){
       console.log('moving');
@@ -37,7 +38,24 @@ map.on('load', function() {
         "type": "symbol",
         "source": "UploadedLocations",
         "layout": {
-            "icon-image": "marker-15",
+            "icon-image": "marker-16",
+            "icon-allow-overlap": true
+        }
+    });
+
+    map.addSource('UploadedFilteredLocations',{
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features": []
+        }
+    })
+    map.addLayer({
+        "id": "filteredLocations",
+        "type": "symbol",
+        "source": "UploadedFilteredLocations",
+        "layout": {
+            "icon-image": "marker-{icon}",
             "icon-allow-overlap": true
         }
     });
@@ -70,9 +88,10 @@ map.on('load', function() {
 
 
 function getUploadedLocations(clientId){
+  console.log('map');
   $.ajax({
     type:"GET",
-    url: '/getUploadedLocations' + '/' + clientId,
+    url: '/api/getUploadedLocations' + '/' + clientId,
     success: function(data){
 
       var locationItems = [];
@@ -96,7 +115,35 @@ function getUploadedLocations(clientId){
     }
   })
 }
+function getUploadedFilteredLocations(filter,type,clientId){
+  $.ajax({
+    type:"GET",
+    url: '/api/getUploadedFilteredLocations' + '/' + clientId + '/' + filter + '/' + type,
+    success: function(data){
+
+      var locationItems2 = [];
+      data.data.forEach(function(item){
+        locationItems2.push({
+            "type": "Feature",
+            "properties": {
+                "description": "<strong>"+item.address+ ' ' +item.state+ ' '+item.zip+"</strong><p>Location #"+item.locationNumber+"</p>",
+                "icon": "15"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [item.lng, item.lat]
+            }
+        })
+      })
+      map.getSource('UploadedFilteredLocations').setData({
+          "type": "FeatureCollection",
+          "features": locationItems2
+      });
+    }
+  })
+}
 const MiniMap = {
-  getUploadedLocations
+  getUploadedLocations,
+  getUploadedFilteredLocations
 };
 export default MiniMap;

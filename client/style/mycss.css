@@ -1745,6 +1745,10 @@ margin-top: 6px;
 	width:100%;
 	border:none;
 }
+.mapboxgl-ctrl-geocoder{
+	right:40px;
+	position: absolute;
+}
 /* Large desktop */
 @media (min-width: 1200px) {
 

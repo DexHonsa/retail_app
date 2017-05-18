@@ -1,0 +1,58 @@
+.view-listing-top{
+
+	display: flex;
+	align-items: center;
+	padding:15px;
+	border-bottom:solid 1px #eaeaea;
+}
+.view-listing-img{
+	background-image: url(../images/1-Building-KYB.jpg);
+	background-size: cover;
+	background-position: center center;
+	height:400px;
+	width:100%;
+	margin-right: 10px;
+}
+.view-listing-address{
+	font-size: 20pt;
+	color:#3080e8;
+	padding:15px;
+	text-align: left;
+}
+.view-listing-body{
+	display: flex;
+}
+.view-listing-type{
+	font-size: 15pt;
+	color:#808080;
+}
+.listing-title{
+	font-size: 14pt;
+	font-weight: bold;
+	margin-bottom:15px;
+	color:#34495e;
+}
+.view-listing-description{
+	font-size: 12pt;
+	text-align: left;
+	padding:15px;
+	color:#808080;
+	flex:2;
+}
+.view-listing-side-container{
+
+	padding:15px;
+	flex:1;
+	margin-left: auto;
+}
+.view-listings-contacts-container{
+	padding:15px;
+}
+.available-now-btn{
+	background:#fff;
+	color:#fff;
+	padding:15px;
+	font-size: 15pt;
+	border-radius: 5px;
+	margin:15px;
+}
