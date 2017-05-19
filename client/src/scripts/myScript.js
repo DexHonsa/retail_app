@@ -821,6 +821,9 @@ function getPois(lat, lng, filters) {
     var map2;
     var service;
     var infowindow;
+
+
+
     var pyrmont = new window.google.maps.LatLng(lat, lng);
     map2 = new window.google.maps.Map(document.getElementById('google-map'), {
         center: pyrmont,
@@ -925,6 +928,9 @@ function getPois(lat, lng, filters) {
 }
 
 function getMapPois(filters) {
+
+    //console.log(filters);
+
     var center = map.getCenter();
     var lng = center.lng;
     var lat = center.lat;
@@ -938,14 +944,18 @@ function getMapPois(filters) {
     });
     var request = {
         location: pyrmont,
-        radius: '500',
-        types: filters
+        radius: 50000,
+        //types: filters,
+        keyword:filters[0]
+        //rankby: 'prominence',
+
     };
     service = new window.google.maps.places.PlacesService(map2);
     service.nearbySearch(request, callback);
     var googlePois = [];
 
     function callback(results, status) {
+
         $('.poi-marker').remove();
         if (status == window.google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
@@ -961,42 +971,44 @@ function getMapPois(filters) {
     var foursquarePois = [];
     var poiSource = [];
     var typesJoined = filters.join();
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "https://api.foursquare.com/v2/venues/search?ll=" + lat + "," + lng + "&query=" + typesJoined + "&v=20161224&client_id=ECE35OJI5AST0N0NVCFC25TUVDD4G1S5YD2XULNXMR55MG0E&client_secret=HFZYXDVLBFAUMNF31R5S32PMFFOT4YI0E3A0JWCPTMCCT0AU",
-        "method": "GET"
-    }
-    $.ajax(settings).done(function(response) {
-
-        foursquarePois = response.response.venues;
-
-    });
+    // var settings = {
+    //     "async": true,
+    //     "crossDomain": true,
+    //     "url": "https://api.foursquare.com/v2/venues/search?ll=" + lat + "," + lng + "&query=" + typesJoined + "&v=20161224&client_id=ECE35OJI5AST0N0NVCFC25TUVDD4G1S5YD2XULNXMR55MG0E&client_secret=HFZYXDVLBFAUMNF31R5S32PMFFOT4YI0E3A0JWCPTMCCT0AU",
+    //     "method": "GET"
+    // }
+    // $.ajax(settings).done(function(response) {
+    //
+    //     foursquarePois = response.response.venues;
+    //
+    // });
 
 
     setTimeout(function() {
 
 
-        foursquarePois.forEach(function(item) {
-            var source2 = {
-                "type": "Feature",
-                "properties": {
-                    "description": "<strong>" + item.name + "</strong>"
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [item.location.lng, item.location.lat]
-                }
-            }
-            poiSource.push(source2)
-        });
+        // foursquarePois.forEach(function(item) {
+        //     var source2 = {
+        //         "type": "Feature",
+        //         "properties": {
+        //             "description": "<strong>" + item.name + "</strong>"
+        //         },
+        //         "geometry": {
+        //             "type": "Point",
+        //             "coordinates": [item.location.lng, item.location.lat]
+        //         }
+        //     }
+        //     poiSource.push(source2)
+        // });
 
         googlePois.forEach(function(item) {
+          //createMarker(item.geometry.location.lng())
 
             var source = {
                 "type": "Feature",
                 "properties": {
-                    "description": "<div style='font-size:12pt;position:relative;'>"+item.name+"</div>"
+                    "description": "<div style='font-size:12pt;position:relative;'>"+item.name+"</div>",
+                    "title": item.name
                 },
                 "geometry": {
                     "type": "Point",
@@ -1010,6 +1022,8 @@ function getMapPois(filters) {
             "type": "FeatureCollection",
             "features": poiSource
         });
+
+
         map.on('mousemove', function(e) {
             var features = map.queryRenderedFeatures(e.point, {
                 layers: ['pois']

@@ -45,7 +45,7 @@ class DemoGender extends React.Component {
 		var gender = this.state.genderSelector;
 		var ratio = this.state.genderRatio;
 
-		var filter = {"title" : title, "value" : gender.value, "ratio" : ratio.value}
+		var filter = {"title" : title, "value" : gender.value,"label" : gender.label, "ratio" : ratio.value}
 		this.props.addFilter(filter);
 		this.props.hideAddFilters();
 

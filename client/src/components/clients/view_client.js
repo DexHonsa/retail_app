@@ -2,9 +2,14 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 import $ from "jquery";
+import request from 'superagent';
 import {connect} from "react-redux";
 import {Link} from 'react-router';
+import EditClientPopup from '../popups/clients/edit_client_popup';
 import CreateContact from './create_client_contact';
+
+const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
 
 class ViewClient extends React.Component{
     constructor(props) {
@@ -21,7 +26,8 @@ class ViewClient extends React.Component{
       zip:"",
       searches: [],
       createContactPopup: false,
-      clientContacts: []
+      clientContacts: [],
+      editClientPopup: false
     }
   }
   getClient(){
@@ -53,6 +59,64 @@ class ViewClient extends React.Component{
           zip: data.Client.zip
           });
       });
+  }
+  handleFileChange(dataURI) {
+    this.setState({
+      img: dataURI,
+      croppedImg: this.state.croppedImg,
+      cropperOpen: true,
+      uploadedFileCloudinaryUrl: ''
+    })
+  }
+  handleCrop(dataURI) {
+    this.setState({
+      cropperOpen: false,
+      img: null,
+      croppedImg: dataURI
+    },function(){this.updatePicture()})
+
+  }
+  handleRequestHide() {
+    this.setState({
+      cropperOpen: false
+    })
+  }
+  updatePicture(){
+    var this2 = this;
+     var upload = request.post(CLOUDINARY_UPLOAD_URL)
+        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+        .field('file', this.state.croppedImg);
+
+    upload.end((err, response) => {
+      if (err) {
+        console.error(err);
+      }
+
+      if (response.body.secure_url !== '') {
+        this.setState({
+          uploadedFileCloudinaryUrl: response.body.secure_url
+        });
+        var img_path = this.state.uploadedFileCloudinaryUrl;
+        var data = {
+          userId : this.props.auth.user.id,
+          img : img_path
+        }
+        axios.put('/api/changePicture', data).then(function(res){
+          this2.getUser();
+        })
+        }
+
+
+
+
+    });
+  }
+  hideEditClientPopup(){
+    this.setState({editClientPopup : false});
+    this.getUser();
+  }
+  showEditClientPopup(){
+    this.setState({editClientPopup : true});
   }
   showCreateContact(){
     this.setState({createContactPopup:true})
@@ -86,6 +150,10 @@ class ViewClient extends React.Component{
     }else{
       createContactPopup = '';
     }
+    var popup;
+     if(this.state.editClientPopup){
+            popup = <EditClientPopup userId={this.state.userId} edit={true} collapse={this.hideEditClientPopup.bind(this)} />
+        }
     const {contactName, contactEmail, contactPhone, errors} = this.state;
     if(this.state.searches.length > 0){
       searches = this.state.searches.map(function(data, i){
@@ -101,7 +169,7 @@ class ViewClient extends React.Component{
     return (
 
         <main className="main">
-
+        {popup}
         {createContactPopup}
         <div className="main-wrapper" style={{textAlign: 'center', position: 'relative'}}>
           <div className="container" style={{background: '#fff', boxShadow: '1px 1px 3px rgba(0,0,0,0.2)', padding: 0, paddingBottom:200}}>
@@ -128,7 +196,7 @@ class ViewClient extends React.Component{
 
             <div className="details-container">
             <div className="edit-profile-btn-container">
-             <div className=" load-more-btn">Edit</div>
+             <div onClick={this.showEditClientPopup.bind(this)} className=" load-more-btn">Edit</div>
              </div>
               <div className="col-sm-8">
                 <div className="client-details">

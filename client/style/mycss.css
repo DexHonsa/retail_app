@@ -213,6 +213,7 @@ a {
 	text-align:left;
 	overflow-x: hidden;
 	position: relative;
+	z-index:1;
 
 }
 .right-side-bar h3{
@@ -407,7 +408,7 @@ a {
 .left-nav-popup{
 
 	overflow: visible;
-	width:300px;
+	width:400px;
 	background:#ffffff;
 	z-index: 10000000;
 	box-shadow: 1px 1px 10px rgba(0,0,0,0.2);

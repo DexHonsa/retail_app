@@ -41,6 +41,7 @@ const items = ["accounting",
                       "funeral_home",
                       "furniture_store",
                       "gas_station",
+                      "grocery_or_supermarket",
                       "gym",
                       "hair_care",
                       "hardware_store",
@@ -99,16 +100,20 @@ class PoiPopout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
       poi_items : items,
+      by:'category',
       poi_item_data : [],
       search : "",
       value: ""
     }
   }
-	
+
   componentWillMount = () => {
     this.selectedCheckboxes = new Set();
+  }
+  showByName(){
+
   }
   componentDidMount() {
     var newArray = [];
@@ -121,7 +126,7 @@ class PoiPopout extends React.Component {
       poi_item_data : newArray
     })
     Client.removePois();
-    
+
   }
 
 
@@ -145,12 +150,12 @@ class PoiPopout extends React.Component {
       this.props.setPoiFilters(poiFilterSelections);
       Client.getMapPois(poiFilterSelections);
     }
-    
-   
-    
-    
 
-   
+
+
+
+
+
   }
   titleCase(str) {
       var str2 = str.replace(/_/g, ' ');
@@ -164,20 +169,20 @@ class PoiPopout extends React.Component {
      return words.join(' ');
 }
 
-  
-    
-    
 
-  
+
+
+
+
 handleSelectChange (value) {
-    
+
     this.setState({ value });
   }
-  
+
 
 
 	render() {
-    
+
 
     var poiData = this.state.poi_item_data;
 		return (
@@ -195,10 +200,10 @@ handleSelectChange (value) {
                                 onChange={this.handleSelectChange.bind(this)}
                                 options={poiData}
                                 clearable={true}
-                                
+
                             />
-                    
-                    
+
+
                     <div className="apply-filter-btn" onClick={this.handleFormSubmit.bind(this)} >Apply Filters </div>
                   </div>
 			);
