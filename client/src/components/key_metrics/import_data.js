@@ -48,10 +48,10 @@ class ImportData extends React.Component {
           var group = item.group;
           var state = item.state;
           var city = item.city;
-          var zip = item.zip;
-          var sqFt = item.sqft;
+          var zip = item.zipcode;
+          var sqFt = item.squarefeet;
           var lat = item.lat;
-          var lng = item.lng;
+          var lng = item.long;
 
           var createData = {
             clientId: clientId,

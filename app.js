@@ -85,13 +85,17 @@ var app = express();
 //     console.log('Disconnected: %s sockets connected', connections.length);
 // });
 var jsonArr = [{
-    'Location #': '',
-    'Location Name': '',
+    'LocationNumber': '',
+    'LocationName': '',
     'Address': '',
+    'Sales': '',
+    'Profit': '',
+    'Country': '', 
+    'Group': '',
     'State': '',
     'City': '',
-    'Zip Code': '',
-    'Square Feet': '',
+    'ZipCode': '',
+    'SquareFeet': '',
     'Lat': '',
     'Long':''
 }];
