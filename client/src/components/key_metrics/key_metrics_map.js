@@ -18,6 +18,7 @@ class KeyMetrics extends React.Component {
         super(props);
 
         this.state = {
+            search:'',
             clientId:'',
             showPage: "",
             prospectiveLocations: false,
@@ -40,6 +41,11 @@ class KeyMetrics extends React.Component {
             }
         }
 
+    }
+    updateSearch(event){
+      this.setState({
+        search: event.target.value.substr(0,20)
+      });
     }
     getClientSearches(clientId) {
         var this2 = this;
@@ -243,7 +249,11 @@ class KeyMetrics extends React.Component {
         var format = function(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-
+        var filteredLocations = this.state.uploadedLocations.filter(
+          (data) => {
+            return data.address.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+          }
+          );
         var array = this.state.uploadedLocations;
         var sliceFrom = 0 - (parseInt(array.length) - 10);
         var topTen = array.slice(0, sliceFrom);
@@ -356,7 +366,7 @@ class KeyMetrics extends React.Component {
                                             <div className="difference-number" style={{
                                                 color: '#20A640'
                                             }}>+${this.format(this.state.prospectiveMetrics.totalSales)}</div><i className="fa fa-arrow-right"/></div>
-                                        <div className="tile-number" data-tip={this.format(this.state.keyMetrics.totalSales + this.state.prospectiveMetrics.totalSales)}>${this.state.keyMetrics.totalSales && this.abbreviateNumber(this.state.keyMetrics.totalSales + this.state.prospectiveMetrics.totalSales)}</div>
+                                        <div className="tile-number" data-tip={this.format((this.state.keyMetrics.totalSales*1000) + this.state.prospectiveMetrics.totalSales)}>${this.state.keyMetrics.totalSales && this.abbreviateNumber((this.state.keyMetrics.totalSales * 1000) + this.state.prospectiveMetrics.totalSales)}</div>
                                     </div>
                                     {/* <div className="tile-details">
                     <table className="tile-details">
@@ -518,7 +528,7 @@ class KeyMetrics extends React.Component {
                         <div className="metric-tile-sm-row">
                             <div className="metric-tile-sm">
                                 <div className="metric-tile-sm-title">Square Feet</div>
-                                <div className="metric-tile-sm-value">{this.state.keyMetrics.totalSf}</div>
+                                <div className="metric-tile-sm-value">{this.format(this.state.keyMetrics.totalSf)}</div>
                             </div>
                             <div className="metric-tile-sm">
                                 <div className="metric-tile-sm-title">Business Groups</div>
@@ -675,9 +685,9 @@ class KeyMetrics extends React.Component {
                             }}/>
                         </div>
                         <div className="map-property-list-container">
-
+                          <input className="client-search" onChange={this.updateSearch.bind(this)} type="text" ref="uploadedLocationSearch" name="uploadedLocationSearch" placeholder="Search"/>
                             <ul className="prospective-locations-list">
-                                {this.state.uploadedLocations.map(function(data, i) {
+                                {filteredLocations.map(function(data, i) {
                                     return <li key={i}>
                                         <div className="pros-loc-details">
                                             <div className="pros-loc-img" style={{
@@ -687,8 +697,7 @@ class KeyMetrics extends React.Component {
                                                 <span className="pros-location-click" style={{
                                                     color: '#3080e8',
                                                     fontSize: '11pt'
-                                                }}>{data.address}</span><br/>{data.city} {data.state}
-                                                {data.zip}<br/></div></Link>
+                                                }}>{data.address}</span><br/>{data.city} {data.state} {data.zip}<br/></div></Link>
                                         </div>
                                         <div className="pros-loc-metric">Sales
                                             <br/>

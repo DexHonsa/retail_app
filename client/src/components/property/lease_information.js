@@ -29,7 +29,7 @@ class LeaseInformation extends React.Component {
         <div className="lease-information-top">
           <div className="lease-information-item">
             <div className="lease-information-title">Building</div>
-            <div className="lease-information-value">Orange Plaza</div>
+            <div className="lease-information-value">--</div>
           </div>
           <div className="lease-information-item">
             <div className="lease-information-title">Value of Lease</div>
@@ -37,7 +37,7 @@ class LeaseInformation extends React.Component {
           </div>
           <div className="lease-information-item">
             <div className="lease-information-title">Term Remaining</div>
-            <div className="lease-information-value">81/180 Months</div>
+            <div className="lease-information-value">--</div>
 
           </div>
         </div>
