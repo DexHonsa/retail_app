@@ -128,7 +128,7 @@ class KeyMetrics extends React.Component {
             var totalProfit = 0;
             var totalLocations = 0;
             res.data.data.forEach(function(item, i) {
-                totalLocations = totalLocations + i;
+                totalLocations = totalLocations + 1;
                 if (item.sales != undefined && item.totalSales != "") {
                     totalSales = parseInt(totalSales) + parseInt(item.sales);
                 }

@@ -47,7 +47,7 @@ class ProspectiveLocationItem extends React.Component{
         <div className="pros-loc-metric">Total SF <br /><span style={{color: '#3080e8', fontWeight: 'bold', fontSize: '12pt'}}><input onChange={this.handleChange.bind(this)} name="totalSf" value={this.state.totalSf} type="text" placeholder="--"/></span></div>
         <div className="pros-loc-metric">Headcount <br /><span style={{color: '#3080e8', fontWeight: 'bold', fontSize: '12pt'}}><input onChange={this.handleChange.bind(this)} name="headcount" value={this.state.headcount} type="text" placeholder="--"/></span></div>
         <div className="pros-loc-metric">Expenses <br /><span style={{color: '#3080e8', fontWeight: 'bold', fontSize: '12pt'}}><input onChange={this.handleChange.bind(this)} name="expenses" value={this.state.expenses} type="text" placeholder="--"/></span></div>
-        <div onClick={() => this.handleSave(this.props.id)} className="change-shadow-loc-btn">Save</div>
+        <div onClick={() => this.handleSave(this.props.id)} className="change-shadow-loc-btn">Add</div>
         {/*<div className="pros-shadow-loc">
           <div className="pros-shadow-img" />
           <div className="pros-shadow-name"><span style={{color: '#C94345', fontSize: '11pt'}}>3535 Malcom Ave (Shadow)</span><br />San Francisco CA, 94545<br />Strip Ctr.</div>
