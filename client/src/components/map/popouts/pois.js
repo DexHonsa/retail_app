@@ -2,6 +2,7 @@ import React from 'react';
 import Client from '../../../scripts/myScript';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import $ from 'jquery';
 
 const items = ["accounting",
                       "airport",
@@ -129,7 +130,11 @@ class PoiPopout extends React.Component {
     Client.removePois();
 
   }
-
+  changeSearchType(){
+    if($('#byName').hasClass('active')){
+      $('#byName').removeClass('active');
+    }
+  }
 
   toggleCheckbox = label => {
     if (this.selectedCheckboxes.has(label)) {
@@ -189,10 +194,10 @@ handleSelectChange (value) {
 		return (
 				 <div className="left-nav-popup">
                     <div className="left-nav-popup-title">POIs <i className="fa fa-life-saver" /></div>
-                    <div className="left-nav-popup-tabs">
-                      <div className="left-nav-popup-tab">By Name</div>
-                      <div className="left-nav-popup-tab active">By Category</div>
-                    </div>
+                    {/* <div className="left-nav-popup-tabs">
+                      <div id="byName" className="left-nav-popup-tab">By Name</div>
+                      <div id="byCategory" className="left-nav-popup-tab active">By Category</div>
+                    </div> */}
                     <Select.Creatable multi simpleValue
                                 placeholder="Select POI's"
                                 value={this.state.value}
