@@ -1750,6 +1750,21 @@ margin-top: 6px;
 	right:40px;
 	position: absolute;
 }
+.share-with-client{
+	padding: 5px 15px;
+    color: #fff;
+    border-radius: 3px;
+    background: #3080e8;
+    font-size: 10pt;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: 15px;
+    float: right;
+}
+.share-with-client:hover{
+	background:#469df5;
+	cursor: pointer;;
+}
 /* Large desktop */
 @media (min-width: 1200px) {
 

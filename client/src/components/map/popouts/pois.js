@@ -41,7 +41,7 @@ const items = ["accounting",
                       "funeral_home",
                       "furniture_store",
                       "gas_station",
-                      "grocery_or_supermarket",
+                      "grocery",
                       "gym",
                       "hair_care",
                       "hardware_store",
@@ -102,6 +102,7 @@ class PoiPopout extends React.Component {
     this.state = {
 
       poi_items : items,
+      byName:false,
       by:'category',
       poi_item_data : [],
       search : "",

@@ -8,7 +8,7 @@ document.arrive('#mini-map', function() {
 window.mapboxgl.accessToken = 'pk.eyJ1IjoiZGV4aG9uc2EiLCJhIjoiY2luejFndTViMThsNnUya2o5bThpemRsaSJ9.GFlYLJmm5XmM-cGc57UH9g';
  map = new window.mapboxgl.Map({
     container: 'mini-map', // container id
-    style: 'mapbox://styles/dexhonsa/cj1pfxfrm00282ro9xwbv905b', //stylesheet location
+    style: 'mapbox://styles/dexhonsa/cizyfpyzn003k2sobx3m1pbmh', //stylesheet location
     center: [-95.7129, 37.0902], // starting position
     zoom: 4 // starting zoom
 });

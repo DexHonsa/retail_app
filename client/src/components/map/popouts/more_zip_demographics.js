@@ -308,7 +308,7 @@ class MoreZipDemographics extends React.Component {
 				<div className="modal-overlay">
         <div className="add-demo-filter-popup-container">
           <div className="add-demo-filter-popup animated-slow fadeInUp" style={{width: '80%'}}>
-            <div className="add-filter-title">More Demographics <i onClick={this.props.hideMoreZipDemographics} className="fa fa-close" /></div>
+            <div className="add-filter-title">More Demographics  <i onClick={this.props.hideMoreZipDemographics} className="fa fa-close" /><div className="share-with-client">Share With Client</div></div>
             <div className="add-filter-stage" style={{height: '70vh', width: '100%', position: 'relative', overflow: 'auto'}}>
               <div className="demographic-info-container">
 

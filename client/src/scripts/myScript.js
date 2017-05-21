@@ -959,7 +959,9 @@ function getMapPois(filters) {
         $('.poi-marker').remove();
         if (status == window.google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
+
                 var place = results[i];
+                console.log(place);
 
                 googlePois.push(place);
             }
@@ -1045,7 +1047,7 @@ function getMapPois(filters) {
                 .addTo(map);
         });
 
-    }, 1000)
+    }, 2000)
 
     return googlePois;
 
