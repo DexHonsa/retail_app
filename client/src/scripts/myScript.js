@@ -436,13 +436,86 @@ function addLayers(){
         //     "circle-stroke-color": "#fff"
         // }
     });
+
+
+        //1st POI layer
+        map.addSource('poi_markers_1', {
+            "type": 'geojson',
+            "data": {
+                "type": "FeatureCollection",
+                "features": []
+            }
+        });
+        map.addLayer({
+           "id": "pois_1",
+           "type": "symbol",
+           "source": "poi_markers_1",
+           "layout": {
+               "icon-image": "marker-15",
+               "icon-size": 1,
+               "text-field": "{title}",
+               "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+               "text-offset": [0, 0.6],
+               "text-anchor": "top",
+               "icon-allow-overlap": true
+
+           }
+       });
+       //2nd POI layer
+       map.addSource('poi_markers_2', {
+           "type": 'geojson',
+           "data": {
+               "type": "FeatureCollection",
+               "features": []
+           }
+       });
+       map.addLayer({
+          "id": "pois_2",
+          "type": "symbol",
+          "source": "poi_markers_2",
+          "layout": {
+              "icon-image": "marker-16",
+              "icon-size": 1,
+              "text-field": "{title}",
+              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+              "text-offset": [0, 0.6],
+              "text-anchor": "top",
+              "icon-allow-overlap": true
+
+          }
+      });
+      //3rd POI layer
+      map.addSource('poi_markers_3', {
+          "type": 'geojson',
+          "data": {
+              "type": "FeatureCollection",
+              "features": []
+          }
+      });
+      map.addLayer({
+         "id": "pois_3",
+         "type": "symbol",
+         "source": "poi_markers_3",
+         "layout": {
+             "icon-image": "marker-17",
+             "icon-size": 1,
+             "text-field": "{title}",
+             "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+             "text-offset": [0, 0.6],
+             "text-anchor": "top",
+             "icon-allow-overlap": true
+
+         }
+     });
+
+
          map.addLayer({
             "id": "pois",
             "type": "symbol",
             "source": "poi_markers",
             "layout": {
-                "icon-image": "marker",
-                "icon-size": .7,
+                "icon-image": "marker-15",
+                "icon-size": 1,
                 "text-field": "{title}",
                 "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
                 "text-offset": [0, 0.6],
@@ -926,130 +999,116 @@ function getPois(lat, lng, filters) {
 
 
 }
+function getMapPois2(filter, number){
+  var center = map.getCenter();
+  var poi_id = 'poi_markers' + '_' + (number + 1);
+  console.log(poi_id);
+  var lng = center.lng;
+  var lat = center.lat;
+  var map2;
+  var service;
+  var infowindow;
+  var pyrmont = new window.google.maps.LatLng(lat, lng);
+  map2 = new window.google.maps.Map(document.getElementById('google-map'), {
+      center: pyrmont,
+      zoom: 15
+  });
+  var request = {
+      location: pyrmont,
+      radius: 50000,
+      //types: filters,
+      keyword:filter
+      //rankby: 'prominence',
 
+  };
+  service = new window.google.maps.places.PlacesService(map2);
+  service.nearbySearch(request, callback);
+  var googlePois = [];
+
+  function callback(results, status) {
+
+      $('.poi-marker' + '_' + (number + 1)).remove();
+      if (status == window.google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+
+              var place = results[i];
+              console.log(place);
+
+              googlePois.push(place);
+          }
+
+      }
+  }
+  var foursquarePois = [];
+  var poiSource = [];
+  //var typesJoined = filter.join();
+  setTimeout(function() {
+      googlePois.forEach(function(item) {
+          var source = {
+              "type": "Feature",
+              "properties": {
+                  "description": "<div style='font-size:12pt;position:relative;'>"+item.name+"</div>",
+                  "title": item.name
+              },
+              "geometry": {
+                  "type": "Point",
+                  "coordinates": [item.geometry.location.lng(), item.geometry.location.lat()]
+              }
+          }
+          poiSource.push(source)
+      });
+
+      map.getSource(poi_id).setData({
+          "type": "FeatureCollection",
+          "features": poiSource
+      });
+
+
+      map.on('mousemove', function(e) {
+
+          var features = map.queryRenderedFeatures(e.point, {
+              layers: [poi_id]
+          });
+          // Change the cursor style as a UI indicator.
+          map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+
+          if (!features.length) {
+              popup.remove();
+              return;
+          }
+
+          var feature = features[0];
+
+          // Populate the popup and set its coordinates
+          // based on the feature found.
+          popup.setLngLat(feature.geometry.coordinates)
+              .setHTML(feature.properties.description)
+              .addTo(map);
+      });
+
+  }, 2000)
+
+  return googlePois;
+}
 function getMapPois(filters) {
+var array = filters[0].split(',');
 
+  console.log(array);
+    if(array.length > 1){
+      getMapPois2(array[0], 0);
+      getMapPois2(array[1], 1);
+      getMapPois2(array[2], 2);
+
+
+
+
+    }else{
+      getMapPois2(array[0], 0)
+    }
     //console.log(filters);
 
-    var center = map.getCenter();
-    var lng = center.lng;
-    var lat = center.lat;
-    var map2;
-    var service;
-    var infowindow;
-    var pyrmont = new window.google.maps.LatLng(lat, lng);
-    map2 = new window.google.maps.Map(document.getElementById('google-map'), {
-        center: pyrmont,
-        zoom: 15
-    });
-    var request = {
-        location: pyrmont,
-        radius: 50000,
-        //types: filters,
-        keyword:filters[0]
-        //rankby: 'prominence',
-
-    };
-    service = new window.google.maps.places.PlacesService(map2);
-    service.nearbySearch(request, callback);
-    var googlePois = [];
-
-    function callback(results, status) {
-
-        $('.poi-marker').remove();
-        if (status == window.google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-
-                var place = results[i];
-                console.log(place);
-
-                googlePois.push(place);
-            }
-
-        }
-    }
 
 
-    var foursquarePois = [];
-    var poiSource = [];
-    var typesJoined = filters.join();
-    // var settings = {
-    //     "async": true,
-    //     "crossDomain": true,
-    //     "url": "https://api.foursquare.com/v2/venues/search?ll=" + lat + "," + lng + "&query=" + typesJoined + "&v=20161224&client_id=ECE35OJI5AST0N0NVCFC25TUVDD4G1S5YD2XULNXMR55MG0E&client_secret=HFZYXDVLBFAUMNF31R5S32PMFFOT4YI0E3A0JWCPTMCCT0AU",
-    //     "method": "GET"
-    // }
-    // $.ajax(settings).done(function(response) {
-    //
-    //     foursquarePois = response.response.venues;
-    //
-    // });
-
-
-    setTimeout(function() {
-
-
-        // foursquarePois.forEach(function(item) {
-        //     var source2 = {
-        //         "type": "Feature",
-        //         "properties": {
-        //             "description": "<strong>" + item.name + "</strong>"
-        //         },
-        //         "geometry": {
-        //             "type": "Point",
-        //             "coordinates": [item.location.lng, item.location.lat]
-        //         }
-        //     }
-        //     poiSource.push(source2)
-        // });
-
-        googlePois.forEach(function(item) {
-          //createMarker(item.geometry.location.lng())
-
-            var source = {
-                "type": "Feature",
-                "properties": {
-                    "description": "<div style='font-size:12pt;position:relative;'>"+item.name+"</div>",
-                    "title": item.name
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [item.geometry.location.lng(), item.geometry.location.lat()]
-                }
-            }
-            poiSource.push(source)
-        });
-
-        map.getSource('poi_markers').setData({
-            "type": "FeatureCollection",
-            "features": poiSource
-        });
-
-
-        map.on('mousemove', function(e) {
-            var features = map.queryRenderedFeatures(e.point, {
-                layers: ['pois']
-            });
-            // Change the cursor style as a UI indicator.
-            map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
-
-            if (!features.length) {
-                popup.remove();
-                return;
-            }
-
-            var feature = features[0];
-
-            // Populate the popup and set its coordinates
-            // based on the feature found.
-            popup.setLngLat(feature.geometry.coordinates)
-                .setHTML(feature.properties.description)
-                .addTo(map);
-        });
-
-    }, 2000)
-
-    return googlePois;
 
 
 }

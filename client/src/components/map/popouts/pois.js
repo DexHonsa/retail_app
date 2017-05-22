@@ -127,7 +127,7 @@ class PoiPopout extends React.Component {
     this.setState({
       poi_item_data : newArray
     })
-    Client.removePois();
+    //Client.removePois();
 
   }
   changeSearchType(){
