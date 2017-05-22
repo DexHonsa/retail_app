@@ -10,7 +10,7 @@ var Validator = require('Validator');
 var jwt = require('jsonwebtoken');
 var Twitter = require('twitter');
 var Pusher = require('pusher');
-var request = require("request");
+//var request = require("request");
 var nodemailer = require('nodemailer');
 var html = '../public/mailer.html';
 var CryptoJS = require("crypto-js");
@@ -154,11 +154,11 @@ exports.Property = function(req,res){
 
 }
 exports.getGeoCode = function(req,res){
-request('https://maps.googleapis.com/maps/api/geocode/json?address=4021+Grand+Ave+,Chino,+CA&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs', function (error, response, body) {
-  res.json({
-    response
-  })
-})
+// request('https://maps.googleapis.com/maps/api/geocode/json?address=4021+Grand+Ave+,Chino,+CA&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs', function (error, response, body) {
+//   res.json({
+//     response
+//   })
+// })
 
 }
 exports.getUploadedLocations = function(req,res){
