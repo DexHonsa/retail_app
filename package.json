@@ -24,7 +24,6 @@
     "react-redux": "^5.0.5",
     "react-tooltip": "^3.3.0",
     "redux": "^3.6.0",
-    "request": "^2.81.0",
     "serve-static": "~1.5.3",
     "socket.io": "^1.7.3",
     "socketio": "^1.0.0",
