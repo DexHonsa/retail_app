@@ -53,7 +53,7 @@ class UserSignup extends React.Component{
 			<div className="overlay" style={{position:'fixed',zIndex:10000, top:0,left:0}}>
           <div className="create-client-contact-popup animated-slow bounceInUp" style={{width:350}}>
             <div className="add-filter-title" style={{textAlign:'center'}}>Sign Up <i onClick={this.props.hideSignupPopup} className="fa fa-close" /></div>
-            <div className="signup-disclaimer">Sign up to SiteMap!  Were pleased you want to explore the exciting benefits of SiteMap.</div>
+            <div className="signup-disclaimer">Sign up for your free 30 day trial of SiteMap!  Were pleased you want to explore the exciting benefits of SiteMap.  </div>
             <div className="client-contact-input-container">
                     <TextFieldGroup
                       field="userFirstName"

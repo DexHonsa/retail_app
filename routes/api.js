@@ -3,6 +3,7 @@
 var config = require(__dirname + '/../config.js');
 var thinky = require('thinky')(config);
 var r = thinky.r;
+var axios = require('axios');
 var type = thinky.type;
 var Query = thinky.Query;
 var Validator = require('Validator');
@@ -13,6 +14,7 @@ var request = require("request");
 var nodemailer = require('nodemailer');
 var html = '../public/mailer.html';
 var CryptoJS = require("crypto-js");
+var request = require('request');
 
 
 var pusher = new Pusher({appId: "323748", key: "d3d161be3854778f5031", secret: "bd446427d3c80f0a9b02", encrypted: true});
@@ -149,6 +151,14 @@ Client.ensureIndex("client_name");
 User.ensureIndex("email");
 Searches.ensureIndex("created_at");
 exports.Property = function(req,res){
+
+}
+exports.getGeoCode = function(req,res){
+request('https://maps.googleapis.com/maps/api/geocode/json?address=4021+Grand+Ave+,Chino,+CA&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs', function (error, response, body) {
+  res.json({
+    response
+  })
+})
 
 }
 exports.getUploadedLocations = function(req,res){

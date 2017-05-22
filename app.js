@@ -90,14 +90,14 @@ var jsonArr = [{
     'Address': '',
     'Sales': '',
     'Profit': '',
-    'Country': '', 
+    'Country': '',
     'Group': '',
     'State': '',
     'City': '',
     'ZipCode': '',
     'SquareFeet': '',
     'Lat': '',
-    'Long':''
+    'Lng':''
 }];
 
 app.use(json2xls.middleware);
@@ -199,6 +199,8 @@ app.route('/api/incrementViews').put(api.incrementViews);
 
 //Login API
 app.route('/api/login').post(api.LoginCheck);
+//geocodeAPI
+app.route('/api/getGeoCode').get(api.getGeoCode);
 
 //Zip code API
 app.route('/api/zip/:zip').get(api.Zip);

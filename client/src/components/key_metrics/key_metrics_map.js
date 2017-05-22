@@ -183,7 +183,7 @@ class KeyMetrics extends React.Component {
             var sortedStateArray = stateArray.sort();
             var totalSfFormatted = this2.abbreviateNumber(totalSf);
             var totalProfitFormatted = this2.abbreviateNumber(totalProfit);
-            var totalSalesFormatted = this2.abbreviateNumber(totalSales * 1000);
+            var totalSalesFormatted = this2.abbreviateNumber(totalSales);
             var totalLocationsFormatted = this2.format(totalLocations);
             this2.setState({
                 uploadedLocations: res.data.data,
@@ -361,12 +361,12 @@ class KeyMetrics extends React.Component {
             }}>100%</span>
                                     </div>
                                     <div className="tile-content">
-                                        <div className="tile-number" data-tip={this.format(this.state.keyMetrics.totalSales * 1000)}>${this.abbreviateNumber(this.state.keyMetrics.totalSales * 1000)}</div>
+                                        <div className="tile-number" data-tip={this.format(this.state.keyMetrics.totalSales)}>${this.abbreviateNumber(this.state.keyMetrics.totalSales)}</div>
                                         <div className="tile-difference">
                                             <div className="difference-number" style={{
                                                 color: '#20A640'
                                             }}>+${this.format(this.state.prospectiveMetrics.totalSales)}</div><i className="fa fa-arrow-right"/></div>
-                                        <div className="tile-number" data-tip={this.format((this.state.keyMetrics.totalSales*1000) + this.state.prospectiveMetrics.totalSales)}>${this.state.keyMetrics.totalSales && this.abbreviateNumber((this.state.keyMetrics.totalSales * 1000) + this.state.prospectiveMetrics.totalSales)}</div>
+                                        <div className="tile-number" data-tip={this.format((this.state.keyMetrics.totalSales) + this.state.prospectiveMetrics.totalSales)}>${this.state.keyMetrics.totalSales && this.abbreviateNumber((this.state.keyMetrics.totalSales ) + this.state.prospectiveMetrics.totalSales)}</div>
                                     </div>
                                     {/* <div className="tile-details">
                     <table className="tile-details">
@@ -570,7 +570,7 @@ class KeyMetrics extends React.Component {
                                                     <div className="location-details">
                                                         <div className="location-detail-item">
                                                             <div className="location-detail-title">Sales</div>
-                                                            <div className="location-detail-value"  style={{color:'#808080'}}>${this.format(data.sales * 1000)}</div>
+                                                            <div className="location-detail-value"  style={{color:'#808080'}}>${this.format(data.sales)}</div>
                                                         </div>
                                                         <div className="location-detail-item">
                                                             <div className="location-detail-title">Profit</div>
@@ -595,7 +595,7 @@ class KeyMetrics extends React.Component {
                                                   <div className="location-details">
                                                       <div className="location-detail-item">
                                                           <div className="location-detail-title">Sales</div>
-                                                          <div className="location-detail-value"  >${this.format(data.sales * 1000)}</div>
+                                                          <div className="location-detail-value"  >${this.format(data.sales)}</div>
                                                       </div>
                                                       <div className="location-detail-item">
                                                           <div className="location-detail-title">Profit</div>
@@ -620,7 +620,7 @@ class KeyMetrics extends React.Component {
                                                 <div className="location-details">
                                                     <div className="location-detail-item">
                                                         <div className="location-detail-title">Sales</div>
-                                                        <div className="location-detail-value" style={{color:'#33dd33'}}  >${this.format(data.sales * 1000)}</div>
+                                                        <div className="location-detail-value" style={{color:'#33dd33'}}  >${this.format(data.sales)}</div>
                                                     </div>
                                                     <div className="location-detail-item">
                                                         <div className="location-detail-title">Profit</div>
@@ -645,7 +645,7 @@ class KeyMetrics extends React.Component {
                                               <div className="location-details">
                                                   <div className="location-detail-item">
                                                       <div className="location-detail-title">Sales</div>
-                                                      <div className="location-detail-value" style={{color:'#808080'}}  >${this.format(data.sales * 1000)}</div>
+                                                      <div className="location-detail-value" style={{color:'#808080'}}  >${this.format(data.sales)}</div>
                                                   </div>
                                                   <div className="location-detail-item">
                                                       <div className="location-detail-title">Profit</div>
@@ -705,7 +705,7 @@ class KeyMetrics extends React.Component {
                                                 color: '#3080e8',
                                                 fontWeight: 'bold',
                                                 fontSize: '12pt'
-                                            }}>{'$' + format(parseInt(data.sales) * 1000)}</span>
+                                            }}>{'$' + format(parseInt(data.sales))}</span>
                                         </div>
                                         <div className="pros-loc-metric">Profit
                                             <br/>

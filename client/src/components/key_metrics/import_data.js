@@ -19,6 +19,7 @@ class ImportData extends React.Component {
       }, 100);
   }
   handleUpload(){
+    console.log('hit');
     var this2 = this;
  var formData = new FormData();
     formData.append('file',$('[name="file"]')[0].files[0]);
@@ -32,6 +33,7 @@ class ImportData extends React.Component {
     type: 'POST',
     dataType:'json',
     success: function(data){
+      console.log(data.error_code)
       if(data.error_code===0)
         {
         console.log("success")
@@ -51,7 +53,15 @@ class ImportData extends React.Component {
           var zip = item.zipcode;
           var sqFt = item.squarefeet;
           var lat = item.lat;
-          var lng = item.long;
+          var lng = item.lng;
+
+
+          var formatted_address = address.replace(/[^A-Z0-9]+/ig, "+");
+          var formatted_city = city.replace(/[^A-Z0-9]+/ig, "+");
+        //  console.log(formatted_address);
+
+
+
 
           var createData = {
             clientId: clientId,
@@ -83,7 +93,9 @@ class ImportData extends React.Component {
 
 
 
-        }
+      }else{
+        console.log('else')
+      }
     }
 })
 }
@@ -105,7 +117,7 @@ class ImportData extends React.Component {
             <table className="example-table">
               <tbody><tr><th>Location #</th><th>Name</th><th>Address</th><th>State</th><th>City</th><th>Zip</th><th>SqFt</th><th>Lat</th><th>Lng</th><th>Sales</th><th>Profit</th></tr>
                 <tr><td>234</td><td>Bloomberg Store</td><td>1234 Westbrooke Ave</td><td>CA</td><td>San Francisco</td><td>94582</td><td>2500</td><td>30.12345</td><td>-120.1245524</td><td>321575</td><td>23000</td></tr>
-                
+
               </tbody></table>
           </div>
           <div className="add-filter-footer">
