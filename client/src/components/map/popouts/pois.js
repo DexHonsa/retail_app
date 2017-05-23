@@ -181,7 +181,6 @@ class PoiPopout extends React.Component {
 
 
 handleSelectChange (value) {
-
     this.setState({ value });
   }
 

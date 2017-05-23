@@ -64,6 +64,20 @@ class KeyMetrics extends React.Component {
     format(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+    deleteImportData(){
+      var this2 = this;
+      axios.post('/api/DeleteImportData' + '/' + this.props.client.clientId).then(function(res){
+        this2.setState({
+          keyMetrics: {
+              totalSf: 0,
+              totalSales: 0,
+              totalProfit: 0,
+              totalLocations: 0
+          },
+          uploadedLocations: []
+        })
+      })
+    }
     getPerformingLocations(filter, type, clientId) {
         var this2 = this;
         axios.get('/api/getUploadedFilteredLocations' +
@@ -325,6 +339,7 @@ class KeyMetrics extends React.Component {
                                     </select>
                                 </div>
                                 <div onClick={this.showImportData.bind(this)} className="import-data-btn">Import Data</div>
+                                <div onClick={this.deleteImportData.bind(this)} className="import-data-btn">Delete Data</div>
                             </div>
                             {/*<div class="client-selector-dropdown">
 							<div class="client-selector-img"></div>

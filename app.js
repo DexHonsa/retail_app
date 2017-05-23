@@ -239,6 +239,7 @@ app.route('/api/getUploadedLocations/:clientId').get(api.getUploadedLocations);
 app.route('/api/getUploadedLocation/:id').get(api.getUploadedLocation);
 app.route('/api/getUploadedFilteredLocations/:clientId/:filter/:type').get(api.getUploadedFilteredLocations);
 app.route('/api/UpdateUploadedLocation/:id').put(api.UpdateUploadedLocation);
+app.route('/api/DeleteImportData/:clientId').post(api.DeleteImportData);
 
 
 // Redirect all others to the index

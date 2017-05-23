@@ -161,6 +161,14 @@ exports.getGeoCode = function(req,res){
 // })
 
 }
+exports.DeleteImportData = function(req,res){
+  var clientId = req.params.clientId;
+  r.db('retail_updated').table('ExcelData').getAll(clientId, {index:'clientId'}).delete().run().then(function(data){
+    res.json({
+      data
+    })
+  })
+}
 exports.getUploadedLocations = function(req,res){
     var clientId = req.params.clientId;
     r.db('retail_updated').table('ExcelData').getAll(clientId, {index:"clientId"}).run().then(function(data){
