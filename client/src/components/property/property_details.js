@@ -50,6 +50,7 @@ class PropertyDetails extends React.Component {
         <div className="input-segment">
           <div className="input-segment-title">Location Attributes</div>
           <div className="input-segment-inputs">
+            <TextInput id={this.props.params.id} value={this.state.property['Building Type']} title="Building Type"/>
             <TextInput id={this.props.params.id} value={this.state.property['Drive Through']} title="Drive Through"/>
             <TextInput id={this.props.params.id} value={this.state.property['Indoor Seats']} title="Indoor Seats"/>
             <TextInput id={this.props.params.id} value={this.state.property['Outdoor Seats']} title="Outdoor Seats"/>
