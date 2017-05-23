@@ -48,8 +48,15 @@ class PropertyDetails extends React.Component {
           </div>
         </div>
         <div className="input-segment">
-          <div className="input-segment-title">Location Details</div>
+          <div className="input-segment-title">Location Attributes</div>
           <div className="input-segment-inputs">
+            <TextInput id={this.props.params.id} value={this.state.property['Drive Through']} title="Drive Through"/>
+            <TextInput id={this.props.params.id} value={this.state.property['Indoor Seats']} title="Indoor Seats"/>
+            <TextInput id={this.props.params.id} value={this.state.property['Outdoor Seats']} title="Outdoor Seats"/>
+            <TextInput id={this.props.params.id} value={this.state.property['Location Number']} title="Location Number"/>
+            <TextInput id={this.props.params.id} value={this.state.property['Site Number']} title="Site Number"/>
+            <TextInput id={this.props.params.id} value={this.state.property['Open Date']} title="Open Date"/>
+
             <TextInput id={this.props.params.id} value={this.state.property['MSA']} title="MSA"/>
             <TextInput id={this.props.params.id} value={this.state.property['Type of Parking']} title="Type of Parking"/>
             <TextInput id={this.props.params.id} value={this.state.property['Sub Market']} title="Sub Market"/>
@@ -58,7 +65,7 @@ class PropertyDetails extends React.Component {
             <TextInput id={this.props.params.id} value={this.state.property['Legal / Conforming']} title="Legal / Conforming"/>
             <TextInput id={this.props.params.id} value={this.state.property['US Highways']} title="US Highways"/>
             <TextInput id={this.props.params.id} value={this.state.property['Number of Parking Spaces']} title="Number of Parking Spaces"/>
-            <TextInput id={this.props.params.id} value={this.state.property['Parking Spaces / 1,000']} title="Parking Spaces / 1,000"/>
+
 
 
             <div className="input-segment-item" style={{border: 'none'}}>
