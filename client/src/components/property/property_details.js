@@ -57,7 +57,6 @@ class PropertyDetails extends React.Component {
             <TextInput id={this.props.params.id} value={this.state.property['Location Number']} title="Location Number"/>
             <TextInput id={this.props.params.id} value={this.state.property['Site Number']} title="Site Number"/>
             <TextInput id={this.props.params.id} value={this.state.property['Open Date']} title="Open Date"/>
-
             <TextInput id={this.props.params.id} value={this.state.property['MSA']} title="MSA"/>
             <TextInput id={this.props.params.id} value={this.state.property['Type of Parking']} title="Type of Parking"/>
             <TextInput id={this.props.params.id} value={this.state.property['Sub Market']} title="Sub Market"/>
@@ -66,9 +65,6 @@ class PropertyDetails extends React.Component {
             <TextInput id={this.props.params.id} value={this.state.property['Legal / Conforming']} title="Legal / Conforming"/>
             <TextInput id={this.props.params.id} value={this.state.property['US Highways']} title="US Highways"/>
             <TextInput id={this.props.params.id} value={this.state.property['Number of Parking Spaces']} title="Number of Parking Spaces"/>
-
-
-
             <div className="input-segment-item" style={{border: 'none'}}>
             </div>
           </div>

@@ -19,6 +19,7 @@ class KeyMetrics extends React.Component {
 
         this.state = {
             search:'',
+            value:'',
             clientId:'',
             showPage: "",
             prospectiveLocations: false,
@@ -42,6 +43,10 @@ class KeyMetrics extends React.Component {
         }
 
     }
+    handleOptionSelectChange(value) {
+      console.log(value)
+        this.setState({ value });
+      }
     updateSearch(event){
       this.setState({
         search: event.target.value.substr(0,20)
@@ -165,6 +170,7 @@ class KeyMetrics extends React.Component {
         })
     }
     getUploadedLocations(clientId) {
+
         var this2 = this;
         axios.get('/api/getUploadedLocations/' + clientId).then(function(res) {
             //console.log(res.data.data);
@@ -231,6 +237,19 @@ class KeyMetrics extends React.Component {
     }
 
     render() {
+      var optionList = [
+        {value: 'Options Held', label: 'Options Held'},
+        {value: 'Encumbered By', label: 'Encumbered By'},
+        {value: 'Right of First Offer', label: 'Right of First Offer'},
+        {value: 'Right of First Refusal', label: 'Right of First Refusal'},
+        {value: 'Relocation', label: 'Relocation'},
+        {value: 'Renewal', label: 'Renewal'},
+        {value: 'Termination', label: 'Termination'},
+        {value: 'Other', label: 'Other'},
+        {value: 'Right of First Purchase', label: 'Right of First Purchase'},
+        {value: 'Early Possession', label: 'Early Possession'}
+
+      ]
         var performingLocationsSelectData = [
             {
                 value: {
@@ -681,15 +700,22 @@ class KeyMetrics extends React.Component {
                             </div>
                         </div>
 
-                        <div className="map-option-dropdown">
+                        <div className="map-option-dropdown" style={{width: '300px', float: 'right', textAlign: 'left',paddingBottom: '20px', zIndex: '10000', position: 'relative'}}>
                             <div>
                                 <span style={{
                                     paddingRight: 15,
                                     color: '#3080e8'
                                 }}>Attributes</span>
-                                <select>
-                                    <option>Options</option>
-                                </select>
+                                <Select.Creatable multi simpleValue
+                                            placeholder="Select Option"
+                                            value={this.state.value}
+                                            className="my-selector"
+                                            name="Pois"
+                                            onChange={this.handleOptionSelectChange.bind(this)}
+                                            options={optionList}
+                                            clearable={true}
+
+                                        />
                             </div>
                         </div>
                         <div className="mini-map-container">

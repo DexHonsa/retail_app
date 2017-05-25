@@ -39,7 +39,13 @@ class LoginForm extends React.Component {
 		if(this.isValid()){
 			e.preventDefault();
 			this.setState({errors: {}, isLoading: true});
-			this.props.userLogin(this.state).then(
+			this.props.userLogin({
+				username : String(this.state.username).toLowerCase(),
+				password : this.state.password,
+				errors : this.state.errors,
+				isLoading : this.state.isLoading,
+				signupPopup: this.state.signupPopup
+			}).then(
 				(res) => browserHistory.push('/map'),
 				(err) => this.setState({errors: err.response.data.errors, isLoading: false})
 				);

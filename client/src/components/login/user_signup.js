@@ -41,7 +41,15 @@ class UserSignup extends React.Component{
     if(this.isValid()){
       e.preventDefault();
       this.setState({errors: {}});
-      this.props.userSignup(this.state).then(
+      this.props.userSignup({
+				userFirstName:this.state.userFirstName,
+				userLastName: this.state.userLastName,
+				userEmail: String(this.state.userEmail).toLowerCase(),
+				userPassword: this.state.userPassword,
+				userPasswordConfirm: this.state.userPasswordConfirm,
+				errors: this.state.errors
+
+			}).then(
         (res) => browserHistory.push('/admin/users'),
         (err) => this.setState({errors: err.response.data.errors})
         );
