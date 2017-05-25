@@ -11,7 +11,7 @@ export function setCurrentUser(user){
 	};
 }
 export function setCurrentClient(clientId, clientName){
-	return { 
+	return {
 		type: SET_CURRENT_CLIENT,
 		clientId,
 		clientName
@@ -42,6 +42,7 @@ export function userLogin(data) {
 		})
 	}
 }
+
 export function userSignup(data) {
 	return dispatch => {
 		return axios.post('/api/signUpUser', data).then(res => {

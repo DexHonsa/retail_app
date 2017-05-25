@@ -40,7 +40,7 @@ class CreateUserPopup extends React.Component {
     this.getClients();
   }
   componentDidMount() {
-    
+
   }
   isValid(){
     const { errors, isValid } = validateInput(this.state);
@@ -77,7 +77,7 @@ class CreateUserPopup extends React.Component {
       this2.setState({
         roles: res.data.data
       })
-     
+
     })
   }
   getClients(){
@@ -86,7 +86,7 @@ class CreateUserPopup extends React.Component {
       this2.setState({
         clients: res.data.data
       })
-      
+
     })
   }
   onChange(e){
@@ -94,7 +94,7 @@ class CreateUserPopup extends React.Component {
       [e.target.name] : e.target.value
     })
   }
-  
+
   submitForm(event){
     console.log('hit');
     var this2= this;
@@ -105,7 +105,7 @@ class CreateUserPopup extends React.Component {
 
     upload.end((err, response) => {
       if (err) {
-        
+
       }
 
       if (response.body.secure_url !== '') {
@@ -121,11 +121,11 @@ class CreateUserPopup extends React.Component {
         var userState = this.refs.user_state.value;
         var userZip = this.refs.user_zip.value;
         var token = this.makeId();
-        
+
         //var userClientAssociation = this.refs.user_client_association.value;
         var imgURL = this.state.uploadedFileCloudinaryUrl;
 
-        
+
         var data = {
           "first_name" : userFirstName,
           "last_name" : userLastName,
@@ -143,7 +143,7 @@ class CreateUserPopup extends React.Component {
           "user_img_path": imgURL,
           "active": 0
         }
-        console.log(data);
+
         axios.post('/api/users', data).then(function(res){
           var data = {
             email: this2.state.user_email,
@@ -152,7 +152,7 @@ class CreateUserPopup extends React.Component {
             axios.post('/api/sendInviteMailer',data).then(function(res){
               console.log(res);
             })
-          
+
           var data = {
             clientId : this2.state.associated_clients.value,
             userId : res.data.User.generated_keys[0]
@@ -162,17 +162,17 @@ class CreateUserPopup extends React.Component {
           })
           this2.props.collapse();
         })
-        
-        
+
+
       }
     });
 
     }
-    
+
 
   }
 makeId(){
- console.log('hit');
+
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -182,12 +182,12 @@ makeId(){
     return text;
 
 }
-  
+
 render(){
   var clientArray = this.state.clients.map(function(data,i){
     return { value: data.id, label: data.client_name }
   });
-               
+
    const {user_password,user_email, errors} = this.state;
    var roles;
     if(this.state.roles.length > 0){
@@ -203,7 +203,7 @@ render(){
     }
     var userClientAssociation;
     if(this.state.user_role === 'Basic'){
-     
+
       userClientAssociation = <div><div className="popup-small-title">Client Association</div>
             <div className="form-row">
               <div className="popup-selector-dropdown" style={{flex: 1, maxWidth: 300, marginLeft: 0}}>
@@ -218,7 +218,7 @@ render(){
               </div>
             </div></div>
     }
-   
+
     return (
       <div id="user-popup" className="popup">
         <div className="popup-container animated-slow bounceInUp">
@@ -238,26 +238,26 @@ render(){
             <div className="popup-small-title">Upload a Photo</div>
             <div className="upload-picture" style={{backgroundImage: 'url(' + this.state.croppedImg + ')'}}>
               <FileUploaderUser handleFileChange={this.handleFileChange.bind(this)} />
-              
-                
+
+
               </div>
             <div className="popup-small-title">Basic Info</div>
             <div className="form-row">
               <div style={{flex: 2}}>
                 <p>
-                  
+
                   <input className="popup-input" placeholder="First Name" type="text" ref="user_first_name" id="user-first-name" />
                 </p>
               </div>
               <div style={{flex: 2, marginLeft: 10}}>
                 <p>
-                  
+
                   <input className="popup-input" placeholder="Last Name" type="text" ref="user_last_name" id="user-last-name" />
                 </p>
               </div>
               <div className="popup-selector-dropdown" style={{flex: 1}}>
                 <select name="user_role" onChange={this.onChange.bind(this)} ref="user_role">
-                  
+
                   {roles}
                 </select>
               </div>
@@ -265,13 +265,13 @@ render(){
             <div className="form-row">
               <div style={{flex: 1}}>
                 <p>
-                  
+
                   <input className="popup-input" placeholder="Address" type="text" ref="user_address" id="user-address" />
                 </p>
               </div>
               <div style={{flex: 1, marginLeft: 10}}>
                 <p>
-                  
+
                   <input className="popup-input" placeholder="City" type="text" ref="user_city" id="user-city" />
                 </p>
               </div>
@@ -304,7 +304,7 @@ render(){
               </div>
               <div style={{flex: 1, maxWidth: 100, marginLeft: 10}}>
                 <p>
-                  
+
                   <input className="popup-input" placeholder="Zip" type="text" ref="user_zip" id="user-zip" />
                 </p>
               </div>
@@ -312,8 +312,8 @@ render(){
             <div className="popup-small-title">User Credentials</div>
             <div className="form-row">
               <div style={{flex: 1, maxWidth: 300}}>
-                
-                  
+
+
                   <TextFieldGroup
                       field="user_email"
                       label="Email"
@@ -322,7 +322,7 @@ render(){
                       error={errors.user_email}
                       onChange={this.onChange.bind(this)}
                     />
-                
+
               </div>
 
             </div>

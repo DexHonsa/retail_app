@@ -194,6 +194,9 @@ app.route('/api/updateUser').put(api.updateUser);
 app.route('/api/updateUserContact').put(api.updateUserContact);
 app.route('/api/updateUserPassword').put(api.updateUserPassword);
 
+//recover password api
+app.route('/api/userForgotPassword').post(api.userForgotPassword);
+
 //views API
 app.route('/api/incrementViews').put(api.incrementViews);
 
@@ -217,6 +220,7 @@ app.route('/api/readMessage').put(api.readMessage);
 
 //Mailer API
 app.route('/api/sendInviteMailer').post(api.sendInviteMailer);
+app.route('/api/forgotPasswordMailer').post(api.forgotPasswordMailer);
 
 // Role API
 app.route('/api/roles').post(api.addRole);
