@@ -169,6 +169,14 @@ exports.DeleteImportData = function(req,res){
     })
   })
 }
+exports.finishTutorial = function(req,res){
+  var userId = req.body.userId;
+  r.db('retail_updated').table('User').get(userId).update({'tutorial':1}).run().then(function(data){
+    res.json({
+      data
+    })
+  })
+}
 exports.getUploadedLocations = function(req,res){
     var clientId = req.params.clientId;
     r.db('retail_updated').table('ExcelData').getAll(clientId, {index:"clientId"}).run().then(function(data){

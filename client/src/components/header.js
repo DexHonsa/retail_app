@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import { logout, setCurrentClient } from '../actions/auth_actions';
 import SettingsDropdown from './util/settings_dropdown';
 import ChangePassword from './util/change_password_popup';
+import Tutorial from './util/tutorial';
 
 
 class Header extends React.Component{
@@ -20,7 +21,8 @@ class Header extends React.Component{
       client_img : "",
       settings_dropdown: false,
       user: [],
-      changePasswordPopup: false
+      changePasswordPopup: false,
+      tutorialPopup:false
     }
   }
   logout(e){
@@ -55,6 +57,11 @@ getUser(){
       if(this2.state.user.active === 0){
           this2.setState({
             changePasswordPopup: true
+          })
+      }
+      if(this2.state.user.tutorial === 0){
+          this2.setState({
+            tutorialPopup: true
           })
       }
     })
@@ -113,11 +120,16 @@ hideChangePasswordPopup(){
     changePasswordPopup:false
   })
 }
+hideTutorialPopup(){
+  this.setState({
+    tutorialPopup:false
+  })
+}
 
 render(){
     var headerStyle
     if(this.props.auth.isAuthenticated == false){
-    
+
        headerStyle = {display:'none'};
     }
     var clientDropdown;
@@ -142,16 +154,20 @@ render(){
             </li>;
     }
     var changePasswordPopup;
-
+    var tutorialPopup;
 
     if(this.state.changePasswordPopup){
       changePasswordPopup = <ChangePassword hideChangePasswordPopup={this.hideChangePasswordPopup.bind(this)} />
+    }
+    if(this.state.tutorialPopup){
+      tutorialPopup = <Tutorial hideTutorialPopup={this.hideTutorialPopup.bind(this)} />
     }
 
 
     return (
       <header className="header" style={headerStyle}>
       {changePasswordPopup}
+      {tutorialPopup}
         <div className="container-fluid">
           <div className="logo"><img alt="logo" style={{height: 20, display: 'inline-block', lineHeight: 50}} src={logo} /></div>
           <div className="main-nav">

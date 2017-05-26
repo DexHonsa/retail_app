@@ -659,6 +659,7 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 	font-weight: normal;
 	float: left;
 	cursor: pointer;
+
 }
 .login-btn{
 	background:#3080e8;
@@ -954,4 +955,35 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 .send-report-btn:hover{
 	background:#469df5;
 	cursor: pointer;
+}
+.tutorial-ss-container{
+	float: left;
+	position: relative;
+	width:70%;
+}
+.tutorial-description-container{
+	width:30%;
+	padding:15px;
+	float: right;
+}
+.tutorial-title{
+	font-size: 15pt;
+	margin-bottom:10px;
+	padding-bottom:10px;
+	border-bottom:solid 1px #eaeaea;
+}
+.next-tutorial{
+	background:#3080e8;
+	padding:7px 15px;
+	border-radius: 3px;
+	margin-top:15px;
+	position: absolute;
+	color:#fff;
+}
+.next-tutorial:hover{
+	background:#469df5;
+	cursor: pointer;
+}
+.tutorial-body-container{
+	overflow: auto;
 }

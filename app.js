@@ -10,11 +10,38 @@ var json2xls = require('json2xls');
 var multer = require('multer');
 var xlsxtojson = require("xlsx-to-json-lc");
 var bodyParser = require('body-parser');
+//var stripe = require("stripe")("sk_test_4oFGt3p491ust1hcWuR27QF1");
+
 
 
 var app = express();
 
 
+// var plan = stripe.plans.create({
+//   name: "Basic Plan",
+//   id: "basic-monthly",
+//   interval: "month",
+//   currency: "usd",
+//   amount: 0,
+// }, function(err, plan) {
+//   // asynchronously called
+// });
+//
+// // Set your secret key: remember to change this to your live secret key in production
+// // See your keys here: https://dashboard.stripe.com/account/apikeys
+//
+// var customer = stripe.customers.create({
+//   email: "jenny.rosen@example.com",
+// }, function(err, customer) {
+//   // asynchronously called
+// });
+//
+// stripe.subscriptions.create({
+//   customer: customer.id,
+//   plan: "basic-monthly",
+// }, function(err, subscription) {
+//   // asynchronously called
+// });
 
 
 
@@ -194,6 +221,8 @@ app.route('/api/updateUser').put(api.updateUser);
 app.route('/api/updateUserContact').put(api.updateUserContact);
 app.route('/api/updateUserPassword').put(api.updateUserPassword);
 
+//tutorial API
+app.route('/api/finishTutorial').put(api.finishTutorial);
 //recover password api
 app.route('/api/userForgotPassword').post(api.userForgotPassword);
 
