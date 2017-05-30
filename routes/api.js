@@ -254,6 +254,7 @@ exports.signUpUser = function(req, res) {
 
         } else {
             r.db('retail_updated').table('User').insert({
+                'tutorial':0,
                 'first_name': userFirstName,
                 'last_name': userLastName,
                 'email': userEmail,
@@ -283,9 +284,41 @@ exports.signUpUser = function(req, res) {
 
             });
 
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'dex@theamp.com', //your email
+                    pass: 'Awesomeo21' //password
+                }
+            });
+
+            var email = userEmail;
+
+
+            var mailOptions = {
+                from: 'dex@theamp.com', // sender address
+                to: email, // list of receivers
+                subject: 'Welcome to SiteMAP!', // Subject line
+                text: 'Welcome to SiteMAP!', // plain text body
+                html: '<!DOCTYPE html><html lang=it><meta content="text/html; charset=UTF-8"http-equiv=content-type><title>MOSAICO Responsive Email Designer</title><meta charset=utf-8><meta content="width=device-width"name=viewport><style>#ko_onecolumnBlock_3 .textintenseStyle a,#ko_onecolumnBlock_3 .textintenseStyle a:hover,#ko_onecolumnBlock_3 .textintenseStyle a:link,#ko_onecolumnBlock_3 .textintenseStyle a:visited{color:#fff;text-decoration:none;text-decoration:none;font-weight:700}#ko_onecolumnBlock_3 .textlightStyle a:hover,#ko_onecolumnBlock_3 .textlightStyle a:visited{color:#3f3d33;text-decoration:none;font-weight:700}</style><style>#outlook a{padding:0}.ReadMsgBody{width:100%}.ExternalClass{width:100%}.ExternalClass,.ExternalClass div,.ExternalClass font,.ExternalClass p,.ExternalClass span,.ExternalClass td{line-height:100%}a,body,table,td{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}table,td{mso-table-lspace:0;mso-table-rspace:0}img{-ms-interpolation-mode:bicubic}body{margin:0;padding:0}img{border:0;height:auto;line-height:100%;outline:0;text-decoration:none}table{border-collapse:collapse!important}body{height:100%!important;margin:0;padding:0;width:100%!important}.appleBody a{color:#68440a;text-decoration:none}.appleFooter a{color:#999;text-decoration:none}@media screen and (max-width:525px){table[class=wrapper]{width:100%!important;min-width:0!important}td[class=mobile-hide]{display:none}img[class=mobile-hide]{display:none!important}img[class=img-max]{width:100%!important;max-width:100%!important;height:auto!important}table[class=responsive-table]{width:100%!important}td[class=padding]{padding:10px 5% 15px 5%!important}td[class=padding-copy]{padding:10px 5% 10px 5%!important;text-align:center}td[class=padding-meta]{padding:30px 5% 0 5%!important;text-align:center}td[class=no-pad]{padding:0!important}td[class=no-padding]{padding:0!important}td[class=section-padding]{padding:10px 15px 10px 15px!important}td[class=section-padding-bottom-image]{padding:10px 15px 0 15px!important}td[class=mobile-wrapper]{padding:10px 5% 15px 5%!important}table[class=mobile-button-container]{margin:0 auto;width:100%!important}a[class=mobile-button]{width:80%!important;padding:15px!important;border:0!important;font-size:16px!important}}</style><body align=center bgcolor=#ffffff style=margin:0;padding:0><a href="http://retail.theamp.com"><img src=http://dexhonsa.com/AMP/site_map_welcome_mailer.jpg></a>'
+
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }else{
+                  res.json({info})
+                }
+                console.log('Message %s sent: %s', info.messageId, info.response);
+            });
+
         }
 
     }).error(handleError(res));
+
+
+
 
 }
 

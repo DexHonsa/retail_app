@@ -274,6 +274,10 @@ app.route('/api/getUploadedFilteredLocations/:clientId/:filter/:type').get(api.g
 app.route('/api/UpdateUploadedLocation/:id').put(api.UpdateUploadedLocation);
 app.route('/api/DeleteImportData/:clientId').post(api.DeleteImportData);
 
+//welcome mailer api
+
+
+
 
 // Redirect all others to the index
 // A 404 page is probably a better move
