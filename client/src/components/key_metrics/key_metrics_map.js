@@ -182,7 +182,7 @@ class KeyMetrics extends React.Component {
             var cityArray = [];
             var stateArray = [];
             res.data.data.forEach(function(item, i) {
-
+            //  console.log(item);
                 if (cityArray.includes(item.city)) {} else {
                     cityArray.push(item.city);
                 }
@@ -192,7 +192,7 @@ class KeyMetrics extends React.Component {
                 }
 
                 totalLocations = parseInt(totalLocations) + 1;
-                totalSf = parseInt(totalSf) + parseInt(item.sqFt);
+                totalSf = parseInt(totalSf) + parseInt(item['square feet']);
 
                 totalSales = parseInt(totalSales) + parseInt(item.sales);
 
@@ -284,7 +284,7 @@ class KeyMetrics extends React.Component {
         }
         var filteredLocations = this.state.uploadedLocations.filter(
           (data) => {
-            return data.address.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+            return data['address'].toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
           }
           );
         var array = this.state.uploadedLocations;
@@ -598,7 +598,7 @@ class KeyMetrics extends React.Component {
                                                 <div className="location-number">#{i+1}</div>
                                                 <div className="location-inner">
                                                     <div className="location-img" style={{
-                                                        backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.lat + ',' + data.lng + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
+                                                        backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.latitude + ',' + data.longitude + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
                                                     }}/>
                                                     <Link to={'/property/propertydetails/' +data.id}><div className="location-name">{data.address} {data.city} {data.state}</div></Link>
                                                     <div className="location-details">
@@ -623,7 +623,7 @@ class KeyMetrics extends React.Component {
                                               <div className="location-number">#{i+1}</div>
                                               <div className="location-inner">
                                                   <div className="location-img" style={{
-                                                      backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.lat + ',' + data.lng + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
+                                                      backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.latitude + ',' + data.longitude + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
                                                   }}/>
                                                   <Link to={'/property/propertydetails/' +data.id}><div className="location-name">{data.address} {data.city} {data.state}</div></Link>
                                                   <div className="location-details">
@@ -648,7 +648,7 @@ class KeyMetrics extends React.Component {
                                             <div className="location-number green" >#{i+1}</div>
                                             <div className="location-inner">
                                                 <div className="location-img" style={{
-                                                    backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.lat + ',' + data.lng + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
+                                                    backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.latitude + ',' + data.longitude + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
                                                 }}/>
                                                 <Link to={'/property/propertydetails/' +data.id}><div className="location-name">{data.address} {data.city} {data.state}</div></Link>
                                                 <div className="location-details">
@@ -673,7 +673,7 @@ class KeyMetrics extends React.Component {
                                           <div className="location-number green">#{i+1}</div>
                                           <div className="location-inner">
                                               <div className="location-img" style={{
-                                                  backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.lat + ',' + data.lng + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
+                                                  backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.latitude + ',' + data.longitude + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
                                               }}/>
                                               <Link to={'/property/propertydetails/' +data.id}><div className="location-name">{data.address} {data.city} {data.state}</div></Link>
                                               <div className="location-details">
@@ -732,13 +732,13 @@ class KeyMetrics extends React.Component {
                                     return <li key={i}>
                                         <div className="pros-loc-details">
                                             <div className="pros-loc-img" style={{
-                                                backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.lat + ',' + data.lng + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
+                                                backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + data.latitude + ',' + data.longitude + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
                                             }}/>
                                             <Link to={'/property/propertydetails/' + data.id}><div className="pros-loc-name">
                                                 <span className="pros-location-click" style={{
                                                     color: '#3080e8',
                                                     fontSize: '11pt'
-                                                }}>{data.address}</span><br/>{data.city} {data.state} {data.zip}<br/></div></Link>
+                                                }}>{data.address}</span><br/>{data.city} {data.state} {data['zip code']}<br/></div></Link>
                                         </div>
                                         <div className="pros-loc-metric">Sales
                                             <br/>
@@ -754,7 +754,7 @@ class KeyMetrics extends React.Component {
                                                 color: '#3080e8',
                                                 fontWeight: 'bold',
                                                 fontSize: '12pt'
-                                            }}>{data.profit}</span>
+                                            }}>{'$' + format(parseInt(data.profit))}</span>
                                         </div>
                                         <div className="pros-loc-metric">Total SF
                                             <br/>
@@ -762,7 +762,7 @@ class KeyMetrics extends React.Component {
                                                 color: '#3080e8',
                                                 fontWeight: 'bold',
                                                 fontSize: '12pt'
-                                            }}>{data.sqFt}</span>
+                                            }}>{data['square feet']}</span>
                                         </div>
                                         <div className="pros-loc-metric">Headcount
                                             <br/>

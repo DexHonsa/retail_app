@@ -96,15 +96,16 @@ function getUploadedLocations(clientId){
 
       var locationItems = [];
       data.data.forEach(function(item){
+        console.log(item);
         locationItems.push({
             "type": "Feature",
             "properties": {
-                "description": "<strong>"+item.address+ ' ' +item.state+ ' '+item.zip+"</strong><p>Location #"+item.locationNumber+"</p>",
+                "description": "<strong>"+item.address+ ' ' +item.state+ ' '+item['zip code']+"</strong><p>Location #"+item['location number']+"</p>",
                 "icon": "music"
             },
             "geometry": {
                 "type": "Point",
-                "coordinates": [item.lng, item.lat]
+                "coordinates": [item.longitude, item.latitude]
             }
         })
       })
@@ -126,12 +127,12 @@ function getUploadedFilteredLocations(filter,type,clientId){
         locationItems2.push({
             "type": "Feature",
             "properties": {
-                "description": "<strong>"+item.address+ ' ' +item.state+ ' '+item.zip+"</strong><p>Location #"+item.locationNumber+"</p>",
+                "description": "<strong>"+item.address+ ' ' +item.state+ ' '+item['zip code']+"</strong><p>Location #"+item['location number']+"</p>",
                 "icon": "15"
             },
             "geometry": {
                 "type": "Point",
-                "coordinates": [item.lng, item.lat]
+                "coordinates": [item.longitude, item.latitude]
             }
         })
       })

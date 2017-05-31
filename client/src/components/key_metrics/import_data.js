@@ -37,12 +37,13 @@ class ImportData extends React.Component {
       if(data.error_code===0)
         {
         console.log("success")
-        console.log(data.data);
+
         var newData = [];
         data.data.forEach(function(item, i){
+          //console.log(item);
           var clientId = this2.props.client.clientId;
-          var locationNumber = item.locationnumber;
-          var locationName = item.locationname;
+          var locationNumber = item['location number'];
+          var locationName = item['location name'];
           var address = item.address;
           var sales = item.sales;
           var profit = item.profit;
@@ -50,10 +51,10 @@ class ImportData extends React.Component {
           var group = item.group;
           var state = item.state;
           var city = item.city;
-          var zip = item.zipcode;
-          var sqFt = item.squarefeet;
-          var lat = item.lat;
-          var lng = item.lng;
+          var zip = item['zip code'];
+          var sqFt = item['square feet'];
+          var lat = item.latitude;
+          var lng = item.longitude;
 
 
           var formatted_address = address.replace(/[^A-Z0-9]+/ig, "+");
@@ -64,25 +65,25 @@ class ImportData extends React.Component {
 
 
           var createData = {
-            clientId: clientId,
-            locationNumber:locationNumber,
-            locationName:locationName,
-            sales:sales,
-            profit:profit,
-            group:group,
-            country:country,
-            address:address,
-            state:state,
-            city:city,
-            zip:zip,
-            sqFt:sqFt,
-            lat:lat,
-            lng:lng
+            'clientId': clientId,
+            'location number':locationNumber,
+            'location name':locationName,
+            'sales':sales,
+            'profit':profit,
+            'group':group,
+            'country':country,
+            'address':address,
+            'state':state,
+            'city':city,
+            'zip code':zip,
+            'square feet':sqFt,
+            'latitude':lat,
+            'longitude':lng
           }
           newData[i] = createData;
         });
 
-        console.log(newData);
+        //console.log(newData);
 
         axios.post('/uploadData',newData).then((res)=>{
         console.log("complete")
@@ -115,7 +116,7 @@ class ImportData extends React.Component {
             You can upload an excel Spreadsheet with your existing location infomation in order to use SiteMap to be an analytical tool.<br /> Your headers much be identical to the headers listed below.  If you do not have a particular field, leave the spaces blank.<br /><br />
             <div style={{marginBottom:15}}>Example:</div>
             <table className="example-table">
-              <tbody><tr><th>locationNumber</th><th>locationName</th><th>address</th><th>state</th><th>city</th><th>zipCode</th><th>squareFeet</th><th>lat</th><th>lng</th><th>sales</th><th>profit</th></tr>
+              <tbody><tr><th>Location Number</th><th>Location Name</th><th>Address</th><th>State</th><th>City</th><th>Zip Code</th><th>Square Feet</th><th>Latitude</th><th>Longitude</th><th>Sales</th><th>Profit</th></tr>
                 <tr><td>234</td><td>Bloomberg Store</td><td>1234 Westbrooke Ave</td><td>CA</td><td>San Francisco</td><td>94582</td><td>2500</td><td>30.12345</td><td>-120.1245524</td><td>321575</td><td>23000</td></tr>
 
               </tbody></table>

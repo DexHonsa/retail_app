@@ -112,19 +112,19 @@ var app = express();
 //     console.log('Disconnected: %s sockets connected', connections.length);
 // });
 var jsonArr = [{
-    'locationNumber': '',
-    'locationName': '',
-    'address': '',
-    'sales': '',
-    'profit': '',
-    'country': '',
-    'group': '',
-    'state': '',
-    'city': '',
-    'zipCode': '',
-    'squareFeet': '',
-    'lat': '',
-    'lng':''
+    'Location Number': '',
+    'Location Name': '',
+    'Address': '',
+    'Sales': '',
+    'Profit': '',
+    'Country': '',
+    'Group': '',
+    'State': '',
+    'City': '',
+    'Zip Code': '',
+    'Square Feet': '',
+    'Latitude': '',
+    'Longitude':''
 }];
 
 app.use(json2xls.middleware);
