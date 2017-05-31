@@ -13,6 +13,9 @@ class MoreZipDemographics extends React.Component {
 
 		}
 	}
+	format(x) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 	componentDidMount() {
 
 		var that = this;
@@ -79,7 +82,7 @@ class MoreZipDemographics extends React.Component {
 			          </div>
 			          <div className="detail-item">
 			            <div className="detail-title">Total Family Households</div>
-			            <div className="detail-value">{this.state.demographics.FamilyHouseholds.value}</div>
+			            <div className="detail-value">{this.format(this.state.demographics.FamilyHouseholds.value)}</div>
 			          </div>
 			        </div>
 			        <div className="property-info-details">
@@ -93,7 +96,7 @@ class MoreZipDemographics extends React.Component {
 			          </div>
 			          <div className="detail-item">
 			            <div className="detail-title">Household Income</div>
-			            <div className="detail-value">${this.state.demographics.IncomePerHousehold.value}</div>
+			            <div className="detail-value">${this.format(this.state.demographics.IncomePerHousehold.value)}</div>
 			          </div>
 			        </div></div>;
 

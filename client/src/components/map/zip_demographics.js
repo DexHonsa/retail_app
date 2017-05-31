@@ -29,6 +29,9 @@ class ZipDemographics extends React.Component {
 	componentDidMount() {
 
 	}
+	format(x) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 	componentWillReceiveProps(nextProps) {
 		this.setState({
 			zipDemographicItems : nextProps.zipDemographicItems
@@ -43,15 +46,15 @@ class ZipDemographics extends React.Component {
 		        <div className="zip-code-demo-list">
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Total Households</div>
-		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.TotalHouseholds.value}</div>
+		            <div className="zip-code-demo-value">{this.format(this.state.zipDemographicItems.TotalHouseholds.value)}</div>
 		          </div>
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Total Number Of Businesses</div>
-		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.TotalNumberOfBusinesses.value}</div>
+		            <div className="zip-code-demo-value">{this.format(this.state.zipDemographicItems.TotalNumberOfBusinesses.value)}</div>
 		          </div>
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Income Per Household</div>
-		            <div className="zip-code-demo-value">{this.state.zipDemographicItems.IncomePerHousehold.value}</div>
+		            <div className="zip-code-demo-value">${this.format(this.state.zipDemographicItems.IncomePerHousehold.value)}</div>
 		          </div>
 		          <div className="zip-code-demo-item">
 		            <div className="zip-code-demo-title">Median Age</div>

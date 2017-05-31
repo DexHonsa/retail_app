@@ -64,15 +64,15 @@ class Options extends React.Component{
 
                 </tr>
                 <tr>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - Suite']} title="Option Rent Schedule - Suite"/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - Charge Code']} title="Option Rent Schedule - Charge Code"/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - From']} title="Option Rent Schedule - From"/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - To']} title="Option Rent Schedule - To"/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - Months']} title="Option Rent Schedule - Months"/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - Annual']} title="Option Rent Schedule - Annual"/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - Monthly']} title="Option Rent Schedule - Monthly"/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - Per Square Feet/Year']} title="Option Rent Schedule - Per Square Feet/Year"/></td>
+                    <td><TableInput id={this.props.params.id} value={this.state.property['Option Rent Schedule - SF']} title="Option Rent Schedule - SF"/></td>
 
                 </tr>
             </table>

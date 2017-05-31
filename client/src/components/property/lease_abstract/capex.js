@@ -39,11 +39,11 @@ class Capex extends React.Component{
 
                 </tr>
                 <tr>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Tenant Improvements - Name']} title='Tenant Improvements - Name'/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Tenant Improvements - Charge Code']} title='Tenant Improvements - Charge Code'/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Tenant Improvements - Amount Per Square Feet ($)']} title='Tenant Improvements - Amount Per Square Feet ($)'/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Tenant Improvements - Total Amount ($)']} title='Tenant Improvements - Total Amount ($)'/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Tenant Improvements - Start Work Date']} title='Tenant Improvements - Start Work Date'/></td>
 
                 </tr>
             </table>
@@ -73,11 +73,11 @@ class Capex extends React.Component{
 
                 </tr>
                 <tr>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
-                    <td><TableInput/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Other Capital Exp - Name']} title='Other Capital Exp - Name'/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Other Capital Exp - Charge Code']} title='Other Capital Exp - Charge Code'/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Other Capital Exp - Amount Per Square Feet ($)']} title='Other Capital Exp - Amount Per Square Feet ($)'/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Other Capital Exp - Total Amount ($)']} title='Other Capital Exp - Total Amount ($)'/></td>
+                    <td><TableInput  id={this.props.params.id} value={this.state.property['Other Capital Exp - Notes']} title='Other Capital Exp - Notes'/></td>
 
                 </tr>
             </table>

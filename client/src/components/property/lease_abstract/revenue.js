@@ -39,12 +39,12 @@ class Revenue extends React.Component {
                             <th>To</th>
                         </tr>
                         <tr>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Suite']} title='Suite'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Floor']} title='Floor'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rentable Square Feet']} title='Rentable Square Feet'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Usable Square Feet']} title='Usable Square Feet'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Tenant Space From']} title='Tenant Space From'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Tenant Space To']} title='Tenant Space To'/></td>
                         </tr>
                     </table>
                 </div>
@@ -64,15 +64,15 @@ class Revenue extends React.Component {
                             <th>SF</th>
                         </tr>
                         <tr>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - Suite']} title='Rent Schedule - Suite'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - Charge Code']} title='Rent Schedule - Charge Code'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - From']} title='Rent Schedule - From'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - To']} title='Rent Schedule - To'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - Months']} title='Rent Schedule - Months'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - Annual ($)']} title='Rent Schedule - Annual ($)'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - Monthly ($)']} title='Rent Schedule - Monthly ($)'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - Per Square Feet/Year ($)']} title='Rent Schedule - Per Square Feet/Year ($)'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Rent Schedule - SF']} title='Rent Schedule - SF'/></td>
                         </tr>
                     </table>
                 </div>
@@ -92,15 +92,15 @@ class Revenue extends React.Component {
                             <th>Overage ($)</th>
                         </tr>
                         <tr>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - Category']} title='Percentage Sales Rent - Category'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - Charge Code']} title='Percentage Sales Rent - Charge Code'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - Sales Estimate']} title='Percentage Sales Rent - Sales Estimate'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - Estimated Sales Escalation/Year']} title='Percentage Sales Rent - Estimated Sales Escalation/Year'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - From']} title='Percentage Sales Rent - From'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - To']} title='Percentage Sales Rent - To'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - Break Point ($)']} title='Percentage Sales Rent - Break Point ($)'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - Ceiling Amount ($)']} title='Percentage Sales Rent - Ceiling Amount ($)'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Percentage Sales Rent - Overage ($)']} title='Percentage Sales Rent - Overage ($)'/></td>
                         </tr>
                     </table>
                 </div>
@@ -121,14 +121,14 @@ class Revenue extends React.Component {
                         </tr>
                         <tr>
 
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
-                            <td><TableInput/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Parking Rent - Charge Code']} title='Parking Rent - Charge Code'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Parking Rent - #']} title='Parking Rent - #'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Parking Rent - Reserved $/Space/Month']} title='Parking Rent - Reserved $/Space/Month'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Parking Rent - Total $/month']} title='Parking Rent - Total $/month'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Parking Rent - #']} title='Parking Rent - #'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Parking Rent - Unreserved $/Space/Month']} title='Parking Rent - Unreserved $/Space/Month'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Parking Rent - Total $/month']} title='Parking Rent - Total $/month'/></td>
+                            <td><TableInput id={this.props.params.id} value={this.state.property['Parking Rent - Total Parking/month ($)']} title='Parking Rent - Total Parking/month ($)'/></td>
                         </tr>
                     </table>
                 </div>
