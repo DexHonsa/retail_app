@@ -115,7 +115,7 @@ class ImportData extends React.Component {
             You can upload an excel Spreadsheet with your existing location infomation in order to use SiteMap to be an analytical tool.<br /> Your headers much be identical to the headers listed below.  If you do not have a particular field, leave the spaces blank.<br /><br />
             <div style={{marginBottom:15}}>Example:</div>
             <table className="example-table">
-              <tbody><tr><th>Location #</th><th>Name</th><th>Address</th><th>State</th><th>City</th><th>Zip</th><th>SqFt</th><th>Lat</th><th>Lng</th><th>Sales</th><th>Profit</th></tr>
+              <tbody><tr><th>locationNumber</th><th>locationName</th><th>address</th><th>state</th><th>city</th><th>zipCode</th><th>squareFeet</th><th>lat</th><th>lng</th><th>sales</th><th>profit</th></tr>
                 <tr><td>234</td><td>Bloomberg Store</td><td>1234 Westbrooke Ave</td><td>CA</td><td>San Francisco</td><td>94582</td><td>2500</td><td>30.12345</td><td>-120.1245524</td><td>321575</td><td>23000</td></tr>
 
               </tbody></table>

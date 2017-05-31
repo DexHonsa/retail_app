@@ -112,19 +112,19 @@ var app = express();
 //     console.log('Disconnected: %s sockets connected', connections.length);
 // });
 var jsonArr = [{
-    'LocationNumber': '',
-    'LocationName': '',
-    'Address': '',
-    'Sales': '',
-    'Profit': '',
-    'Country': '',
-    'Group': '',
-    'State': '',
-    'City': '',
-    'ZipCode': '',
-    'SquareFeet': '',
-    'Lat': '',
-    'Lng':''
+    'locationNumber': '',
+    'locationName': '',
+    'address': '',
+    'sales': '',
+    'profit': '',
+    'country': '',
+    'group': '',
+    'state': '',
+    'city': '',
+    'zipCode': '',
+    'squareFeet': '',
+    'lat': '',
+    'lng':''
 }];
 
 app.use(json2xls.middleware);
@@ -276,7 +276,7 @@ app.route('/api/DeleteImportData/:clientId').post(api.DeleteImportData);
 
 //welcome mailer api
 
-
+app.rout
 
 
 // Redirect all others to the index
