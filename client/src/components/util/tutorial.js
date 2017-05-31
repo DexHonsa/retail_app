@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import Overlay from './overlay';
+import welcome from '../../../images/tutorial/welcome.jpg'
 import add_client from '../../../images/tutorial/add_client.jpg'
 import select_client from '../../../images/tutorial/select_client.jpg';
 import add_user from '../../../images/tutorial/add_user.jpg';
@@ -39,6 +40,15 @@ class Tutorial extends React.Component{
     var screenshot;
     var description;
     if(this.state.tutorialPosition == 0){
+      screenshot = welcome;
+      description = <div className="tutorial-description-container">
+                      <div className="tutorial-title">Welcome</div>
+                      <div className="tutorial-description-body">Welcome to SiteMAP! This tutorial will help you get a basic high level understanding of the various functionalities of SiteMAP.
+                      Click next to go through the tutorial or skip it at the bottom of this dialouge.  You can always revist this tutorial by clicking the 'Tutorial' btn on the top right.</div>
+                      <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
+                    </div>
+    }
+    if(this.state.tutorialPosition == 1){
       screenshot = add_client;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Creating Clients</div>
@@ -47,7 +57,7 @@ class Tutorial extends React.Component{
                       <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
                     </div>
     }
-    if(this.state.tutorialPosition == 1){
+    if(this.state.tutorialPosition == 2){
       screenshot = select_client;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Selecting Clients</div>
@@ -55,7 +65,7 @@ class Tutorial extends React.Component{
                       <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
                     </div>
     }
-    if(this.state.tutorialPosition == 2){
+    if(this.state.tutorialPosition == 3){
       screenshot = add_user;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Users</div>
@@ -64,7 +74,7 @@ class Tutorial extends React.Component{
                       <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
                     </div>
     }
-    if(this.state.tutorialPosition == 3){
+    if(this.state.tutorialPosition == 4){
       screenshot = messages;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Messages</div>
@@ -72,7 +82,7 @@ class Tutorial extends React.Component{
                       <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
                     </div>
     }
-    if(this.state.tutorialPosition == 4){
+    if(this.state.tutorialPosition == 5){
       screenshot = map_geolocation;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Map Navigation</div>
@@ -80,7 +90,7 @@ class Tutorial extends React.Component{
                       <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
                     </div>
     }
-    if(this.state.tutorialPosition == 5){
+    if(this.state.tutorialPosition == 6){
       screenshot = map_demographics;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Map Demographics</div>
@@ -88,7 +98,7 @@ class Tutorial extends React.Component{
                       <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
                     </div>
     }
-    if(this.state.tutorialPosition == 6){
+    if(this.state.tutorialPosition == 7){
       screenshot = map_pois;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Map Points of Interest</div>
@@ -96,7 +106,7 @@ class Tutorial extends React.Component{
                       <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
                     </div>
     }
-    if(this.state.tutorialPosition == 7){
+    if(this.state.tutorialPosition == 8){
       screenshot = drop_marker;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Double Click to Drop a marker</div>
@@ -104,7 +114,7 @@ class Tutorial extends React.Component{
                       <div onClick={this.nextTutorial.bind(this)} className="next-tutorial">Next <i className="fa fa-angle-right"></i></div>
                     </div>
     }
-    if(this.state.tutorialPosition == 8){
+    if(this.state.tutorialPosition == 9){
       screenshot = property_open;
       description = <div className="tutorial-description-container">
                       <div className="tutorial-title">Location View</div>

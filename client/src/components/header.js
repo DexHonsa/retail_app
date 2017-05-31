@@ -44,6 +44,11 @@ toggleSettingsDropdown(){
     })
   }
 }
+showTutorial(){
+  this.setState({
+    tutorialPopup:true
+  })
+}
 setClientId(){
     if(this.props.auth.user.role === 'Basic'){
       this.props.setCurrentClient(this.props.auth.user.associated_clients[0].value, this.props.auth.user.associated_clients[0].label)
@@ -172,16 +177,18 @@ render(){
           <div className="logo"><img alt="logo" style={{height: 20, display: 'inline-block', lineHeight: 50}} src={logo} /></div>
           <div className="main-nav">
             <Link to="/admin/users" activeClassName="active">Admin</Link>
-
             <Link to="/map" activeClassName="active">Map</Link>
             <Link to="/keymetrics" activeClassName="active">Key Metrics</Link>
             <Link to="/rankings/population" activeClassName="active">Rankings</Link>
           </div>
           <ul className="user-nav">
+            <li><a onClick={this.showTutorial.bind(this)} href="#">Tutorial</a>
+              {settingsDropdown}
+            </li>
             <li><a href="#"><i onClick={this.toggleSettingsDropdown.bind(this)} className="fa fa-gear"></i></a>
               {settingsDropdown}
             </li>
-            {clientDropdownToggle}
+              {clientDropdownToggle}
             <li><Link to={"/user/" + this.props.auth.user.id}><span className="user-img" style={{backgroundImage: 'url('+this.state.user.user_img_path+')'}}></span></Link></li>
           </ul>
         </div>
