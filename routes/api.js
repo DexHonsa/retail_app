@@ -162,6 +162,16 @@ exports.getGeoCode = function(req,res){
 // })
 
 }
+exports.addSubscriptionUser = function(req,res){
+  var customer = stripe.customers.create({
+  email: "dex@theamp.com",
+}, function(err, customer) {
+  console.log(customer);
+  res.json({
+    customer
+  })
+});
+}
 exports.DeleteImportData = function(req,res){
   var clientId = req.params.clientId;
   r.db('retail_updated').table('ExcelData').getAll(clientId, {index:'clientId'}).delete().run().then(function(data){

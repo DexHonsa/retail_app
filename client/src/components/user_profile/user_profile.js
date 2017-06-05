@@ -29,7 +29,7 @@ class UserProfile extends React.Component{
       myProfile: false,
       editUserPopup: false,
       createContactPopup: false,
-			upgradePopup:false,
+			upgradePopup: false,
       userContacts: [],
       errors: {}
 
@@ -67,6 +67,11 @@ class UserProfile extends React.Component{
 				user: res.data.User,
         userContacts: res.data.User.contacts
 			})
+		})
+	}
+	addSubscriptionUser(){
+		axios.get('/api/addSubscriptionUser').then(function(res){
+			console.log(res);
 		})
 	}
   handleFileChange(dataURI) {
@@ -259,7 +264,7 @@ class UserProfile extends React.Component{
                   </div>
 									<div className="field-container">
                     <div className="field-title">Account Type</div>
-                    <div className="field-value">Basic (25 days Remaining)<div onClick={this.showUpgradePopup.bind(this)} className="upgrade-btn">Upgrade</div></div>
+                    <div className="field-value">Basic (25 days Remaining)<div onClick={this.showUpgradePopup.bind(this)} className="upgrade-btn">Upgrade</div><div onClick={this.addSubscriptionUser.bind(this)} className="upgrade-btn">Create Email</div></div>
                   </div>
                 </div>
                 <div className="saved-locations-container">

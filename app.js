@@ -274,6 +274,9 @@ app.route('/api/getUploadedFilteredLocations/:clientId/:filter/:type').get(api.g
 app.route('/api/UpdateUploadedLocation/:id').put(api.UpdateUploadedLocation);
 app.route('/api/DeleteImportData/:clientId').post(api.DeleteImportData);
 
+//stripe api
+app.route('/api/addSubscriptionUser').get(api.addSubscriptionUser);
+
 //welcome mailer api
 
 app.rout
