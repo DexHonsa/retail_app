@@ -183,7 +183,7 @@ render(){
           </div>
           <ul className="user-nav">
             <li><a onClick={this.showTutorial.bind(this)} href="#">Tutorial</a>
-              {settingsDropdown}
+              
             </li>
             <li><a href="#"><i onClick={this.toggleSettingsDropdown.bind(this)} className="fa fa-gear"></i></a>
               {settingsDropdown}

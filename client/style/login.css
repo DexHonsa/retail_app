@@ -1,0 +1,278 @@
+ul,li{
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+.stage{
+	height:100vh;
+	width:100vw;
+	background:rgba(235,241,245,1.00);
+	background-image: url(../images/mapbg.jpg);
+	background-size: cover;
+	background-position: center center;
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+.main-message{
+	font-size:55pt;
+	color:#fff;
+	flex:1;
+	margin-left: 150px;
+	line-height: 60px;
+	font-weight: 300;
+	margin-bottom: 400px;
+}
+.login-container{
+	height:100%;
+	background:#f7f7f7;
+	width:500px;
+	margin-left: auto;
+	padding:15px;
+	display: flex;
+	align-items: center;
+}
+.login-box{
+
+	height:300px;
+	width:100%;
+	text-align: left;
+	padding:15px;
+	font-weight: 300;
+}
+.login-label{
+	font-size:7pt;
+	color:#B5B5B5;
+	text-align: left;
+	text-transform: uppercase;
+	font-weight: bold;
+	letter-spacing: 1px;
+	margin-bottom:2px;
+}
+.login-title{
+	font-size: 17pt;
+	color:#3080e8;
+	margin-bottom:20px;
+}
+.login-box input{
+	width:100%;
+	background: #fff !important;
+	border:solid 1px #e0e0e0;
+	border-radius: 2px;
+	font-size:12pt;
+	padding:5px;
+	color:#808080;
+	margin-bottom:10px;
+}
+.login-box input:focus{
+	border:solid 1px #3080e8;
+}
+.forgot-password{
+	font-size: 10pt;
+	color:#3E5f77;
+	font-weight: normal;
+	float: left;
+}
+.login-btn{
+	background:#3080e8;
+	float: right;
+	color:#fff;
+	padding:10px 15px;
+	border-radius: 3px;
+	font-size: 10pt;
+}
+.login-btn:hover{
+	cursor: pointer;
+	background:#469df5;
+}
+.overlay{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.popup-container{
+	width:50%;
+	min-width: 500px;
+	max-width:1000px;
+	background:#fff;
+
+	border-radius: 5px;
+	overflow: hidden;
+	border:none;
+}
+.popup-top{
+	background:#eaeaea;
+	height:50px;
+	line-height: 50px;
+	padding:0px 15px;
+	font-size: 12pt;
+	display: flex;
+	align-items: center;
+	align-items: center;
+	border-bottom:#d0d0d0;
+}
+.popup-top i{
+	margin-left: auto;
+}
+.subscribe-container{
+	position: relative;
+}
+.subscribe-container img{
+	z-index: 1;
+}
+.subscribe-title-top{
+	font-size: 27pt;
+	position: relative;
+	z-index: 2;
+	color:#fff;
+	padding:15px;
+	font-weight: 300;
+}
+.upgrade-options{
+	position: relative;
+	z-index: 3;
+	padding:15px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.option-tile{
+	height:400px;
+	background:#fff;
+	box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+	border-radius: 3px;
+	padding:15px;
+	position: relative;
+	box-sizing: border-box;
+	transition:all .3s ease;
+}
+.enter-info-tile{
+	height:auto;
+	margin-top: -50px;
+}
+.enter-info-tile:hover{
+	transform:scale(1,1) !important;
+}
+
+.option-tile:hover{
+/*	box-shadow: 0px 0px 0px 4px rgba(0,108,255,0.3);*/
+	transform:scale(1.05,1.05)
+}
+.option-tile-title{
+	font-size: 15pt;
+	color:#000;
+	padding-bottom:15px;
+	border-bottom:solid 1px #eaeaea;
+}
+.option-tile-title i{
+	color:#3080e8;
+	float: right;
+}
+.option-tile-details{
+	margin-top:15px;
+	font-size: 12pt;
+}
+.popup-container li{
+	margin-left: 25px;
+	margin-bottom:15px;
+}
+.option-tile-details li i{
+	color:#3080e8;
+	position: absolute;
+	margin-right:10px;
+	transform:translateX(-25px)
+}
+.option-choose-btn{
+	color:#fff;
+	border-radius: 3px;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4300b1+0,3080e8+100 */
+background: #4300b1; /* Old browsers */
+background: -moz-linear-gradient(left, #4300b1 0%, #3080e8 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(left, #4300b1 0%,#3080e8 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to right, #4300b1 0%,#3080e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4300b1', endColorstr='#3080e8',GradientType=1 ); /* IE6-9 */
+	padding:15px;
+	text-align: center;
+	font-size: 13pt;
+	position: absolute;
+	box-sizing: border-box;
+	width:calc(100% - 30px);
+	bottom:30px;
+	transition:all .3s ease;
+}
+.option-choose-btn:hover{
+	box-shadow: 0px 0px 0px 4px rgba(0,108,255,0.67);
+	cursor: pointer;
+}
+.most-badge{
+	padding:5px; border:solid 1px #3080e8;
+	color:#3080e8;
+	font-size: 8pt;
+	border-radius: 3px;
+	display: inline-block;
+	float: right;
+	margin-right:10px;
+}
+.most-orange{
+	border-color:#D55D00;
+	color:#D55D00;
+}
+.plan-disclaimer{
+	color:#808080;
+	text-align: center;
+	position: absolute;
+	bottom:8px;
+	width:calc(100% - 30px);
+}
+.card-input-container{
+	width:100%;
+	padding:8px 15px;
+}
+.card-input-title{
+	font-size: 13pt;
+	text-align: left;
+	margin-bottom:10px;
+}
+.card-input-container input{
+	width:100%;
+	border-radius: 3px;
+	border:solid 1px #d0d0d0;
+	padding:5px;
+	font-size: 12pt;
+	transition: all .2s ease;
+}
+.card-input-container input:focus{
+	box-shadow: 0px 0px 0px 3px rgba(0,108,255,0.2);
+	border:solid 1px #3080e8;
+}
+.submit-info-btn{
+	background:#3080e8;
+	cursor: pointer;
+	border-radius: 3px;
+	padding:15px;
+	color:#fff;
+	font-size: 13pt;
+	width:100%;
+	transition:all .3s ease;
+	margin-top:20px;
+}
+.submit-info-btn:hover{
+	box-shadow: 0px 0px 0px 3px rgba(0,108,255,0.67);
+	cursor: pointer;
+}
+.submit-info-disclaimer{
+	font-size: 9pt;
+	color:#808080;
+	margin:5px 0px;
+}
+.back-to-options{
+	margin-top:15px;
+	font-size: 15pt;
+	color:#3080e8;
+	cursor: pointer;
+}
+.back-to-options i{
+	transition:all .2s ease;
+}
+.back-to-options:hover i{
+	transform:translateX(-5px);
+}

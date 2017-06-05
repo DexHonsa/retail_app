@@ -9,6 +9,7 @@ import FileUploaderUser from './file_uploader_user';
 import EditUserPopup from '../popups/users/edit_user_popup';
 import CreateContact from './create_user_contact';
 import {Link} from 'react-router';
+import Upgrade from '../util/upgrade';
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
@@ -28,6 +29,7 @@ class UserProfile extends React.Component{
       myProfile: false,
       editUserPopup: false,
       createContactPopup: false,
+			upgradePopup:true,
       userContacts: [],
       errors: {}
 
@@ -125,6 +127,13 @@ class UserProfile extends React.Component{
   showEditUserPopup(){
     this.setState({editUserPopup : true});
   }
+	hideUpgradePopup(){
+    this.setState({upgradePopup : false});
+    this.getUser();
+  }
+  showUpgradePopup(){
+    this.setState({upgradePopup : true});
+  }
   showCreateContact(){
     this.setState({createContactPopup:true})
   }
@@ -150,10 +159,17 @@ class UserProfile extends React.Component{
 }
 	render(){
     var createContactPopup;
+		var upgradePopup;
     if(this.state.createContactPopup === true){
       createContactPopup = <CreateContact hideCreateContact={this.hideCreateContact.bind(this)} userId={this.props.params.id} />;
     }else{
       createContactPopup = '';
+    }
+
+		if(this.state.upgradePopup === true){
+      upgradePopup = <Upgrade hideUpgradePopup={this.hideUpgradePopup.bind(this)} userId={this.props.params.id} />;
+    }else{
+      upgradePopup = '';
     }
     const {contactName, contactEmail, contactPhone, errors} = this.state;
     var popup;
@@ -202,6 +218,7 @@ class UserProfile extends React.Component{
 			<main className="main">
       {popup}
       {createContactPopup}
+			{upgradePopup}
       {this.state.cropperOpen &&
           <AvatarCropper
             onRequestHide={this.handleRequestHide.bind(this)}
@@ -239,6 +256,10 @@ class UserProfile extends React.Component{
                   <div className="field-container">
                     <div className="field-title">Password</div>
                     <div className="field-value">Change Password</div>
+                  </div>
+									<div className="field-container">
+                    <div className="field-title">Account Type</div>
+                    <div className="field-value">Basic (25 days Remaining)<div onClick={this.showUpgradePopup.bind(this)} className="upgrade-btn">Upgrade</div></div>
                   </div>
                 </div>
                 <div className="saved-locations-container">

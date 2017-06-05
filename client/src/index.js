@@ -53,6 +53,7 @@ import '../style/messages.css';
 import '../bootstrap/css/bootstrap.min.css';
 import '../style/font-awesome.min.css';
 import '../style/view_property.css';
+import '../style/login.css';
 
 
 const store = createStore(

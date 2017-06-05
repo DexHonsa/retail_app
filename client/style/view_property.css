@@ -65,6 +65,7 @@
 	border-bottom:solid 1px #eaeaea;
 	padding-left:10px;
 	position: relative;
+	display: flex;
 }
 .input-segment-item:nth-child(odd){
 	margin-right:50px;
@@ -97,6 +98,7 @@
 	border:none;
 	padding:10px;
 	font-size: 12pt;
+	flex:1;
 }
 .input-segment-table-item input{
 	float: right;

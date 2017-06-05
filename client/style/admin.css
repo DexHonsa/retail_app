@@ -987,3 +987,16 @@ label  { position:absolute; top:8px; left:5px; font-size:12pt; font-weight: norm
 .tutorial-body-container{
 	overflow: auto;
 }
+.upgrade-btn{
+	color:#3080e8;
+	float: right; margin-left: 10px;
+	border:solid 1px #3080e8;
+	border-radius:3px;
+	padding:2px 5px;
+	font-size: 7pt;
+}
+.upgrade-btn:hover{
+	background:#3080e8;
+	color:#fff;
+	cursor: pointer;
+}
