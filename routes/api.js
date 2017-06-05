@@ -15,6 +15,7 @@ var nodemailer = require('nodemailer');
 var html = '../public/mailer.html';
 var CryptoJS = require("crypto-js");
 var request = require('request');
+var stripe = require("stripe")("sk_test_4oFGt3p491ust1hcWuR27QF1");
 
 
 var pusher = new Pusher({appId: "323748", key: "d3d161be3854778f5031", secret: "bd446427d3c80f0a9b02", encrypted: true});

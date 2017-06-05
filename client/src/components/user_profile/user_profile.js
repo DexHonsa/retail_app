@@ -29,7 +29,7 @@ class UserProfile extends React.Component{
       myProfile: false,
       editUserPopup: false,
       createContactPopup: false,
-			upgradePopup:true,
+			upgradePopup:false,
       userContacts: [],
       errors: {}
 
