@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import validateInput from '../validations/login_validation';
 import TextFieldGroup from './text_field_group';
-import { userLogin } from '../../actions/auth_actions';
+import { userLogin, getCustomer } from '../../actions/auth_actions';
 import UserSignup from './user_signup';
 import ForgotPassword from './forgot_password';
 
@@ -38,6 +38,7 @@ class LoginForm extends React.Component {
 		})
 	}
 	onSubmit(e){
+		var this2 = this;
 		if(this.isValid()){
 			e.preventDefault();
 			this.setState({errors: {}, isLoading: true});
@@ -48,7 +49,11 @@ class LoginForm extends React.Component {
 				isLoading : this.state.isLoading,
 				signupPopup: this.state.signupPopup
 			}).then(
-				(res) => browserHistory.push('/map'),
+				(res) => {
+					this2.props.getCustomer(res.id);
+					console.log(res.id);
+					browserHistory.push('/map')
+				},
 				(err) => this.setState({errors: err.response.data.errors, isLoading: false})
 				);
 		}
@@ -133,4 +138,10 @@ class LoginForm extends React.Component {
 			);
 	}
 }
-export default connect((state) => {return {} }, { userLogin })(LoginForm);
+function mapStateToProps(state){
+  return{
+    auth: state.auth,
+    client: state.client
+  }
+}
+export default connect((state) => {return {} }, { userLogin, getCustomer })(LoginForm);

@@ -22,7 +22,7 @@ class Header extends React.Component{
       settings_dropdown: false,
       user: [],
       changePasswordPopup: false,
-      tutorialPopup:false
+      tutorialPopup:false,
     }
   }
   logout(e){

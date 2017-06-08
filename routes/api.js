@@ -15,7 +15,7 @@ var nodemailer = require('nodemailer');
 var html = '../public/mailer.html';
 var CryptoJS = require("crypto-js");
 var request = require('request');
-var stripe = require("stripe")("sk_test_4oFGt3p491ust1hcWuR27QF1");
+var stripe = require("stripe")("pk_live_T7vj7D458oCYtaO01T0YZDNW");
 
 
 var pusher = new Pusher({appId: "323748", key: "d3d161be3854778f5031", secret: "bd446427d3c80f0a9b02", encrypted: true});
@@ -162,15 +162,110 @@ exports.getGeoCode = function(req,res){
 // })
 
 }
-exports.addSubscriptionUser = function(req,res){
-  var customer = stripe.customers.create({
-  email: "dex@theamp.com",
-}, function(err, customer) {
-  console.log(customer);
-  res.json({
-    customer
+exports.getStripeCustomer = function(req,res){
+  r.db('retail_updated').table('User').get(req.params.id).run().then(function(data){
+    stripe.customers.retrieve(
+    data.stripe_id,
+    function(err, customer) {
+      res.json({
+        customer
+      })
+    }
+  );
   })
-});
+
+}
+exports.cancelSubscription = function(req,res){
+  r.db('retail_updated').table('User').get(req.body.userId).run().then(function(data){
+    var customer_id = data.stripe_id
+    stripe.customers.retrieve(
+      customer_id,
+      function(err, customer){
+        console.log('INACTIVATING ACCOUNT');
+        r.db('retail_updated').table('User').get(req.body.userId).update({stripe_plan_status:'inactive'}).run();
+        stripe.subscriptions.del(
+            customer.subscriptions.data[0].id)
+            .then(function(subscription) {
+            res.json({data:subscription})
+            }).catch(function(error)
+            {
+            res.json({data:error})
+            })
+      }
+    )
+  })
+}
+exports.addSubscriptionUser = function(req,res){
+
+  r.db('retail_updated').table('User').get(req.body.userId).hasFields('stripe_id').run().then(function(data){
+    if(data == true){
+      r.db('retail_updated').table('User').get(req.body.userId).run().then(function(data){
+        var customer_id = data.stripe_id
+        stripe.customers.retrieve(
+          customer_id,
+          function(err, customer){
+
+            if(customer.subscriptions.count > 0){
+            stripe.subscriptions.update(
+                customer.subscriptions.data[0].id,
+                { plan: req.body.plan })
+                .then(function(subscription) {
+                res.json({data:subscription})
+                }).catch(function(error)
+                {
+                res.json({data:error})
+                })
+              }else{
+                r.db('retail_updated').table('User').get(req.body.userId).update({stripe_plan_status:'active'}).run();
+                   stripe.subscriptions.create({
+                    customer: customer.id,
+                    plan: req.body.plan,
+                  }).then(function(subscription) {
+                  res.json({data:subscription})
+                  }).catch(function(error)
+                  {
+                  res.json({data:error})
+                  })
+              }
+          }
+        )
+      })
+
+    }else{
+      stripe.customers.create({
+      email: req.body.email
+      }).then(function(customer){
+        r.db('retail_updated').table('User').get(req.body.userId).update({stripe_id:customer.id}).run()
+          // save customer.id if u want to use it for future so no need create customer again
+        return stripe.customers.createSource(customer.id, {
+          source: {
+             object: 'card',
+             exp_month: req.body.exp_mn,
+             exp_year: req.body.exp_yr,
+             number: req.body.card_num,
+             cvc: req.body.cvc,
+             name:req.body.name,
+          }
+        });
+
+      }).then(function(source) {
+        r.db('retail_updated').table('User').get(req.body.userId).update({stripe_plan_status:'active'}).run();
+
+        return stripe.subscriptions.create({
+          customer: source.customer,
+          plan: "silver-plan",
+        }).then(function(subscription) {
+        res.json({data:subscription})
+        }).catch(function(error)
+        {
+        res.json({data:error})
+        })
+      })
+
+    }
+  })
+
+
 }
 exports.DeleteImportData = function(req,res){
   var clientId = req.params.clientId;
@@ -188,6 +283,7 @@ exports.finishTutorial = function(req,res){
     })
   })
 }
+
 exports.getUploadedLocations = function(req,res){
     var clientId = req.params.clientId;
     r.db('retail_updated').table('ExcelData').getAll(clientId, {index:"clientId"}).run().then(function(data){

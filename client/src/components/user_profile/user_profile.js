@@ -10,6 +10,8 @@ import EditUserPopup from '../popups/users/edit_user_popup';
 import CreateContact from './create_user_contact';
 import {Link} from 'react-router';
 import Upgrade from '../util/upgrade';
+import CancelSubscription from '../util/cancel_subscription';
+
 
 const CLOUDINARY_UPLOAD_PRESET = 'MyPreset';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dexhonsa/image/upload';
@@ -30,23 +32,30 @@ class UserProfile extends React.Component{
       editUserPopup: false,
       createContactPopup: false,
 			upgradePopup: false,
+			CancelSubscriptionPopupL:false,
       userContacts: [],
-      errors: {}
+      errors: {},
+			userPlan:this.props.customer.customerPlan,
+			customer:{}
 
 		}
 	}
 
 	componentDidMount() {
 		this.getUser();
+		this.getCustomer();
     this.getSearches(this.props.params.id);
 	}
   componentWillReceiveProps(nextProps) {
      this.getSearches(nextProps.params.id);
+		 this.setState({
+			 userPlan:nextProps.customer.customerPlan
+		 })
   }
   getSearches(userId){
     var this2 = this
     axios.get('/api/getUserSearches/' + userId).then(function(res){
-      console.log(res.data);
+
       this2.setState({
         searches : res.data
       })
@@ -62,16 +71,18 @@ class UserProfile extends React.Component{
 
 
 		axios.get('/api/users/' + this.state.userId).then(function(res){
-      console.log(res);
+
 			this2.setState({
 				user: res.data.User,
         userContacts: res.data.User.contacts
 			})
 		})
 	}
-	addSubscriptionUser(){
-		axios.get('/api/addSubscriptionUser').then(function(res){
+	getCustomer(){
+		var this2 = this;
+		axios.get('/api/getCustomer' + '/' + this.props.auth.user.id).then(function(res){
 			console.log(res);
+			this2.setState({customer:res.data.customer})
 		})
 	}
   handleFileChange(dataURI) {
@@ -139,6 +150,12 @@ class UserProfile extends React.Component{
   showUpgradePopup(){
     this.setState({upgradePopup : true});
   }
+	hideCancelSubscriptionPopup(){
+    this.setState({cancelSubscriptionPopup : false});
+  }
+  showCancelSubscriptionPopup(){
+    this.setState({cancelSubscriptionPopup : true});
+  }
   showCreateContact(){
     this.setState({createContactPopup:true})
   }
@@ -165,6 +182,33 @@ class UserProfile extends React.Component{
 	render(){
     var createContactPopup;
 		var upgradePopup;
+		var plan;
+		var cancelSubscriptionPopup;
+		var accountPlan;
+		var accountStatus;
+		if(Object.keys(this.state.customer).length > 0){
+			//console.log(this.state.customer);
+			if(Object.keys(this.state.customer.subscriptions.data).length > 0){
+				accountPlan = this.state.customer.subscriptions.data[0].plan.name;
+				accountStatus = this.state.customer.subscriptions.data[0].status;
+			}else{
+				accountPlan = "None";
+				accountStatus = "Canceled"
+			}
+
+		}
+		if(this.state.cancelSubscriptionPopup){
+			cancelSubscriptionPopup = <CancelSubscription hideCancelSubscriptionPopup={this.hideCancelSubscriptionPopup.bind(this)}/>
+		}
+		if(this.state.userPlan == 'silver-plan'){
+			plan = 'Silver';
+		}
+		if(this.state.userPlan == 'gold-plan'){
+			plan = 'Gold';
+		}
+		if(this.state.userPlan == 'platnium-plan'){
+			plan = 'Platnium';
+		}
     if(this.state.createContactPopup === true){
       createContactPopup = <CreateContact hideCreateContact={this.hideCreateContact.bind(this)} userId={this.props.params.id} />;
     }else{
@@ -224,6 +268,7 @@ class UserProfile extends React.Component{
       {popup}
       {createContactPopup}
 			{upgradePopup}
+			{cancelSubscriptionPopup}
       {this.state.cropperOpen &&
           <AvatarCropper
             onRequestHide={this.handleRequestHide.bind(this)}
@@ -263,8 +308,12 @@ class UserProfile extends React.Component{
                     <div className="field-value">Change Password</div>
                   </div>
 									<div className="field-container">
-                    <div className="field-title">Account Type</div>
-                    <div className="field-value">Basic (25 days Remaining)<div onClick={this.showUpgradePopup.bind(this)} className="upgrade-btn">Upgrade</div><div onClick={this.addSubscriptionUser.bind(this)} className="upgrade-btn">Create Email</div></div>
+                    <div className="field-title">Account Plan</div>
+                    <div className="field-value">{accountPlan}<div onClick={this.showUpgradePopup.bind(this)} className="upgrade-btn">Upgrade</div></div>
+                  </div>
+									<div className="field-container">
+                    <div className="field-title">Account Status</div>
+                    <div className="field-value">{accountStatus} (15 days Remaining)<div onClick={this.showCancelSubscriptionPopup.bind(this)} className="upgrade-btn">Cancel Subscription</div></div>
                   </div>
                 </div>
                 <div className="saved-locations-container">
@@ -306,7 +355,8 @@ class UserProfile extends React.Component{
 function mapStateToProps(state){
   return{
     auth: state.auth,
-    client: state.client
+    client: state.client,
+		customer:state.customer
   }
 }
 export default connect(mapStateToProps)(UserProfile);

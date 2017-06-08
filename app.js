@@ -275,11 +275,13 @@ app.route('/api/UpdateUploadedLocation/:id').put(api.UpdateUploadedLocation);
 app.route('/api/DeleteImportData/:clientId').post(api.DeleteImportData);
 
 //stripe api
-app.route('/api/addSubscriptionUser').get(api.addSubscriptionUser);
+app.route('/api/addSubscriptionUser').post(api.addSubscriptionUser);
+app.route('/api/getCustomer/:id').get(api.getStripeCustomer);
+app.route('/api/cancelSubscription').post(api.cancelSubscription);
 
 //welcome mailer api
 
-app.rout
+
 
 
 // Redirect all others to the index

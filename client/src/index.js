@@ -25,7 +25,7 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import setAuthoizationToken from './utils/set_authorization_token';
 import RootReducer from './rootreducer';
 import jwtDecode from 'jwt-decode';
-import { setCurrentUser } from './actions/auth_actions';
+import { setCurrentUser, setCustomer } from './actions/auth_actions';
 import Property from './components/property/property';
 import PropertyDetails from './components/property/property_details';
 import FinancialDetails from './components/property/financial_details';
@@ -67,6 +67,7 @@ const store = createStore(
 if(localStorage.jwtToken){
   setAuthoizationToken(localStorage.jwtToken);
   store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
+  store.dispatch(setCustomer(localStorage.customerId, localStorage.customerPlan, localStorage.customerStatus));
 }
 
 

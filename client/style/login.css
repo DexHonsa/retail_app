@@ -92,7 +92,7 @@ ul,li{
 }
 .popup-container{
 	width:50%;
-	min-width: 500px;
+	min-width: 900px;
 	max-width:1000px;
 	background:#fff;
 
@@ -170,6 +170,7 @@ ul,li{
 .option-tile-details{
 	margin-top:15px;
 	font-size: 12pt;
+	text-align: left;
 }
 .popup-container li{
 	margin-left: 25px;

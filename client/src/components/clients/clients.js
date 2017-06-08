@@ -5,6 +5,7 @@ import axios from 'axios';
 import {connect} from 'react-redux';
 import CreateClientPopup from '../popups/clients/create_client_popup';
 import $ from "jquery";
+import Upgrade from '../util/upgrade';
 
 class Clients extends React.Component{
     constructor(props) {
@@ -13,9 +14,15 @@ class Clients extends React.Component{
     this.state = {
       clients: [],
       search : "",
-      popup : false
-
+      popup : false,
+      upgradePopup:false
     };
+  }
+  showUpgradePopup(){
+    this.setState({upgradePopup:true})
+  }
+  hideUpgradePopup(){
+    this.setState({upgradePopup:false})
   }
   collapsePopup(){
     this.setState({popup : false})
@@ -61,8 +68,33 @@ componentDidMount() {
   render(){
     var clientList;
     var addClientBtn;
+      var upgradePopup;
+
+      if(this.state.upgradePopup){
+        upgradePopup = <Upgrade hideUpgradePopup={this.hideUpgradePopup.bind(this)}/>;
+      }
     if(this.props.auth.user.role == 'Admin'){
-      addClientBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>;
+      if(this.props.customer.customerPlan == 'silver-plan'){
+        if(this.state.clients.length >= 3){
+          addClientBtn = <div onClick={this.showUpgradePopup.bind(this)} className="add-client-btn">Add Client</div>;
+        }else{
+          addClientBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>;
+        }
+      }
+
+      if(this.props.customer.customerPlan == 'gold-plan'){
+        if(this.state.clients.length >= 10){
+          addClientBtn = <div onClick={this.showUpgradePopup.bind(this)} className="add-client-btn">Add Client</div>;
+        }else{
+          addClientBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>;
+        }
+      }
+      if(this.props.customer.customerPlan == 'platnium-plan'){
+
+          addClientBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>;
+
+      }
+
     }
       var filteredClients = this.state.clients.filter(
         (data) => {
@@ -89,6 +121,7 @@ componentDidMount() {
     }
       return (
         <div >
+          {upgradePopup}
         {popup}
           <div id="clients-content" style={{display: 'flex'}}>
                   {/*<div className="left-side-filter-container">
@@ -132,7 +165,8 @@ componentDidMount() {
 function mapStateToProps(state){
   return{
     auth: state.auth,
-    client: state.client
+    client: state.client,
+    customer:state.customer
   }
 }
 export default connect(mapStateToProps)(Clients);
