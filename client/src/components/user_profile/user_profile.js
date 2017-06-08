@@ -194,7 +194,7 @@ class UserProfile extends React.Component{
 				accountPlan = this.state.customer.subscriptions.data[0].plan.name;
 				accountStatus = this.state.customer.subscriptions.data[0].status;
 			}else{
-				accountPlan = "Silver(Trial)";
+				accountPlan = "Silver (Trial)";
 				accountStatus = "Trial (15 Days Remaining)"
 			}
 
