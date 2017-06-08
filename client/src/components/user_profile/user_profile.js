@@ -186,17 +186,20 @@ class UserProfile extends React.Component{
 		var cancelSubscriptionPopup;
 		var accountPlan;
 		var accountStatus;
+		if(this.state.customer !== null){
+
 		if(Object.keys(this.state.customer).length > 0){
 			//console.log(this.state.customer);
 			if(Object.keys(this.state.customer.subscriptions.data).length > 0){
 				accountPlan = this.state.customer.subscriptions.data[0].plan.name;
 				accountStatus = this.state.customer.subscriptions.data[0].status;
 			}else{
-				accountPlan = "None";
-				accountStatus = "Canceled"
+				accountPlan = "Silver(Trial)";
+				accountStatus = "Trial (15 Days Remaining)"
 			}
 
 		}
+	}
 		if(this.state.cancelSubscriptionPopup){
 			cancelSubscriptionPopup = <CancelSubscription hideCancelSubscriptionPopup={this.hideCancelSubscriptionPopup.bind(this)}/>
 		}
@@ -313,7 +316,7 @@ class UserProfile extends React.Component{
                   </div>
 									<div className="field-container">
                     <div className="field-title">Account Status</div>
-                    <div className="field-value">{accountStatus} (15 days Remaining)<div onClick={this.showCancelSubscriptionPopup.bind(this)} className="upgrade-btn">Cancel Subscription</div></div>
+                    <div className="field-value">{accountStatus}<div onClick={this.showCancelSubscriptionPopup.bind(this)} className="upgrade-btn">Cancel Subscription</div></div>
                   </div>
                 </div>
                 <div className="saved-locations-container">
