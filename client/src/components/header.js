@@ -185,6 +185,9 @@ render(){
             <li><a onClick={this.showTutorial.bind(this)} href="#">Tutorial</a>
 
             </li>
+            <li><Link to="/signups" activeClassName="active">View Sign Ups</Link>
+
+            </li>
             <li><a href="#"><i onClick={this.toggleSettingsDropdown.bind(this)} className="fa fa-gear"></i></a>
               {settingsDropdown}
             </li>

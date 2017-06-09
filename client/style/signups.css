@@ -1,0 +1,69 @@
+/* CSS Document */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+html,body{
+	background:#f1f5f9;
+	font-family: 'Roboto';
+}
+.signups-container{
+	border-radius: 5px;
+	overflow: hidden;
+
+	background:#fff;
+	box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+	margin-top:50px;
+
+}
+.signups-total{
+	flex:1;
+	padding:15px;
+}
+.signups-total .signups-title{
+	color:#24b47e;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 12pt;
+}
+.signups-total .signups-value{
+	font-size: 15pt;
+}
+.signups-top{
+	background:#fff;
+	height:100px;
+	display: flex;
+	align-items: center;
+
+}
+.signups-item{
+	padding:15px;
+	color:#4a4a70;
+	background:#f6f9fc;
+	border-top: solid 1px #e6ebf1;
+	display: flex;
+	height:70px;
+	align-items: center;
+}
+.signups-item:hover{
+	background:#EFF4F9;
+	cursor: pointer;
+}
+.signups-item:hover .signups-value{
+	color:#4A5673;
+}
+.signup-group{
+	flex: 1;
+}
+.signups-title{
+	color:#8898aa;
+	font-size: 8pt;
+	font-weight: 500;
+	letter-spacing: .5px;
+	text-transform: uppercase;
+}
+.signups-value{
+	color:#525f7f;
+	font-size: 12pt;
+}
+.signup-time{
+	color:#8898aa;
+	margin-left: auto;
+}

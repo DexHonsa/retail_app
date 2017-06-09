@@ -211,6 +211,7 @@ app.route('/api/UpdateProperty/:id').put(api.UpdateProperty);
 
 // User API
 app.route('/api/signUpUser').post(api.signUpUser);
+app.route('/api/getTotalUsers/').get(api.getTotalUsers);
 app.route('/api/getUsers/:id').get(api.getUsers);
 app.route('/api/users/:id').get(api.User);
 app.route('/api/users').post(api.addUser);

@@ -1000,6 +1000,12 @@ exports.getUsers = function(req, res) {
         res.json({User})
     })
 };
+// Retrieve all Users
+exports.getTotalUsers = function(req, res) {
+    r.db('retail_updated').table('User').run().then(function(User) {
+        res.json({User})
+    })
+};
 
 // Retrieve one User
 exports.User = function(req, res) {

@@ -88,10 +88,11 @@ class DemoGender extends React.Component {
 
             ];
 		var genderRatio = [
+								{ value: 1, label: '1% or greater' },
+								{ value: 2, label: '2% or greater' },
+								{ value: 3, label: '3% or greater' },
+								{ value: 4, label: '4% or greater' },
 								{ value: 5, label: '5% or greater' },
-								{ value: 10, label: '10% or greater' },
-								{ value: 15, label: '15% or greater' },
-								{ value: 20, label: '20% or greater' },
 
 						];
 

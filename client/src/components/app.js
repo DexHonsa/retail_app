@@ -20,7 +20,7 @@ class App extends React.Component {
 
 	componentDidMount(){
 		if(this.props.auth.isAuthenticated){
-			browserHistory.push('/admin/')
+			//browserHistory.push('/admin/')
 		}else{
 			browserHistory.push('/login')
 		}

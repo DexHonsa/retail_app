@@ -20,6 +20,7 @@ import UserProfile from './components/user_profile/user_profile';
 import Messages from './components/messages/messages';
 import Rankings from './components/rankings/rankings';
 import KeyMetrics from './components/key_metrics/key_metrics_map';
+import SignUps from './components/superadmin/signups';
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import setAuthoizationToken from './utils/set_authorization_token';
@@ -84,6 +85,7 @@ ReactDOM.render(
     	<Route path="/" component={App}>
         <IndexRoute Component={LoginHome}/>
         <Route path="/login" component={LoginHome}></Route>
+        <Route path="/signups" component={SignUps}></Route>
         <Route path="/user/:id" component={UserProfile}></Route>
         <Route path="/rankings" component={Rankings}></Route>
         <Route path="/rankings/population" component={Rankings} field="Population"></Route>
