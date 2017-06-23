@@ -137,6 +137,7 @@ render(){
 
        headerStyle = {display:'none'};
     }
+
     var clientDropdown;
     var settingsDropdown;
 
@@ -179,15 +180,16 @@ render(){
             <Link to="/admin/users" activeClassName="active">Admin</Link>
             <Link to="/map" activeClassName="active">Map</Link>
             <Link to="/keymetrics" activeClassName="active">Key Metrics</Link>
+            {/* <Link to="/pipeline" activeClassName="active">Pipeline</Link> */}
             <Link to="/rankings/population" activeClassName="active">Rankings</Link>
           </div>
           <ul className="user-nav">
             <li><a onClick={this.showTutorial.bind(this)} href="#">Tutorial</a>
 
             </li>
-            <li><Link to="/signups" activeClassName="active">View Sign Ups</Link>
+            {/* <li><Link to="/signups" activeClassName="active">View Sign Ups</Link>
 
-            </li>
+            </li> */}
             <li><a href="#"><i onClick={this.toggleSettingsDropdown.bind(this)} className="fa fa-gear"></i></a>
               {settingsDropdown}
             </li>

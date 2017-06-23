@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import {Bar, Pie} from 'react-chartjs-2';
+import {Link} from 'react-router';
 
 class MoreZipDemographics extends React.Component {
 	constructor(props) {
@@ -46,7 +47,7 @@ class MoreZipDemographics extends React.Component {
 				});
 
                 that.setState({
-                  imgUrl: "https://maps.googleapis.com/maps/api/streetview?location=" + data.data[0].Latitude + "," + data.data[0].Longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs",
+                  imgUrl: "https://maps.googleapis.com/maps/api/streetview?location=" + that.props.latitude + "," + that.props.longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs",
                   demographics: data.data[0]
                 });
 
@@ -68,6 +69,11 @@ class MoreZipDemographics extends React.Component {
 		// var gradient = chart.createLinearGradient(0, 0, 0, 400);
 		// 	gradient.addColorStop(0, 'rgba(250,174,50,1)');
 		// 	gradient.addColorStop(1, 'rgba(250,174,50,0)');
+		var searchId;
+		if(this.props.searchId != ''){
+			console.log(this.props.searchId);
+			searchId = <Link to={'/emailreport/' + this.props.searchId}><div className="share-with-client">Share With Client</div></Link>;
+		}
 		var incomeChart;
 		var demographicValues;
        if(Object.keys(this.state.demographics).length > 0){
@@ -311,7 +317,7 @@ class MoreZipDemographics extends React.Component {
 				<div className="modal-overlay">
         <div className="add-demo-filter-popup-container">
           <div className="add-demo-filter-popup animated-slow fadeInUp" style={{width: '80%'}}>
-            <div className="add-filter-title">More Demographics  <i onClick={this.props.hideMoreZipDemographics} className="fa fa-close" /><div className="share-with-client">Share With Client</div></div>
+            <div className="add-filter-title">More Demographics  <i onClick={this.props.hideMoreZipDemographics} className="fa fa-close" />{searchId}</div>
             <div className="add-filter-stage" style={{height: '70vh', width: '100%', position: 'relative', overflow: 'auto'}}>
               <div className="demographic-info-container">
 

@@ -50,8 +50,10 @@ class Property extends React.Component {
                 backgroundImage: 'url(https://maps.googleapis.com/maps/api/streetview?location=' + this.state.property.lat + ',' + this.state.property.lng + '&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs)'
             }} />
             <div className="saved-search-title">{address}</div>
+
           </div>
           <div className="details-container">
+            <div className="create-deal-btn">Start Deal</div>
             <div className="detail-tabs">
               <IndexLink to={"/property/propertydetails" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Property Details</IndexLink>
               <Link to={"/property/financialdetails" + '/' + this.props.params.id } className="detail-tab" activeClassName="active">Financial Details</Link>

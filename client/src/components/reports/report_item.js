@@ -3,6 +3,7 @@ import {Bar, Pie} from 'react-chartjs-2';
 import $ from 'jquery';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import EmailReportPopup from './email_popup';
 
 class ReportItem extends React.Component {
 	constructor(props) {
@@ -12,8 +13,15 @@ class ReportItem extends React.Component {
 			imgUrl : "https://maps.googleapis.com/maps/api/streetview?location=" + this.props.latitude + "," + this.props.longitude + "&size=400x400&key=AIzaSyBXkG_joIB9yjAP94-L6S-GLTWnj7hYmzs",
 			twitterFeed: [],
 			associatedUsers:[],
-			searchId: this.props.id
+			searchId: this.props.id,
+			emailReportPopup:false
 		}
+	}
+	showEmailReportPopup(){
+		this.setState({emailReportPopup:true})
+	}
+	hideEmailReportPopup(){
+		this.setState({emailReportPopup:false})
 	}
 	componentDidMount() {
 		this.getTwitterFeed();
@@ -67,6 +75,10 @@ class ReportItem extends React.Component {
 
 	}
 	render(){
+		var emailReportPopup;
+		if(this.state.emailReportPopup){
+			emailReportPopup = <EmailReportPopup hideEmailReportPopup={this.hideEmailReportPopup} />
+		}
 		var incomeChart;
 		var demographicValues;
 		var twitterItems;
@@ -295,10 +307,11 @@ class ReportItem extends React.Component {
 
 		return(
 			<div className="report-container">
+				{emailReportPopup}
         <div className="report-item">
           <div className="report-item-top">
             <div className="report-item-details">
-              <div>{this.props.street} {this.props.city} </div><span style={{fontSize: '.8em', color: '#808080'}}><div className="send-report-btn">Email Report</div></span>
+              <div>{this.props.street} {this.props.city} </div><span style={{fontSize: '.8em', color: '#808080'}}><div onClick={this.showEmailReportPopup.bind(this)} className="send-report-btn">Email Report</div></span>
               <div className="report-item-user-likes">
               {userBadges}
                 {/*<div className="user-like-item">

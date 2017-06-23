@@ -63,10 +63,8 @@ a {
 	padding:15px;
 	box-sizing: border-box;
 	float: left;
-
 }
 .main-section{
-	display: flex;
 	width:100%;
 	height: calc(100vh - 50px);
 	position: fixed;
@@ -162,7 +160,8 @@ a {
 }
 .map-container{
 	position: relative;
-	flex:1;
+  width: calc(100% - 530px);
+	height:100%;
 	margin-left:80px;
 	padding:15px;
 	box-sizing: border-box;
@@ -207,13 +206,16 @@ a {
 	cursor: pointer;
 }
 .right-side-bar{
-	box-sizing: border-box;
-	background:#fff;
-	width:450px;
-	text-align:left;
-	overflow-x: hidden;
-	position: relative;
-	z-index:1;
+	  box-sizing: border-box;
+    background: #fff;
+    width: 450px;
+    text-align: left;
+    overflow-x: hidden;
+    position: fixed;
+    z-index: 1000;
+    top: 50px;
+    height: 100%;
+    right: 0;
 
 }
 .right-side-bar h3{

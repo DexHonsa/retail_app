@@ -230,3 +230,19 @@
 	font-size:14pt;
 	color:#3080e8;
 }
+.create-deal-btn{
+	background:#3080e8;
+	color:#fff;
+	padding:7px 15px;
+	border-radius: 3px;
+	margin-left: auto;
+	display: inline-block;
+	float:right;
+	margin-right: 15px;
+	right:0;
+	top:0;
+}
+.create-deal-btn:hover{
+	background:#469df5;
+	cursor: pointer;
+}

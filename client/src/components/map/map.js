@@ -240,6 +240,10 @@ class Map extends React.Component {
         }
     }
     render() {
+        var noSavedSearches = <span style={{marginTop:10,display:'inline-block',color:'#aeaeae'}}>Start by selecting your prefered demographics on the left, then double clicking on the map to select a location</span>;
+        if(this.state.searches.length > 0){
+          noSavedSearches = '';
+        }
         if (this.state.zipDemographics) {
             var zipDemographics = <ZipDemographics zip={this.state.zip} zipDemographicItems={this.state.zipDemographicItems} showMoreZipDemographics={this.showMoreZipDemographics.bind(this)}/>
 
@@ -249,7 +253,7 @@ class Map extends React.Component {
         }
         var more_zip_demographics;
         if (this.state.moreZipDemographics) {
-            more_zip_demographics = <MoreZipDemographics latitude={this.state.latitude} longitude={this.state.longitude} street={this.state.street} city={this.state.city} zip={this.state.zip} hideMoreZipDemographics={this.hideMoreZipDemographics.bind(this)}/>
+            more_zip_demographics = <MoreZipDemographics searchId={this.state.searchId} latitude={this.state.latitude} longitude={this.state.longitude} street={this.state.street} city={this.state.city} zip={this.state.zip} hideMoreZipDemographics={this.hideMoreZipDemographics.bind(this)}/>
         }
         var demo_pop;
         if (this.state.demo_pop_open) {
@@ -349,7 +353,7 @@ class Map extends React.Component {
                                     padding: 15,
                                     fontSize: '12pt',
                                     color: '#469df5'
-                                }}>Saved Searches</span>
+                                }}>Saved Searches<br/>{noSavedSearches}</span>
                                 <div className="results-list">
                                     <ReactCSSTransitionGroup transitionName="slideRight" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
 

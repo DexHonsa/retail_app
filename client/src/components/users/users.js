@@ -101,6 +101,8 @@ render(){
       if(this.props.customer.customerPlan == 'silver-plan'){
         addUserBtn = <div onClick={this.showUpgradePopup.bind(this)} className="add-client-btn">Add User</div>;
 
+      }else{
+        addUserBtn = <div onClick={this.showUpgradePopup.bind(this)} className="add-client-btn">Add User</div>;
       }
 
         if(this.props.customer.customerPlan == 'gold-plan'){
@@ -115,7 +117,7 @@ render(){
         if(this.props.customer.customerPlan == 'platnium-plan'){
 
             addUserBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add User</div>;
-          
+
 
         }
 

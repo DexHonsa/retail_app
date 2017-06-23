@@ -40,6 +40,8 @@ import Documents from './components/property/lease_abstract/documents';
 import Insurance from './components/property/lease_abstract/insurance';
 import Tenant from './components/property/lease_abstract/tenant';
 import ViewLising from './components/listing/view_listing';
+import Pipeline from './components/pipeline/pipeline';
+import EmailReport from './components/reports/email_report';
 
 
 
@@ -66,6 +68,7 @@ const store = createStore(
     );
 
 if(localStorage.jwtToken){
+
   setAuthoizationToken(localStorage.jwtToken);
   store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
   store.dispatch(setCustomer(localStorage.customerId, localStorage.customerPlan, localStorage.customerStatus));
@@ -88,13 +91,14 @@ ReactDOM.render(
         <Route path="/signups" component={SignUps}></Route>
         <Route path="/user/:id" component={UserProfile}></Route>
         <Route path="/rankings" component={Rankings}></Route>
+        <Route path="/pipeline" component={Pipeline}></Route>
         <Route path="/rankings/population" component={Rankings} field="Population"></Route>
         <Route path="/rankings/households" component={Rankings} field="TotalHouseholds"></Route>
         <Route path="/rankings/education" component={Rankings} field="EducationBachelorOrGreater"></Route>
         <Route path="/rankings/income" component={Rankings} field="IncomePerHousehold"></Route>
         <Route path="/reports" component={Reports}></Route>
+        <Route path="/emailreport/:id" component={EmailReport}></Route>
     		<Route path="/admin" component={Admin}>
-
     			<Route path="/admin/clients" component={Clients}></Route>
     			<Route path="/admin/users" component={Users}></Route>
                 <Route path="/admin/roles" component={Roles}></Route>

@@ -80,6 +80,8 @@ componentDidMount() {
         }else{
           addClientBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>;
         }
+      }else{
+        addClientBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add Client</div>;
       }
 
       if(this.props.customer.customerPlan == 'gold-plan'){

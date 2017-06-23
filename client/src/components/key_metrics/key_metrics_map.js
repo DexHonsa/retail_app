@@ -9,6 +9,7 @@ import {Bar, Pie} from 'react-chartjs-2';
 import Select from 'react-select';
 import {Link} from 'react-router';
 import Expirations from './expirations.js';
+import ConfirmDelete from './confirm_delete';
 
 import ProspectiveLocations from './prospective_locations';
 import '../../scripts/keymetrics_map.js';
@@ -39,7 +40,8 @@ class KeyMetrics extends React.Component {
                 totalSales: 0,
                 totalProfit: 0,
                 totalLocations: 0
-            }
+            },
+            confirmDeleteDate:false
         }
 
     }
@@ -51,6 +53,12 @@ class KeyMetrics extends React.Component {
       this.setState({
         search: event.target.value.substr(0,20)
       });
+    }
+    showConfirmDeleteData(){
+      this.setState({confirmDeleteDate:true})
+    }
+    hideConfirmDeleteData(){
+      this.setState({confirmDeleteDate:false})
     }
     getClientSearches(clientId) {
         var this2 = this;
@@ -70,6 +78,7 @@ class KeyMetrics extends React.Component {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     deleteImportData(){
+
       var this2 = this;
       axios.post('/api/DeleteImportData' + '/' + this.props.client.clientId).then(function(res){
         this2.setState({
@@ -79,6 +88,7 @@ class KeyMetrics extends React.Component {
               totalProfit: 0,
               totalLocations: 0
           },
+          confirmDeleteDate:false,
           uploadedLocations: []
         })
       })
@@ -237,6 +247,10 @@ class KeyMetrics extends React.Component {
     }
 
     render() {
+      var confirmDelete;
+      if(this.state.confirmDeleteDate){
+        confirmDelete = <ConfirmDelete deleteData={this.deleteImportData.bind(this)} hideConfirmDeleteData={this.hideConfirmDeleteData.bind(this)}/>;
+      }
       var optionList = [
         {value: 'Options Held', label: 'Options Held'},
         {value: 'Encumbered By', label: 'Encumbered By'},
@@ -311,6 +325,7 @@ class KeyMetrics extends React.Component {
         return (
             <main className="main">
                 <ReactTooltip/> {importData}
+                {confirmDelete}
                 <div className="main-wrapper" style={{
                     textAlign: 'center',
                     position: 'relative'
@@ -358,7 +373,7 @@ class KeyMetrics extends React.Component {
                                     </select>
                                 </div>
                                 <div onClick={this.showImportData.bind(this)} className="import-data-btn">Import Data</div>
-                                <div onClick={this.deleteImportData.bind(this)} className="import-data-btn">Delete Data</div>
+                                <div onClick={this.showConfirmDeleteData.bind(this)} className="import-data-btn">Delete Data</div>
                             </div>
                             {/*<div class="client-selector-dropdown">
 							<div class="client-selector-img"></div>
