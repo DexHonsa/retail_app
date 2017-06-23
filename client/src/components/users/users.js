@@ -102,7 +102,7 @@ render(){
         addUserBtn = <div onClick={this.showUpgradePopup.bind(this)} className="add-client-btn">Add User</div>;
 
       }else{
-        addUserBtn = <div onClick={this.showUpgradePopup.bind(this)} className="add-client-btn">Add User</div>;
+        addUserBtn = <div onClick={this.expandPopup.bind(this)} className="add-client-btn">Add User</div>;
       }
 
         if(this.props.customer.customerPlan == 'gold-plan'){
